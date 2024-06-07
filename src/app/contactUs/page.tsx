@@ -1,3 +1,4 @@
+"use client"
 import { Container, Grid, Paper, Typography } from "@mui/material";
 import Image from "next/image";
 import React from "react";
@@ -5,8 +6,12 @@ import CallIcon from '@mui/icons-material/Call';
 import LocationOnIcon from '@mui/icons-material/LocationOn';
 import EmailIcon from '@mui/icons-material/Email';
 import Footer from "@/Component/HomePage/Footer";
+import ArrowBackIcon from '@mui/icons-material/ArrowBack';  
+import { useRouter } from "next/navigation";
+import OtherPageFooter from "@/Component/Shared/Footer";
 
 export default function ContactUs() {
+    const history = useRouter()
   return (
     <Grid container>
       <Container
@@ -22,8 +27,11 @@ export default function ContactUs() {
           justifyContent: "center",
         }}
       >
-        <Container>
-          <Paper sx={{ textAlign: "center", mt: 5, p: 5 }} elevation={2}>
+        <Container sx={{mt:4}}>
+            <Container onClick={()=>history.back()} sx={{width:"100%",bgcolor:"#eb94d7",p:1}}>
+            <ArrowBackIcon  sx={{fontSize:30,color:"whitesmoke"}} />
+            </Container>
+          <Paper sx={{ textAlign: "center", p: 5 }} elevation={2}>
             <Image
               src="/customer-service.png"
               alt=""
@@ -96,7 +104,7 @@ export default function ContactUs() {
         </Container>
       </Container>
       <div style={{marginTop:5,width:"100%",}}>
-      <Footer />
+      <OtherPageFooter />
       </div>
     </Grid>
   );

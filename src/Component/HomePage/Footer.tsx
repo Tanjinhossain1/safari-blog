@@ -8,6 +8,8 @@ import {
   Card,
   CardMedia,
   CardContent,
+  Divider,
+  Container,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Image from "next/image";
@@ -24,7 +26,7 @@ export default function Footer() {
       <Grid xs={0} md={1} lg={1.1} xl={2}></Grid>
       <Grid xs={12} md={10} lg={9.8} xl={8}>
         <Paper
-          sx={{ p: 5,  borderTop: "15px solid #bf0080" }}
+          sx={{ p: 5,  borderTop: "10px solid #bf0080" }}
           elevation={2}
         >
           <Grid container>
@@ -98,8 +100,18 @@ export default function Footer() {
                   Privacy Policy
                 </Link>
               </Typography>
+
             </Grid>
           </Grid>
+                <Container sx={{width:"100%",mt:3}}>
+                <Divider />
+                </Container>
+                
+                <Container sx={{width:"100%",mt:3,display:"flex",justifyContent:"space-between"}}>
+               <Typography>Copyright © Saltside Technologies</Typography>
+               <Typography sx={{fontWeight:600,fontSize:23}}>Sell Safari</Typography>
+                </Container>
+
         </Paper>
       </Grid>
       <Grid xs={0} md={1} lg={1.1} xl={2}></Grid>
