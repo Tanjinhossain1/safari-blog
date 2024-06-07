@@ -99,7 +99,7 @@ export default function Banner() {
     <Grid  container>
       <Grid xs={0} md={1} lg={1.1} xl={2}></Grid>
       <Grid xs={12} md={10} lg={9.8} xl={8}>
-        <Paper sx={{p:2}}  elevation={2}>
+        <Paper sx={{p:2,mb:2}}  elevation={2}>
           <Grid  container spacing={1}>
             <Grid   item xs={12} sm={8}>
               <ContentBox
