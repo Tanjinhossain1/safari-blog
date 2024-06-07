@@ -12,6 +12,7 @@ import {
 import { styled } from "@mui/material/styles";
 import Image from "next/image";
 import { truncateText } from "@/utils/utils";
+import RecentArticle from "./RecentArticle";
 
 const HoverBox = styled(Box)(({ theme }) => ({
   position: "relative",
@@ -127,6 +128,7 @@ export default function Banner() {
               </Grid>
             </Grid>
           </Grid>
+      <RecentArticle />
         </Paper>
       </Grid>
       <Grid xs={0} md={1} lg={1.1} xl={2}></Grid>
