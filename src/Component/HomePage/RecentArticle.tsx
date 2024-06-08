@@ -54,7 +54,7 @@ export default function RecentArticle() {
               <>
                 <Grid xs={12} sm={5.5}>
                   <Image
-                    style={{ width: "100%" }}
+                    style={{ width: "100%",cursor: "pointer" }}
                     alt=""
                     src={data.image}
                     width={370}
@@ -64,7 +64,7 @@ export default function RecentArticle() {
                 <Grid xs={0} sm={0.5}></Grid>
                 <Grid xs={12} sm={6}>
                   <Typography
-                    sx={{ fontSize: 18, fontWeight: 550, fontFamily: "revert" }}
+                    sx={{ fontSize: 18, fontWeight: 600, fontFamily: "revert",cursor: "pointer" , ":hover":{color:"#c4007c"}}}
                   >
                     {data.title}
                   </Typography>
