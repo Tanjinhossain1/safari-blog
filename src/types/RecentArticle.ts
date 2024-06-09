@@ -4,4 +4,5 @@ export interface RecentArticleDataType {
     image: string;
     title: string;
     description: string;
+    category: string;
 }

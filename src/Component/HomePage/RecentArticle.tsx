@@ -39,7 +39,9 @@ import TopSearch from "../TopSearchBar/TopSearch";
 import CloseIcon from "@mui/icons-material/Close";
 import { SAMPLE_DATA } from "./RecentArticleDataType";
 import { RecentArticleDataType } from "@/types/RecentArticle";
+import { useRouter } from "next/navigation";
 export default function RecentArticle() {
+  const history = useRouter()
   return (
     <Grid sx={{ mt: 4 }} container>
       <Grid xs={12} md={8}>
@@ -59,12 +61,22 @@ export default function RecentArticle() {
                     src={data.image}
                     width={370}
                     height={200}
+                    onClick={() => {
+                      const joinTitle = data.title.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join('-');
+                      history.push(`/details/${data.id}/${data.category}${joinTitle}`)
+                    
+                    }}
                   />
                 </Grid>
                 <Grid xs={0} sm={0.5}></Grid>
                 <Grid xs={12} sm={6}>
                   <Typography
                     sx={{ fontSize: 18, fontWeight: 600, fontFamily: "revert",cursor: "pointer" , ":hover":{color:"#c4007c"}}}
+                    onClick={() => {
+                      const joinTitle = data.title.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join('-');
+                      history.push(`/details/${data.id}/${data.category}${joinTitle}`)
+                    
+                    }}
                   >
                     {data.title}
                   </Typography>
@@ -73,6 +85,11 @@ export default function RecentArticle() {
                   </Typography>
                   <Button
                     variant="contained"
+                    onClick={() => {
+                      const joinTitle = data.title.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join('-');
+                      history.push(`/details/${data.id}/${data.category}${joinTitle}`)
+                    
+                    }}
                     sx={{
                       backgroundColor: "#bd047c", // Primary color
                       mt: 3,
