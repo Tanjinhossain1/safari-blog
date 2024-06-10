@@ -10,6 +10,7 @@ import axios from "axios";
 import { ResizableImageTool } from "./EditorImage";
 import { Container } from "@mui/material";
 import Delimiter from '@editorjs/delimiter';
+import Marker from "@editorjs/marker";
 
 
 const EditorForCreateArticle = ({editorRef}:{editorRef: any}) => {
@@ -97,7 +98,10 @@ const EditorForCreateArticle = ({editorRef}:{editorRef: any}) => {
             inlineToolbar: true,
             shortcut: 'CMD+SHIFT+ENTER',
           },
-      
+          marker: {
+            class: Marker as any,
+            inlineToolbar: true,
+          },
         },
         onReady: () => {
           console.log("Editor.js is ready to work!");

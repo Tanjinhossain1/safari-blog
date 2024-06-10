@@ -100,4 +100,22 @@ declare module '@editorjs/table' {
       static get toolbox(): { title: string, icon: string };
     }
   }
+  declare module '@editorjs/marker' {
+    import { BlockTool, BlockToolData } from '@editorjs/editorjs';
+  
+    interface MarkerConfig {
+      endpoints: {
+        byFile: string; // Your backend file uploader endpoint
+        byUrl: string; // Your endpoint that provides uploading by URL
+      };
+    }
+  
+    export default class MarkerTool implements BlockTool {
+      constructor(config: { data: BlockToolData, config: MarkerConfig, api: any, readOnly: boolean });
+      render(): HTMLElement;
+      save(block: HTMLElement): BlockToolData;
+      validate(savedData: BlockToolData): boolean;
+      static get toolbox(): { title: string, icon: string };
+    }
+  }
   
