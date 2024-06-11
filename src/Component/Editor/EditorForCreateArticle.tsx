@@ -51,7 +51,7 @@ const EditorForCreateArticle = ({editorRef}:{editorRef: any}) => {
 
                   try {
                     const response = await axios.post(
-                      `http://localhost:3002/api/v1/image/upload`,
+                      `https://sell-safari-blog-server.onrender.com/api/v1/image/upload`,
                       formData,
                       {
                         headers: {
@@ -72,7 +72,7 @@ const EditorForCreateArticle = ({editorRef}:{editorRef: any}) => {
                 },
                 async uploadByUrl(url:any) {
                   const response = await axios.post(
-                    `http://localhost:3002/api/v1/image/upload/byUrl`,
+                    `https://sell-safari-blog-server.onrender.com/api/v1/image/upload/byUrl`,
                     {
                       url,
                     }
