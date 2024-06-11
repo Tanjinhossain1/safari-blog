@@ -27,9 +27,10 @@ const beforeUpload = (file: RcFile) => {
 interface ImageUploadPropsType {
   name: string;
   runAfterChange?: (file: any)=>void;
+  required?:boolean;
 }
 
-const UploadImageField = ({name,runAfterChange}: ImageUploadPropsType) => {
+const UploadImageField = ({name,runAfterChange,required}: ImageUploadPropsType) => {
   const [loading, setLoading] = useState(false);
   const [imageUrl, setImageUrl] = useState<string>();
   // const {setValue,reset} = useFormContext()
@@ -55,7 +56,9 @@ const UploadImageField = ({name,runAfterChange}: ImageUploadPropsType) => {
   const uploadButton = (
     <div>
       {loading ? <LoadingOutlined /> : <PlusOutlined />}
-      <div style={{ marginTop: 8 }}>Upload</div>
+      <div style={{ marginTop: 8 }}>Upload {
+            required === true ? <sup style={{color:'red',display:"inline",fontSize:15}}>*</sup>:""
+          }</div>
     </div>
   );
 
@@ -65,7 +68,7 @@ const UploadImageField = ({name,runAfterChange}: ImageUploadPropsType) => {
         name={name}
         listType="picture-card"
         className="avatar-uploader"
-        showUploadList={false}
+        showUploadList={false} 
         action="/api/file"
         beforeUpload={beforeUpload}
         onChange={handleChange}

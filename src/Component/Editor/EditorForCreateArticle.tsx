@@ -139,7 +139,7 @@ const EditorForCreateArticle = ({editorRef}:{editorRef: any}) => {
           width:{
             xs: "95%",
             md: "600%",
-          },
+          }, 
           margin:"auto"
         }}
       /> 
