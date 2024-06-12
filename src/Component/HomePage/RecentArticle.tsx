@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -40,8 +40,53 @@ import CloseIcon from "@mui/icons-material/Close";
 import { SAMPLE_DATA } from "./RecentArticleDataType";
 import { RecentArticleDataType } from "@/types/RecentArticle";
 import { useRouter } from "next/navigation";
-export default function RecentArticle() {
-  const history = useRouter()
+import axios from "axios";
+import { truncateText } from "@/utils/utils";
+
+export const getServerSideProps = async () => {
+  try {
+    console.log("getServerSideProps");
+    const result = await axios.get(
+      `${process.env.NEXT_PUBLIC_BACKEND_SERVER_URL}/api/v1/article/all?page=1&limit=1`
+    );
+
+    return {
+      props: {
+        articles: result.data.data || [],
+      },
+    };
+  } catch (error) {
+    console.error(error);
+    return {
+      props: {
+        articles: [],
+      },
+    };
+  }
+};
+
+export default function RecentArticle({articles}:{articles: RecentArticleDataType[]}) {
+  const history = useRouter();
+  // const [allArticle, setAllArticle] = useState<RecentArticleDataType[] | null>(
+  //   null
+  // );
+
+  // useEffect(() => {
+  //   axios
+  //     .get(
+  //       `${process.env.NEXT_PUBLIC_BACKEND_SERVER_URL}/api/v1/article/all?page=1&limit=1`
+  //     )
+  //     .then((result) => {
+  //       console.log(result);
+  //       if (result?.data?.success === true) {
+  //         setAllArticle(result.data.data);
+  //       }
+  //     })
+  //     .catch((err) => {
+  //       console.log(err);
+  //     });
+  // }, []);
+
   return (
     <Grid sx={{ mt: 4 }} container>
       <Grid xs={12} md={8}>
@@ -51,73 +96,101 @@ export default function RecentArticle() {
           </Typography>
         </Container>
         <Grid sx={{ mt: 2 }} container>
-          {SAMPLE_DATA.map((data: RecentArticleDataType) => {
-            return (
-              <>
-                <Grid xs={12} sm={5.5}>
-                  <Image
-                    style={{ width: "100%",cursor: "pointer" }}
-                    alt=""
-                    src={data.image}
-                    width={370}
-                    height={200}
-                    onClick={() => {
-                      const joinTitle = data.title.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join('-');
-                      history.push(`/details/${data.id}/${data.category}${joinTitle}`)
-                    
-                    }}
-                  />
-                </Grid>
-                <Grid xs={0} sm={0.5}></Grid>
-                <Grid xs={12} sm={6}>
-                  <Typography
-                    sx={{ fontSize: 18, fontWeight: 600, fontFamily: "revert",cursor: "pointer" , ":hover":{color:"#c4007c"}}}
-                    onClick={() => {
-                      const joinTitle = data.title.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join('-');
-                      history.push(`/details/${data.id}/${data.category}${joinTitle}`)
-                    
-                    }}
-                  >
-                    {data.title}
-                  </Typography>
-                  <Typography sx={{ fontSize: 13, fontWeight: 500, mt: 2 }}>
-                    {data.description}
-                  </Typography>
-                  <Button
-                    variant="contained"
-                    onClick={() => {
-                      const joinTitle = data.title.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join('-');
-                      history.push(`/details/${data.id}/${data.category}${joinTitle}`)
-                    
-                    }}
-                    sx={{
-                      backgroundColor: "#bd047c", // Primary color
-                      mt: 3,
-                      color: "#ffffff",
-                      padding: "10px 20px",
-                      fontSize: "16px",
-                      textTransform: "none",
-                      transition:
-                        "background-color 0.3s ease-in-out, transform 0.3s ease-in-out",
-                      "&:hover": {
-                        backgroundColor: "#018c2d", // Darker shade for hover
-                        transform: "scale(1.05)",
-                      },
-                      "&:active": {
-                        backgroundColor: "#4791db", // Lighter shade for active
-                        transform: "scale(0.95)",
-                      },
-                    }}
-                  >
-                    Read More &gt;&gt;
-                  </Button>
-                </Grid>
-              </>
-            );
-          })}
+          {articles &&
+            articles.map((data: RecentArticleDataType) => {
+              return (
+                <>
+                  <Grid xs={12} sm={5.5}>
+                    <Image
+                      style={{ width: "100%", cursor: "pointer" }}
+                      alt=""
+                      src={data.image}
+                      width={370}
+                      height={200}
+                      onClick={() => {
+                        const joinTitle = data.title
+                          .split(" ")
+                          .map(
+                            (word) =>
+                              word.charAt(0).toUpperCase() + word.slice(1)
+                          )
+                          .join("-");
+                        history.push(
+                          `/details/${data.id}/${data.category}${joinTitle}`
+                        );
+                      }}
+                    />
+                  </Grid>
+                  <Grid xs={0} sm={0.5}></Grid>
+                  <Grid xs={12} sm={6}>
+                    <Typography
+                      sx={{
+                        fontSize: 18,
+                        fontWeight: 600,
+                        fontFamily: "revert",
+                        cursor: "pointer",
+                        ":hover": { color: "#c4007c" },
+                      }}
+                      onClick={() => {
+                        const joinTitle = data.title
+                          .split(" ")
+                          .map(
+                            (word) =>
+                              word.charAt(0).toUpperCase() + word.slice(1)
+                          )
+                          .join("-");
+                        history.push(
+                          `/details/${data.id}/${data.category}${joinTitle}`
+                        );
+                      }}
+                    >
+                      {data.title}
+                    </Typography>
+                    <Typography sx={{ fontSize: 13, fontWeight: 500, mt: 2 }}>
+                      {truncateText(data.description, 350)}
+                    </Typography>
+                    <Button
+                      variant="contained"
+                      onClick={() => {
+                        const joinTitle = data.title
+                          .split(" ")
+                          .map(
+                            (word) =>
+                              word.charAt(0).toUpperCase() + word.slice(1)
+                          )
+                          .join("-");
+                        history.push(
+                          `/details/${data.id}/${data.category}${joinTitle}`
+                        );
+                      }}
+                      sx={{
+                        backgroundColor: "#bd047c", // Primary color
+                        mt: 3,
+                        color: "#ffffff",
+                        padding: "10px 20px",
+                        fontSize: "16px",
+                        textTransform: "none",
+                        transition:
+                          "background-color 0.3s ease-in-out, transform 0.3s ease-in-out",
+                        "&:hover": {
+                          backgroundColor: "#018c2d", // Darker shade for hover
+                          transform: "scale(1.05)",
+                        },
+                        "&:active": {
+                          backgroundColor: "#4791db", // Lighter shade for active
+                          transform: "scale(0.95)",
+                        },
+                      }}
+                    >
+                      Read More &gt;&gt;
+                    </Button>
+                  </Grid>
+                </>
+              );
+            })}
         </Grid>
       </Grid>
-      <Grid sx={{mt:3}} container>
+      <Grid sx={{ mt: 3 }} container>
         <Grid xs={1}></Grid>
         <Grid xs={10} sm={4}>
           <Button

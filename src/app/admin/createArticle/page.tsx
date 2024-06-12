@@ -15,6 +15,7 @@ import {
   Select,
   SelectChangeEvent,
   Snackbar,
+  TextField,
   Typography,
 } from "@mui/material";
 import dynamic from "next/dynamic";
@@ -99,6 +100,7 @@ export default function CreateArticle() {
     handleBackDropOpen()
     const fieldData = await editorRef.current?.save();
     const title = (event.target as any)?.title.value;
+    const description = (event.target as any)?.description.value;
     const category = (event.target as any)?.category.value;
     event.preventDefault();
     console.log(
@@ -114,6 +116,7 @@ export default function CreateArticle() {
     const data = {
       title: title,
       category: category,
+      description: description,
       image: image,
       content: fieldData?.blocks,
     };
@@ -185,6 +188,17 @@ export default function CreateArticle() {
               <MenuItem value={"mobile"}>Mobile</MenuItem>
             </Select>
           </FormControl>
+          <TextField
+       
+      label={<span>Description <sup style={{ color: "red", fontSize:12}}>*</sup></span>}
+      multiline
+      rows={4}
+      name={'description'}
+      sx={{width: "100%"}}
+      variant="outlined"
+      // value={value}
+      // onChange={onChange}
+    />
           <FileUpload
             runAfterChange={(file) => {
               setImageLoad(true);
