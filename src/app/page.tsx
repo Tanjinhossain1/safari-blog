@@ -20,7 +20,7 @@ async function Home({ searchParams }: HomePropsType) {
     <>
       <Navbar />
       {articles ? (
-        <Banner articles={articles.data} page={page} limit={limit} />
+        <Banner articles={articles.data} total={articles.total} />
       ) : null}
       <Footer />
     </>

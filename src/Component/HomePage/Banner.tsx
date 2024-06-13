@@ -110,12 +110,10 @@ const ContentBox = ({
 
 export default function Banner({
   articles,
-  page,
-  limit,
+  total
 }: {
   articles: RecentArticleDataType[];
-  page: string;
-  limit: string;
+  total:number
 }) {
   console.log("articles articles ", articles);
   const history = useRouter();
@@ -161,7 +159,7 @@ export default function Banner({
               </Grid>
             </Grid>
           </Grid>
-          <RecentArticleComponent  articles={articles}/>
+          <RecentArticleComponent total={total} articles={articles}/>
         </Paper>
       </Grid>
       <Grid xs={0} md={1} lg={1.1} xl={2}></Grid>

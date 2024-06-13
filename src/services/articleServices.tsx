@@ -1,11 +1,12 @@
 "use server"
+import { serverDB } from "@/drizzle/db";
 // services/articleService.ts
 import { RecentArticleDataType } from "@/types/RecentArticle";
 import { revalidatePath } from "next/cache";
 
 export async function fetchArticles({
   page = "1",
-  limit = "2",
+  limit = "3",
 }: {
   page: string;
   limit: string;
@@ -16,8 +17,7 @@ export async function fetchArticles({
   total: number;
 }> {
     console.log('test 1 ',page)
-
-    console.log('limit 1 ',limit)
+     
   const response = await fetch(
     `${process.env.NEXT_PUBLIC_BACKEND_SERVER_URL}/api/v1/article/all?page=${page}&limit=${limit}`,
     {

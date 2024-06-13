@@ -45,8 +45,10 @@ import { truncateText } from "@/utils/utils";
 
 export default function RecentArticleComponent({
   articles,
+  total
 }: {
-  articles: RecentArticleDataType[] | null;  
+  articles: RecentArticleDataType[];  
+  total:number
 }) {
      
   const [isHideLoadMore, setIsHideLoadMore] = useState<boolean>(false);
@@ -69,6 +71,12 @@ export default function RecentArticleComponent({
     );
   };
 
+  useEffect(()=>{
+    console.log('articles.length  ', articles.length,total)
+    if(articles.length  === total){
+        setIsHideLoadMore(true)
+    }
+  },[articles.length])
   return (
     <Grid sx={{ mt: 4 }} container>
       <Grid xs={12} md={8}>
