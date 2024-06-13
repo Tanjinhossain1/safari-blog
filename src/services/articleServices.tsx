@@ -1,12 +1,13 @@
-// // services/articleService.ts
+"use server"
+// services/articleService.ts
 import { RecentArticleDataType } from "@/types/RecentArticle";
 
 export async function fetchArticles({
   page,
   limit,
 }: {
-  page: number;
-  limit: number;
+  page: string;
+  limit: string;
 }): Promise<{
   data: RecentArticleDataType[];
   page: number;

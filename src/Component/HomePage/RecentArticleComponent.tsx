@@ -41,7 +41,8 @@ import { SAMPLE_DATA } from "./RecentArticleDataType";
 import { RecentArticleDataType } from "@/types/RecentArticle";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import { truncateText } from "@/utils/utils";  
+import { truncateText } from "@/utils/utils"; 
+// import { fetchArticles } from "@/services/articleServices";
 
 export default function RecentArticleComponent({
   articles,
@@ -49,15 +50,15 @@ export default function RecentArticleComponent({
   limit,
 }: {
   articles: RecentArticleDataType[] | null;
-  pages: number;
-  limit: number;
+  pages: string;
+  limit: string;
 }) {
   const [allArticle, setAllArticle] = useState<RecentArticleDataType[] | null>(
     articles
   );
   //   const [allArticle, setAllArticle] = useState<RecentArticleDataType[] | null>(initialArticles);
-  const [page, setPage] = useState<number>(pages);
-  const [limits, setLimit] = useState<number>(limit);
+  const [page, setPage] = useState<string>(pages);
+  const [limits, setLimit] = useState<string>(limit);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isHideLoadMore, setIsHideLoadMore] = useState<boolean>(false);
   const history = useRouter();
@@ -67,8 +68,9 @@ export default function RecentArticleComponent({
     setIsLoading(true);
     // try {
     //   if (allArticle) {
+       
     //     // Fetch new articles from the next page
-    //      
+    //     const newArticles = await fetchArticles({ page: page + 1, limit: limits });
 
     //     // Filter out articles with duplicate IDs
     //     const filteredArticles = newArticles.data.filter(
@@ -91,7 +93,7 @@ export default function RecentArticleComponent({
     // } catch (error) {
     //   console.error("Error loading more articles:", error);
     // } finally {
-      setIsLoading(false);
+    //   setIsLoading(false);
     // }
   };
 

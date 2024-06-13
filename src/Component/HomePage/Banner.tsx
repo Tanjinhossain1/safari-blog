@@ -114,8 +114,8 @@ export default function Banner({
   limit,
 }: {
   articles: RecentArticleDataType[];
-  page: number;
-  limit: number;
+  page: string;
+  limit: string;
 }) {
   console.log("articles articles ", articles);
   const history = useRouter();

@@ -26,7 +26,7 @@ export const getServerSideProps = async () => {
     };
   }
 };
-export default function RecentArticle({articles,page,limit}:{articles:RecentArticleDataType[],page:number,limit: number}) {
+export default function RecentArticle({articles,page,limit}:{articles:RecentArticleDataType[],page:string,limit: string}) {
    
 
   return (
