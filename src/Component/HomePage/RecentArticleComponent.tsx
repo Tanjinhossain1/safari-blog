@@ -42,7 +42,7 @@ import { RecentArticleDataType } from "@/types/RecentArticle";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { truncateText } from "@/utils/utils"; 
-import { fetchArticles } from "@/services/articleServices";
+// import { fetchArticles } from "@/services/articleServices";
 
 export default function RecentArticleComponent({
   articles,

@@ -13,7 +13,7 @@ export async function fetchArticles({
   limit: number;
   total: number;
 }> {
-  try {
+   
     const response = await fetch(
       `${process.env.NEXT_PUBLIC_BACKEND_SERVER_URL}/api/v1/article/all?page=${page}&limit=${limit}`,
       {
@@ -32,11 +32,7 @@ export async function fetchArticles({
       page: data.meta.page,
       limit: data.meta.limit,
       total: data.meta.total,
-    };
-  } catch (error) {
-    console.error("Error fetching articles:", error);
-    throw new Error("Failed to fetch articles. Please try again later.");
-  }
+    }; 
 }
 
 // import { RecentArticleDataType } from "@/types/RecentArticle";
