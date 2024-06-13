@@ -5,7 +5,6 @@ import Banner from "@/Component/HomePage/Banner";
 import Footer from "@/Component/HomePage/Footer"; 
 import { fetchArticles } from "@/services/articleServices";
  
-export const runtime = 'edge';
 async function Home() {
   let page = 1;
   let limit = 3;
