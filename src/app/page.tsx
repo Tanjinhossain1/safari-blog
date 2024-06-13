@@ -10,13 +10,13 @@ import { details } from "./details/[id]/[category]/[title]/SAMPLE_DATA";
 async function Home() {
   let page = 1;
   let limit = 3;
-  const articles = details // await fetchArticles({ page, limit }); 
+  const articles = await fetchArticles({ page, limit }); 
    
   return (
     <>
       <Navbar />
       {articles ? (
-        <Banner articles={details} page={page} limit={limit} />
+        <Banner articles={articles.data} page={page} limit={limit} />
       ) : null}
       <Footer />
     </>
