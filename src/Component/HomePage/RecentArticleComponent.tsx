@@ -42,7 +42,6 @@ import { RecentArticleDataType } from "@/types/RecentArticle";
 import { useRouter } from "next/navigation";
 import axios from "axios";
 import { truncateText } from "@/utils/utils"; 
-// import { fetchArticles } from "@/services/articleServices";
 
 export default function RecentArticleComponent({
   articles,
@@ -57,44 +56,20 @@ export default function RecentArticleComponent({
     articles
   );
   //   const [allArticle, setAllArticle] = useState<RecentArticleDataType[] | null>(initialArticles);
-  const [page, setPage] = useState<string>(pages);
-  const [limits, setLimit] = useState<string>(limit);
+//   const [page, setPage] = useState<string>(pages);
+//   const [limits, setLimit] = useState<string>(limit);
   const [isLoading, setIsLoading] = useState<boolean>(false);
   const [isHideLoadMore, setIsHideLoadMore] = useState<boolean>(false);
   const history = useRouter();
 
   // Function to load more articles
   const loadMoreArticles = async () => {
-    setIsLoading(true);
+    // setIsLoading(true);
     // try {
     //   if (allArticle) {
-       
-    //     // Fetch new articles from the next page
-    //     const newArticles = await fetchArticles({ page: page + 1, limit: limits });
-
-    //     // Filter out articles with duplicate IDs
-    //     const filteredArticles = newArticles.data.filter(
-    //       (newArticle) =>
-    //         !allArticle.some((article) => article.id === newArticle.id)
-    //     );
-
-    //     // Append the new articles to the existing ones
-    //     console.log(filteredArticles, "allArticleallArticleallArticle",allArticle);
-    //     setAllArticle((prevArticles) => [
-    //       ...(prevArticles || []),
-    //       ...filteredArticles,
-    //     ]);
-    //     if (allArticle.length + 1 === newArticles.total) {
-    //       setIsHideLoadMore(true);
-    //     }
-    //     // Update the page state
-    //     setPage((prevPage) => prevPage + 1);
-    //   }
-    // } catch (error) {
-    //   console.error("Error loading more articles:", error);
-    // } finally {
-    //   setIsLoading(false);
-    // }
+    history.push(`/?${new URLSearchParams(`?page=1&limit=3`)}`, {
+      scroll: false,
+    });
   };
 
   return (

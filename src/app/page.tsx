@@ -13,10 +13,10 @@ interface HomePropsType {
     limit: string;
   };
 }
-async function Home({ params }: HomePropsType) {
+async function Home({ params }: HomePropsType) {  
   const { page, limit } = params;
+  console.log('limittt   ', limit)
   const articles = await fetchArticles({ page, limit });
-
   return (
     <>
       <Navbar />

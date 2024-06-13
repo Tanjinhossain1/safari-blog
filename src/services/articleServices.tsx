@@ -3,8 +3,8 @@
 import { RecentArticleDataType } from "@/types/RecentArticle";
 
 export async function fetchArticles({
-  page,
-  limit,
+  page = "1",
+  limit = "2",
 }: {
   page: string;
   limit: string;
