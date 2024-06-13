@@ -16,7 +16,7 @@ async function Home() {
     <>
       <Navbar />
       {articles ? (
-        <Banner articles={articles} page={page} limit={limit} />
+        <Banner articles={details} page={page} limit={limit} />
       ) : null}
       <Footer />
     </>

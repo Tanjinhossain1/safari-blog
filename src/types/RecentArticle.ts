@@ -1,6 +1,6 @@
 
 export interface RecentArticleDataType {
-    id:number;
+    id:string;
     image: string;
     title: string;
     description: string;

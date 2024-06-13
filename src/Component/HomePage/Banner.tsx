@@ -75,7 +75,7 @@ const ContentBox = ({
   category: string;
   title: string;
   description: string;
-  id: number;
+  id: string;
   history: any;
   isBig?: boolean;
 }) => (

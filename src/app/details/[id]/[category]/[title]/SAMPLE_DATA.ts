@@ -1,8 +1,13 @@
-export const details =[ {
+import { RecentArticleDataType } from "@/types/RecentArticle";
+
+export const details:RecentArticleDataType[] =[ {
+    "id":"1",
     "title": "5 Official Budget Smartphones to Buy in 2022 under BDT 15,000",
     "category": "mobile",
     "description": "mobile",
     "image": "http://res.cloudinary.com/djvcnudls/image/upload/v1718115404/itfsgg9jt3jt3annhvt4.jpg",
+    "updateAt": "",
+    "createdAt": "", 
     "content": [
         {
             "id": "8BV_UeSonR",
