@@ -16,7 +16,7 @@ export async function fetchArticles({
 }> {
    
     const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_SERVER_URL}/api/v1/article/all?page=${page}&limit=${limit}`
+      `http://localhost:3002/api/v1/article/all?page=${page}&limit=${limit}`
       ,
       {
         cache: "no-store", // To ensure the data is fetched on every request
