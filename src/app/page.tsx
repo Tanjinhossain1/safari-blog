@@ -8,8 +8,7 @@ import { fetchArticles } from "@/services/articleServices";
 async function Home() {
   let page = 1;
   let limit = 3;
-  const articles = await fetchArticles({ page, limit });
-  // console.log("articles 3434", articles);
+  const articles = await fetchArticles({ page, limit }); 
   return (
     <>
       <Navbar />
