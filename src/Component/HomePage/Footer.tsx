@@ -10,11 +10,7 @@ import {
   CardContent,
   Divider,
   Container,
-} from "@mui/material";
-import { styled } from "@mui/material/styles";
-import Image from "next/image";
-import { truncateText } from "@/utils/utils";
-import RecentArticle from "./RecentArticle";
+} from "@mui/material"; 
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import YouTubeIcon from "@mui/icons-material/YouTube";

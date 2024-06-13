@@ -11,10 +11,10 @@ import {
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Image from "next/image";
-import { truncateText } from "@/utils/utils";
-import RecentArticle from "./RecentArticle";
+import { truncateText } from "@/utils/utils"; 
 import { useRouter } from "next/navigation";
 import { RecentArticleDataType } from "@/types/RecentArticle";
+import RecentArticleComponent from "./RecentArticleComponent";
 
 const HoverBox = styled(Box)(({ theme }) => ({
   position: "relative",
@@ -161,7 +161,7 @@ export default function Banner({
               </Grid>
             </Grid>
           </Grid>
-          <RecentArticle limit={limit} articles={articles} page={page} />
+          <RecentArticleComponent  articles={articles}/>
         </Paper>
       </Grid>
       <Grid xs={0} md={1} lg={1.1} xl={2}></Grid>

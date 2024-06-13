@@ -8,14 +8,13 @@ import { SAMPLE_DATA } from "@/Component/HomePage/RecentArticleDataType";
 import { details } from "./details/[id]/[category]/[title]/SAMPLE_DATA";
 
 interface HomePropsType {
-  params: {
+  searchParams: {
     page: string;
     limit: string;
   };
 }
-async function Home({ params }: HomePropsType) {  
-  const { page, limit } = params;
-  console.log('limittt   ', limit)
+async function Home({ searchParams }: HomePropsType) {  
+  const { page, limit } = searchParams; 
   const articles = await fetchArticles({ page, limit });
   return (
     <>

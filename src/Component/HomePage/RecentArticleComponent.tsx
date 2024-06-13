@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -39,37 +39,34 @@ import TopSearch from "../TopSearchBar/TopSearch";
 import CloseIcon from "@mui/icons-material/Close";
 import { SAMPLE_DATA } from "./RecentArticleDataType";
 import { RecentArticleDataType } from "@/types/RecentArticle";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import axios from "axios";
-import { truncateText } from "@/utils/utils"; 
+import { truncateText } from "@/utils/utils";
 
 export default function RecentArticleComponent({
   articles,
-  pages,
-  limit,
 }: {
-  articles: RecentArticleDataType[] | null;
-  pages: string;
-  limit: string;
+  articles: RecentArticleDataType[] | null;  
 }) {
-  const [allArticle, setAllArticle] = useState<RecentArticleDataType[] | null>(
-    articles
-  );
-  //   const [allArticle, setAllArticle] = useState<RecentArticleDataType[] | null>(initialArticles);
-//   const [page, setPage] = useState<string>(pages);
-//   const [limits, setLimit] = useState<string>(limit);
-  const [isLoading, setIsLoading] = useState<boolean>(false);
+     
   const [isHideLoadMore, setIsHideLoadMore] = useState<boolean>(false);
   const history = useRouter();
+  const searchParams = useSearchParams();
+  const page = searchParams.get("page") ?? "1";
+  const limit = searchParams.get("limit") ?? "3";
 
   // Function to load more articles
-  const loadMoreArticles = async () => {
-    // setIsLoading(true);
-    // try {
-    //   if (allArticle) {
-    history.push(`/?${new URLSearchParams(`?page=1&limit=3`)}`, {
-      scroll: false,
-    });
+  const loadMoreArticles = async () => { 
+
+    history.push(
+      `/?${new URLSearchParams({
+        page: page,
+        limit: `${Number(limit) + 2}`,
+      })}`,
+      {
+        scroll: false,
+      }
+    );
   };
 
   return (
@@ -81,10 +78,10 @@ export default function RecentArticleComponent({
           </Typography>
         </Container>
         <Grid sx={{ mt: 2 }} container>
-          {allArticle &&
-            allArticle.map((data: RecentArticleDataType) => {
+          {articles &&
+            articles.map((data: RecentArticleDataType) => {
               return (
-                <>
+                <Fragment key={data.id}>
                   <Grid xs={12} sm={5.5}>
                     <Image
                       style={{ width: "100%", cursor: "pointer" }}
@@ -170,7 +167,7 @@ export default function RecentArticleComponent({
                       Read More &gt;&gt;
                     </Button>
                   </Grid>
-                </>
+                </Fragment>
               );
             })}
         </Grid>
