@@ -13,26 +13,27 @@ export async function fetchArticles({
   limit: number;
   total: number;
 }> {
-   
-    const response = await fetch(
-      `${process.env.NEXT_PUBLIC_BACKEND_SERVER_URL}/api/v1/article/all?page=${page}&limit=${limit}`,
-      {
-        cache: "no-store",
-      }
-    );
-
-    if (!response.ok) {
-      console.error(`Failed to fetch articles: ${response.status} ${response.statusText}`);
-      throw new Error("Failed to fetch articles");
+  const response = await fetch(
+    `${process.env.NEXT_PUBLIC_BACKEND_SERVER_URL}/api/v1/article/all?page=${page}&limit=${limit}`,
+    {
+      cache: "no-store",
     }
+  );
 
-    const data = await response.json();
-    return {
-      data: data.data,
-      page: data.meta.page,
-      limit: data.meta.limit,
-      total: data.meta.total,
-    }; 
+  if (!response.ok) {
+    console.error(
+      `Failed to fetch articles: ${response.status} ${response.statusText}`
+    );
+    throw new Error("Failed to fetch articles");
+  }
+
+  const data = await response.json();
+  return {
+    data: data.data,
+    page: data.meta.page,
+    limit: data.meta.limit,
+    total: data.meta.total,
+  };
 }
 
 // import { RecentArticleDataType } from "@/types/RecentArticle";
@@ -49,7 +50,7 @@ export async function fetchArticles({
 //   limit: number;
 //   total: number;
 // }> {
-   
+
 //     const response = await fetch(
 //       `http://localhost:3002/api/v1/article/all?page=${page}&limit=${limit}`
 //       ,
@@ -68,5 +69,5 @@ export async function fetchArticles({
 //       page: data.meta.page,
 //       limit: data.meta.limit,
 //       total: data.meta.total,
-//     }; 
+//     };
 // }

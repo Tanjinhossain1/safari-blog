@@ -41,8 +41,7 @@ import { SAMPLE_DATA } from "./RecentArticleDataType";
 import { RecentArticleDataType } from "@/types/RecentArticle";
 import { useRouter } from "next/navigation";
 import axios from "axios";
-import { truncateText } from "@/utils/utils"; 
-// import { fetchArticles } from "@/services/articleServices";
+import { truncateText } from "@/utils/utils";  
 
 export default function RecentArticleComponent({
   articles,
@@ -69,7 +68,7 @@ export default function RecentArticleComponent({
     // try {
     //   if (allArticle) {
     //     // Fetch new articles from the next page
-    //     const newArticles = await fetchArticles({ page: page + 1, limit: limits });
+    //      
 
     //     // Filter out articles with duplicate IDs
     //     const filteredArticles = newArticles.data.filter(
