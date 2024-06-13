@@ -66,34 +66,34 @@ export default function RecentArticleComponent({
   // Function to load more articles
   const loadMoreArticles = async () => {
     setIsLoading(true);
-    try {
-      if (allArticle) {
-        // Fetch new articles from the next page
-        const newArticles = await fetchArticles({ page: page + 1, limit: limits });
+    // try {
+    //   if (allArticle) {
+    //     // Fetch new articles from the next page
+    //     const newArticles = await fetchArticles({ page: page + 1, limit: limits });
 
-        // Filter out articles with duplicate IDs
-        const filteredArticles = newArticles.data.filter(
-          (newArticle) =>
-            !allArticle.some((article) => article.id === newArticle.id)
-        );
+    //     // Filter out articles with duplicate IDs
+    //     const filteredArticles = newArticles.data.filter(
+    //       (newArticle) =>
+    //         !allArticle.some((article) => article.id === newArticle.id)
+    //     );
 
-        // Append the new articles to the existing ones
-        console.log(filteredArticles, "allArticleallArticleallArticle",allArticle);
-        setAllArticle((prevArticles) => [
-          ...(prevArticles || []),
-          ...filteredArticles,
-        ]);
-        if (allArticle.length + 1 === newArticles.total) {
-          setIsHideLoadMore(true);
-        }
-        // Update the page state
-        setPage((prevPage) => prevPage + 1);
-      }
-    } catch (error) {
-      console.error("Error loading more articles:", error);
-    } finally {
+    //     // Append the new articles to the existing ones
+    //     console.log(filteredArticles, "allArticleallArticleallArticle",allArticle);
+    //     setAllArticle((prevArticles) => [
+    //       ...(prevArticles || []),
+    //       ...filteredArticles,
+    //     ]);
+    //     if (allArticle.length + 1 === newArticles.total) {
+    //       setIsHideLoadMore(true);
+    //     }
+    //     // Update the page state
+    //     setPage((prevPage) => prevPage + 1);
+    //   }
+    // } catch (error) {
+    //   console.error("Error loading more articles:", error);
+    // } finally {
       setIsLoading(false);
-    }
+    // }
   };
 
   return (

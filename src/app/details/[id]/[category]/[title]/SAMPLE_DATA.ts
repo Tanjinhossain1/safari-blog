@@ -1,6 +1,7 @@
-const details = {
+export const details =[ {
     "title": "5 Official Budget Smartphones to Buy in 2022 under BDT 15,000",
     "category": "mobile",
+    "description": "mobile",
     "image": "http://res.cloudinary.com/djvcnudls/image/upload/v1718115404/itfsgg9jt3jt3annhvt4.jpg",
     "content": [
         {
@@ -669,4 +670,4 @@ const details = {
             }
         }
     ]
-}
+}]
