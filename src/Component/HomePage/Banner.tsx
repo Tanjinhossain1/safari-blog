@@ -26,7 +26,7 @@ const HoverBox = styled(Box)(({ theme }) => ({
     transform: "translateY(-200%)",
   },
   "&:hover .bigTitle": {
-    transform: "translateY(-99%)",
+    transform: "translateY(-900%)",
   },
   "&:hover .description": {
     transform: "translateY(0)",
@@ -87,9 +87,11 @@ const ContentBox = ({
         height: isBig ? "470px" : "228px",
       }}
       onClick={() => {
-        const joinTitle = title.split(' ').map(word => word.charAt(0).toUpperCase() + word.slice(1)).join('-');
-        history.push(`/details/${id}/${category}/${joinTitle}`)
-      
+        const joinTitle = title
+          .split(" ")
+          .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+          .join("-");
+        history.push(`/details/${id}/${category}/${joinTitle}`);
       }}
     >
       <Image src={image} alt={title} layout="fill" objectFit="cover" />
@@ -106,7 +108,16 @@ const ContentBox = ({
   </HoverBox>
 );
 
-export default function Banner() {
+export default function Banner({
+  articles,
+  page,
+  limit,
+}: {
+  articles: RecentArticleDataType[];
+  page: number;
+  limit: number;
+}) {
+  console.log("articles articles ", articles);
   const history = useRouter();
   return (
     <Grid container>
@@ -116,13 +127,12 @@ export default function Banner() {
           <Grid container spacing={1}>
             <Grid item xs={12} sm={8}>
               <ContentBox
-              category="gadget"
-              id={1}
+                category={articles[0]?.category}
+                id={articles[0]?.id}
                 history={history}
-                image="/bik.png"
-
-                title="Bikroy  Ad View Count Feature Now Available for All Users"
-                description="Description for the second section Description for the second sectionDescription  for the second section Description for the third section for the third section for the third section the third section the third section the third section "
+                image={articles[0]?.image}
+                title={articles[0]?.title}
+                description={articles[0]?.description}
                 isBig
               />
             </Grid>
@@ -130,28 +140,28 @@ export default function Banner() {
               <Grid container spacing={2}>
                 <Grid item xs={6} sm={12}>
                   <ContentBox
-                  category="gadget"
-                  id={2}
+                    category={articles[1]?.category}
+                    id={articles[1]?.id}
                     history={history}
-                    image="/bik.png"
-                    title="Bikroy  Ad View Count Feature Now Available for All Users"
-                    description="Description for the second section Description for the second sectionDescription  for the second section Description for the third section for the third section for the third section the third section the third section the third section "
+                    image={articles[1]?.image}
+                    title={articles[1]?.title}
+                    description={articles[1]?.description}
                   />
                 </Grid>
                 <Grid item xs={6} sm={12}>
                   <ContentBox
-                  category="gadget"
-                  id={3}
+                    category={articles[2]?.category}
+                    id={articles[2]?.id}
                     history={history}
-                    image="/bik.png"
-                    title="Bikroy  Ad View Count Feature Now Available for All Users"
-                    description="Description for the second section Description for the second sectionDescription  for the second section Description for the third section for the third section for the third section the third section the third section the third section"
+                    image={articles[2]?.image}
+                    title={articles[2]?.title}
+                    description={articles[2]?.description}
                   />
                 </Grid>
               </Grid>
             </Grid>
           </Grid>
-          <RecentArticle  />
+          <RecentArticle limit={limit} articles={articles} page={page} />
         </Paper>
       </Grid>
       <Grid xs={0} md={1} lg={1.1} xl={2}></Grid>
