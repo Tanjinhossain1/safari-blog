@@ -1,0 +1,8 @@
+{
+    "functions": {
+      "api/your-function-name.js": {
+        "maxDuration": 30
+      }
+    }
+  }
+  
