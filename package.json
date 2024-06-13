@@ -29,6 +29,7 @@
     "uuid": "^10.0.0"
   },
   "devDependencies": {
+    "@cloudflare/next-on-pages": "^1.11.3",
     "@editorjs/delimiter": "^1.4.0",
     "@editorjs/image": "^2.9.0",
     "@editorjs/list": "^1.9.0",
