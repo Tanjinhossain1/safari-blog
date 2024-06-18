@@ -1,5 +1,4 @@
 "use server"
-import { serverDB } from "@/drizzle/db";
 // services/articleService.ts
 import { RecentArticleDataType } from "@/types/RecentArticle";
 import { revalidatePath } from "next/cache";
@@ -19,7 +18,7 @@ export async function fetchArticles({
     console.log('test 1 ',page)
      
   const response = await fetch(
-    `${process.env.NEXT_PUBLIC_BACKEND_SERVER_URL}/api/v1/article/all?page=${page}&limit=${limit}`,
+    `http://localhost:3000/api/v1/article/all?page=${page}&limit=${limit}`,
     {
       cache: "no-store",
     }

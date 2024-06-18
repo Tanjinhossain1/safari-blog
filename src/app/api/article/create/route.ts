@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from 'next';
-import { serverDB } from '@/drizzle/db';  // Assuming you have initialized your db connection
-import { CreateArticle } from '@/drizzle/schema';
 import { NextResponse } from "next/server";
+import { CreateArticles } from '../../../../lib/schema';
+import { serverDb } from '../../../../lib/db';
 
 export async function POST(req: Request) {
     try {
@@ -17,7 +17,7 @@ export async function POST(req: Request) {
         }
 
         // Perform the database insertion using Drizzle ORM
-        const result = await serverDB.insert(CreateArticle).values({
+        const result = await serverDb.insert(CreateArticles).values({
             title,
             category,
             description,
@@ -35,7 +35,7 @@ export async function GET(req: Request) {
     try {
         
         // Perform the database insertion using Drizzle ORM
-        const result = await serverDB.query.CreateArticle.findMany()
+        const result = await serverDb.select().from(CreateArticles)
 
         return NextResponse.json({success:true,message:"successfully Get all article",data:result})
     } catch (error) {
