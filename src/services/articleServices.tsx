@@ -41,38 +41,38 @@ export async function fetchArticles({
   };
 }
 
-// import { RecentArticleDataType } from "@/types/RecentArticle";
+export async function fetchArticlesDetails({
+  id
+}: {
+  id:number
+}): Promise<{
+  data: RecentArticleDataType[];
+  page: number;
+  limit: number;
+  total: number;
+}> {
+     
+     
+  const response = await fetch(
+    `http://localhost:3000/api/article/detail/${id}/details`,
+    {
+      cache: "no-store",
+    }
+  );
 
-// export async function fetchArticles({
-//   page,
-//   limit,
-// }: {
-//   page: number;
-//   limit: number;
-// }): Promise<{
-//   data: RecentArticleDataType[];
-//   page: number;
-//   limit: number;
-//   total: number;
-// }> {
+  if (!response.ok) {
+    console.error(
+      `Failed to fetch articles: ${response.status} ${response.statusText}`
+    );
+    throw new Error("Failed to fetch articles");
+  }
 
-//     const response = await fetch(
-//       `http://localhost:3002/api/v1/article/all?page=${page}&limit=${limit}`
-//       ,
-//       {
-//         cache: "no-store", // To ensure the data is fetched on every request
-//       }
-//     );
-
-//     if (!response.ok) {
-//       throw new Error("Failed to fetch articles");
-//     }
-
-//     const data = await response.json();
-//     return {
-//       data: data.data,
-//       page: data.meta.page,
-//       limit: data.meta.limit,
-//       total: data.meta.total,
-//     };
-// }
+  const data = await response.json();
+  revalidatePath('/')
+  return {
+    data: data.data,
+    page: data.meta.page,
+    limit: data.meta.limit,
+    total: data.meta.total,
+  };
+}
