@@ -139,7 +139,7 @@ export default function CreateArticleComponent() {
             setTimeout(() => {
               handleBackdropClose()
               window.location.reload();
-            }, 3500);
+            }, 1000);
           }
         })
         .catch((err) => {

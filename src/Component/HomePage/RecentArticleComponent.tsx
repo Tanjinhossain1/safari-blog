@@ -76,7 +76,7 @@ export default function RecentArticleComponent({
     if(articles.length  === total){
         setIsHideLoadMore(true)
     }
-  },[articles.length])
+  },[articles.length,total])
   return (
     <Grid sx={{ mt: 4 }} container>
       <Grid xs={12} md={8}>
@@ -91,7 +91,8 @@ export default function RecentArticleComponent({
               console.log(data,)
               return (
                 <Fragment key={data.id}>
-                  <Grid xs={12} sm={5.5}>
+                  <Grid sx={{mb:5}} xs={12} sm={5.5}>
+                  {/* <Image src={data.image} alt={data.title} layout="fill" objectFit="cover" /> */}
                     <Image
                       style={{ width: "100%", cursor: "pointer" }}
                       alt=""
@@ -138,7 +139,7 @@ export default function RecentArticleComponent({
                       {data.title}
                     </Typography>
                     <Typography sx={{ fontSize: 13, fontWeight: 500, mt: 2 }}>
-                      {truncateText(data.description, 350)}
+                      {truncateText(data.description, 300)}
                     </Typography>
                     <Button
                       variant="contained"
@@ -156,7 +157,7 @@ export default function RecentArticleComponent({
                       }}
                       sx={{
                         backgroundColor: "#bd047c", // Primary color
-                        mt: 3,
+                        mt: 1,
                         color: "#ffffff",
                         padding: "10px 20px",
                         fontSize: "16px",
