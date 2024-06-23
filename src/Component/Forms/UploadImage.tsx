@@ -36,17 +36,17 @@ const UploadImageField = ({name,runAfterChange,required}: ImageUploadPropsType) 
   // const {setValue,reset} = useFormContext()
 
   const handleChange: UploadProps['onChange'] = (info: UploadChangeParam<UploadFile>) => {
-    if (info.file.status === 'uploading') {
+    if (info?.file.status === 'uploading') {
       setLoading(true);
       return;
     }
-    if (info.file.status === 'done') {
+    if (info?.file.status === 'done') {
       // Get this url from response in real world.
       // setValue(name,info.file.originFileObj);
       if(runAfterChange){
-        runAfterChange(info.file.originFileObj)
+        runAfterChange(info?.file.originFileObj)
       }
-      getBase64(info.file.originFileObj as RcFile, (url) => {
+      getBase64(info?.file.originFileObj as RcFile, (url) => {
         setLoading(false);
         setImageUrl(url);
       });  

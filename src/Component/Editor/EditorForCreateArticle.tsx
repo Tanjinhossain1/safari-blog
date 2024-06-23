@@ -43,7 +43,6 @@ const EditorForCreateArticle = ({editorRef}:{editorRef: any}) => {
             // class: ImageTool as any,
             inlineToolbar: ['link'],
             config: {
-              
               uploader: {
                 async uploadByFile(file: File) {
                   const formData = new FormData(); 

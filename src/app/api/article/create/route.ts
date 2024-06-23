@@ -1,7 +1,6 @@
-import { NextApiRequest, NextApiResponse } from 'next';
-import { NextResponse } from "next/server";
-import { CreateArticles } from '../../../../lib/schema';
-import { serverDb } from '../../../../lib/db';
+import { db } from '@/drizzle/db';
+import { Articles } from '@/drizzle/schema';
+import { NextResponse } from "next/server"; 
 
 export async function POST(req: Request) {
     try {
@@ -15,9 +14,9 @@ export async function POST(req: Request) {
         if (!title || !category || !description || !image || !content) {
             return NextResponse.json({ error: 'Missing required fields' });
         }
-
+        
         // Perform the database insertion using Drizzle ORM
-        const result = await serverDb.insert(CreateArticles).values({
+        const result = await db.insert(Articles).values({
             title,
             category,
             description,
@@ -35,7 +34,7 @@ export async function GET(req: Request) {
     try {
         
         // Perform the database insertion using Drizzle ORM
-        const result = await serverDb.select().from(CreateArticles)
+        const result = await db.select().from(Articles)
 
         return NextResponse.json({success:true,message:"successfully Get all article",data:result})
     } catch (error) {

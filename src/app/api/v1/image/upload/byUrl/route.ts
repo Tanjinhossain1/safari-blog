@@ -17,11 +17,11 @@ const ensureUploadDirExists = async () => {
   }
 };
 
-export const config = {
-  api: {
-    bodyParser: false, // Disable Next.js built-in bodyParser
-  },
-};
+// export const config = {
+//   api: {
+//     bodyParser: false, // Disable Next.js built-in bodyParser
+//   },
+// };
 
 export async function POST(req: NextRequest) {
   await ensureUploadDirExists();

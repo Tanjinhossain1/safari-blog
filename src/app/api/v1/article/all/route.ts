@@ -1,12 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { IGenericResponse, sendResponse } from '@/utils/utils';
-import {  ilike, and, or, desc, asc } from 'drizzle-orm/expressions';
+import { ilike, and, or, desc, asc } from 'drizzle-orm/expressions';
 import { IPaginationOptions, paginationHelpers } from '@/app/api/shared/helpers';
-import { CreateArticles } from "../../../../../lib/schema";
-import { serverDb } from "../../../../../lib/db";
-import { sql } from "drizzle-orm";
-
-import * as schema from "@/lib/schema";
+import { db } from "@/drizzle/db";
+import { Articles } from "@/drizzle/schema";
+import { count } from "drizzle-orm";
 
 export async function POST(req: Request) {
     try {
@@ -22,7 +20,7 @@ export async function POST(req: Request) {
         }
 
         // Perform the database insertion using Drizzle ORM
-        const result = await serverDb.insert(CreateArticles).values({
+        const result = await db.insert(Articles).values({
             title,
             category,
             description,
@@ -39,31 +37,31 @@ export async function POST(req: Request) {
 
 export async function GET(req: NextRequest) {
     try {
-        // const { searchParams } = new URL(req.url);
+        const { searchParams } = new URL(req.url);
 
-        // const filters = {
-        //     searchTerm: searchParams.get('searchTerm'),
-        //     id: searchParams.get('id'),
-        //     academicFacultyId: searchParams.get('academicFacultyId'),
-        // };
+        const filters = {
+            searchTerm: searchParams.get('searchTerm'),
+            id: searchParams.get('id'),
+            academicFacultyId: searchParams.get('academicFacultyId'),
+        };
 
-        // const options = {
-        //     limit: parseInt(searchParams.get('limit') || '10', 10),
-        //     page: parseInt(searchParams.get('page') || '1', 10),
-        //     // sortBy: searchParams.get('sortBy') || 'createdAt',
-        //     // sortOrder: searchParams.get('sortOrder') || 'asc',
-        // };
-        const total = await serverDb.select().from(CreateArticles)
+        const options = {
+            limit: parseInt(searchParams.get('limit') || '10', 10),
+            page: parseInt(searchParams.get('page') || '1', 10),
+            // sortBy: searchParams.get('sortBy') || 'createdAt',
+            // sortOrder: searchParams.get('sortOrder') || 'asc',
+        };
+        const total = (await db.select().from(Articles))
         // Perform the database query using Drizzle ORM
-        // const { data, meta } = await getAll(filters, options);
+        const { data, meta } = await getAll(filters, options);
 
         return NextResponse.json({
             statusCode: 200,
             success: true,
             message: 'Get All Article successfully',
-            // meta,
-            // data,
-            total
+            meta,
+            data,
+            // total
         });
     } catch (error) {
         console.error('Error fetching articles:', error);
@@ -87,24 +85,24 @@ const getAll = async (
 
     // const orderBy: any = options.sortBy;
 
-    const articles = await serverDb
+    const articles = await db
         .select()
-        .from(CreateArticles)
+        .from(Articles)
         .where(and(...whereConditions))
         .offset(skip)
         .limit(limit);
-        // .orderBy(asc(CreateArticle.createdAt))
-        // .orderBy(orderBy);
+    // .orderBy(asc(CreateArticle.createdAt))
+    // .orderBy(orderBy);
     //   .orderBy(orderBy)
     //   .all();
 
-    console.log('Search   ', articles)
-    
-    const total = await serverDb.select().from(CreateArticles)
-     
+    const total = await db.select({
+        count: count(),
+    }).from(Articles).where(and(...whereConditions)).execute().then((res) => res[0].count)
+
     return {
         meta: {
-            total: total.length,
+            total,
             page,
             limit,
         },

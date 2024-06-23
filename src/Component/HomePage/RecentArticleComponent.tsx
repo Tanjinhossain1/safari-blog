@@ -88,6 +88,7 @@ export default function RecentArticleComponent({
         <Grid sx={{ mt: 2 }} container>
           {articles &&
             articles.map((data: RecentArticleDataType) => {
+              console.log(data,)
               return (
                 <Fragment key={data.id}>
                   <Grid xs={12} sm={5.5}>

@@ -7,10 +7,14 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "introspect": "drizzle-kit introspect:pg --config=drizzle.config.ts",
-    "migrate": "tsx -r dotenv/config lib/migrate.ts",
-    "studio": "drizzle-kit studio",
-    "generate": "drizzle-kit generate:pg --config=drizzle.config.ts"
+    "lint:fix": "next lint --fix",
+    "test:prod": "next lint --fix && next build",
+    "db:generate": "dotenv drizzle-kit generate",
+    "db:introspect": "dotenv drizzle-kit introspect",
+    "db:migrate": "dotenv tsx src/server/db/migrate.ts",
+    "db:push": "dotenv drizzle-kit push",
+    "db:drop-migration": "drizzle-kit drop",
+    "db:studio": "dotenv drizzle-kit studio"
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^1.2.0",
