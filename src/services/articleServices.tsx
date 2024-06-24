@@ -18,7 +18,7 @@ export async function fetchArticles({
     console.log('test 1 ',page)
      
   const response = await fetch(
-    `http://localhost:3000/api/v1/article/all?page=${page}&limit=${limit}`,
+    `${process.env.NEXT_APP_URL}/api/v1/article/all?page=${page}&limit=${limit}`,
     {
       cache: "no-store",
     }
@@ -49,7 +49,7 @@ export async function fetchArticlesDetails({
   data: RecentArticleDataType[];
 }> { 
   const response = await fetch(
-    `http://localhost:3000/api/article/detail/${id}`,
+    `${process.env.NEXT_APP_URL}/api/article/detail/${id}`,
     {
       cache: "no-store",
     }
