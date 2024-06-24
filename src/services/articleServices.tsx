@@ -41,38 +41,38 @@ export async function fetchArticles({
   };
 }
 
-export async function fetchArticlesDetails({
-  id
-}: {
-  id:number
-}): Promise<{
-  data: RecentArticleDataType[];
-  page: number;
-  limit: number;
-  total: number;
-}> {
+// export async function fetchArticlesDetails({
+//   id
+// }: {
+//   id:number
+// }): Promise<{
+//   data: RecentArticleDataType[];
+//   page: number;
+//   limit: number;
+//   total: number;
+// }> {
      
      
-  const response = await fetch(
-    `http://localhost:3000/api/article/detail/${id}/details`,
-    {
-      cache: "no-store",
-    }
-  );
+//   const response = await fetch(
+//     `http://localhost:3000/api/article/detail/${id}/details`,
+//     {
+//       cache: "no-store",
+//     }
+//   );
 
-  if (!response.ok) {
-    console.error(
-      `Failed to fetch articles: ${response.status} ${response.statusText}`
-    );
-    throw new Error("Failed to fetch articles");
-  }
+//   if (!response.ok) {
+//     console.error(
+//       `Failed to fetch articles: ${response.status} ${response.statusText}`
+//     );
+//     throw new Error("Failed to fetch articles");
+//   }
 
-  const data = await response.json();
-  revalidatePath('/')
-  return {
-    data: data.data,
-    page: data.meta.page,
-    limit: data.meta.limit,
-    total: data.meta.total,
-  };
-}
+//   const data = await response.json();
+//   revalidatePath('/')
+//   return {
+//     data: data.data,
+//     page: data.meta.page,
+//     limit: data.meta.limit,
+//     total: data.meta.total,
+//   };
+// }
