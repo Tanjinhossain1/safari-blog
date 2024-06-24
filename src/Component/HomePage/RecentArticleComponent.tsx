@@ -107,9 +107,8 @@ export default function RecentArticleComponent({
                               word.charAt(0).toUpperCase() + word.slice(1)
                           )
                           .join("-");
-                        history.push(
-                          `/details/${data.id}/${data.category}${joinTitle}`
-                        );
+                          history.push(`/details/${data.id}/${data.category}/${joinTitle}`);
+                       
                       }}
                     />
                   </Grid>
@@ -131,9 +130,7 @@ export default function RecentArticleComponent({
                               word.charAt(0).toUpperCase() + word.slice(1)
                           )
                           .join("-");
-                        history.push(
-                          `/details/${data.id}/${data.category}${joinTitle}`
-                        );
+                          history.push(`/details/${data.id}/${data.category}/${joinTitle}`);
                       }}
                     >
                       {data.title}
@@ -151,9 +148,7 @@ export default function RecentArticleComponent({
                               word.charAt(0).toUpperCase() + word.slice(1)
                           )
                           .join("-");
-                        history.push(
-                          `/details/${data.id}/${data.category}${joinTitle}`
-                        );
+                          history.push(`/details/${data.id}/${data.category}/${joinTitle}`);
                       }}
                       sx={{
                         backgroundColor: "#bd047c", // Primary color

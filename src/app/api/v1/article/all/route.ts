@@ -89,6 +89,7 @@ const getAll = async (
         .select()
         .from(Articles)
         .where(and(...whereConditions))
+        .orderBy(desc(Articles.createdAt))
         .offset(skip)
         .limit(limit);
     // .orderBy(asc(CreateArticle.createdAt))
