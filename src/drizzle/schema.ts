@@ -1,5 +1,3 @@
-import { drizzle } from 'drizzle-orm/vercel-postgres';
-import { sql } from '@vercel/postgres';
 import {
     jsonb,
   pgTable,
@@ -9,8 +7,8 @@ import {
   uniqueIndex,
 } from 'drizzle-orm/pg-core';
  
-export const CreateArticle = pgTable(
-  'createArticles',
+export const Articles = pgTable(
+  'articles',
   {
     id: serial('id').primaryKey(),
     title: text('title').notNull(),

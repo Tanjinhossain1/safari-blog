@@ -124,7 +124,7 @@ export default function CreateArticleComponent() {
       setImageRequiredError(false);
       await axios
         .post(
-          `${process.env.NEXT_PUBLIC_BACKEND_SERVER_URL}/api/v1/article/create`,
+          `/api/article/create`,
           data,
           {
             headers: {
@@ -139,7 +139,7 @@ export default function CreateArticleComponent() {
             setTimeout(() => {
               handleBackdropClose()
               window.location.reload();
-            }, 3500);
+            }, 1000);
           }
         })
         .catch((err) => {

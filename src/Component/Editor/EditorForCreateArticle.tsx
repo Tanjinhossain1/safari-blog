@@ -43,15 +43,14 @@ const EditorForCreateArticle = ({editorRef}:{editorRef: any}) => {
             // class: ImageTool as any,
             inlineToolbar: ['link'],
             config: {
-              
               uploader: {
-                async uploadByFile(file: any) {
-                  const formData = new FormData();
-                  formData.append("file", file);
-
+                async uploadByFile(file: File) {
+                  const formData = new FormData(); 
+                  formData.append("file", file); 
+                  
                   try {
                     const response = await axios.post(
-                      `https://sell-safari-blog-server.onrender.com/api/v1/image/upload`,
+                      `/api/v1/image/upload`,
                       formData,
                       {
                         headers: {
@@ -71,10 +70,16 @@ const EditorForCreateArticle = ({editorRef}:{editorRef: any}) => {
                   }
                 },
                 async uploadByUrl(url:any) {
+                  const data = {
+                    url
+                  }
                   const response = await axios.post(
-                    `https://sell-safari-blog-server.onrender.com/api/v1/image/upload/byUrl`,
+                    `/api/v1/image/upload/byUrl`, 
+                    data,
                     {
-                      url,
+                      headers: {
+                        "Content-Type": "application/json",
+                      },
                     }
                   );
   
