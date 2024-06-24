@@ -7,8 +7,10 @@ import {
   CircularProgress,
   Container,
   CssBaseline,
+  Dialog,
   FilledInput,
   FormControl,
+  IconButton,
   InputAdornment,
   InputLabel,
   MenuItem,
@@ -24,24 +26,37 @@ import EditorJS, { OutputData } from "@editorjs/editorjs";
 import FileUpload from "@/Component/Forms/UploadImage";
 import axios from "axios";
 import { useRouter } from "next/navigation";
+import AddCircleIcon from "@mui/icons-material/AddCircle";
+import DialogComponent from "./Dialog";
+import { CategoryTypes } from "@/types/category";
 
 const Editor = dynamic(
   () => import("../../../src/Component/Editor/EditorForCreateArticle"),
   { ssr: false }
 );
 
-export default function CreateArticleComponent() {
-  const history = useRouter()
+export default function CreateArticleComponent({categories}:{categories:CategoryTypes[]}) {
+  const history = useRouter();
   const editorRef = useRef<EditorJS | null>(null);
   const [open, setOpen] = React.useState(false);
   const [openBackDrop, setOpenBackDrop] = React.useState(false);
-  
+
   const [age, setAge] = React.useState("");
 
   const [unFormatFile, setUnFormatFile] = useState<any>(null);
   const [image, setImage] = useState<string | null>(null);
   const [imageLoad, setImageLoad] = useState<boolean>(false);
   const [imageRequiredError, setImageRequiredError] = useState<boolean>(false);
+  const [dialogOpen, setDialogOpen] = React.useState(false);
+  const [showSuccessText, setShowSuccessText] = useState<string>("")
+
+  const handleDialogClickOpen = () => {
+    setDialogOpen(true);
+  };
+
+  const handleDialogClose = () => {
+    setDialogOpen(false);
+  };
 
   const handleBackdropClose = () => {
     setOpenBackDrop(false);
@@ -54,8 +69,9 @@ export default function CreateArticleComponent() {
     setAge(event.target.value);
   };
 
-  const handleClick = () => {
+  const handleClick = (text:string) => {
     setOpen(true);
+    setShowSuccessText(text)
   };
 
   const handleClose = (
@@ -64,8 +80,7 @@ export default function CreateArticleComponent() {
   ) => {
     if (reason === "clickaway") {
       return;
-    }
-
+    } 
     setOpen(false);
   };
   useEffect(() => {
@@ -97,7 +112,7 @@ export default function CreateArticleComponent() {
     if (!image) {
       setImageRequiredError(true);
     }
-    handleBackDropOpen()
+    handleBackDropOpen();
     const fieldData = await editorRef.current?.save();
     const title = (event.target as any)?.title.value;
     const description = (event.target as any)?.description.value;
@@ -123,31 +138,27 @@ export default function CreateArticleComponent() {
     if (image) {
       setImageRequiredError(false);
       await axios
-        .post(
-          `/api/article/create`,
-          data,
-          {
-            headers: {
-              "Content-Type": "application/json",
-            },
-          }
-        )
+        .post(`/api/article/create`, data, {
+          headers: {
+            "Content-Type": "application/json",
+          },
+        })
         .then((response: any) => {
           console.log("create success", response);
           if (response?.data?.success) {
-            handleClick();
+            handleClick("Article Created SuccessFully");
             setTimeout(() => {
-              handleBackdropClose()
+              handleBackdropClose();
               window.location.reload();
             }, 1000);
           }
         })
         .catch((err) => {
-          handleBackdropClose()
+          handleBackdropClose();
           console.log("error", err);
         });
     }
-    handleBackdropClose()
+    handleBackdropClose();
     // http://localhost:3002/api/v1/article/create
   };
 
@@ -155,10 +166,26 @@ export default function CreateArticleComponent() {
     <div>
       <form onSubmit={handleSubmit} style={{ width: "100%" }}>
         <Container sx={{ width: "90%", mx: "auto" }}>
-        <div id="top">
-        <Button onClick={()=>history.push('/')} variant="contained" color="error" sx={{mt:1}}>Back To Home</Button>
-        <a style={{textDecoration:"none"}} href="#bottom"> <Button color="secondary" variant="contained" sx={{mt:1,ml:2}}>Go Bottom</Button></a>
-        </div>
+          <div id="top">
+            <Button
+              onClick={() => history.push("/")}
+              variant="contained"
+              color="error"
+              sx={{ mt: 1 }}
+            >
+              Back To Home
+            </Button>
+            <a style={{ textDecoration: "none" }} href="#bottom">
+              {" "}
+              <Button
+                color="secondary"
+                variant="contained"
+                sx={{ mt: 1, ml: 2 }}
+              >
+                Go Bottom
+              </Button>
+            </a>
+          </div>
           <FormControl sx={{ my: 2, width: "100%" }} variant="filled">
             <InputLabel sx={{ mb: 1 }} htmlFor="filled-adornment-amount">
               Title <sup style={{ color: "red", fontSize: 20 }}>*</sup>
@@ -173,10 +200,14 @@ export default function CreateArticleComponent() {
               }
             />
           </FormControl>
-          <FormControl variant="filled" sx={{ my: 1, minWidth: "100%" }}>
+          <FormControl
+            variant="filled"
+            sx={{ my: 1, minWidth: "100%", display: "flex" }}
+          >
             <InputLabel id="demo-simple-select-filled-label">
               Category <sup style={{ color: "red", fontSize: 20 }}>*</sup>
             </InputLabel>
+
             <Select
               labelId="demo-simple-select-filled-label"
               id="demo-simple-select-filled"
@@ -185,20 +216,32 @@ export default function CreateArticleComponent() {
               name="category"
               onChange={handleChange}
             >
-              <MenuItem value={"mobile"}>Mobile</MenuItem>
+              {
+                categories?.map((category) =>{
+                  return <MenuItem key={category.id} value={category.title}>{category.title}</MenuItem>
+                })
+              }
+              {/* <MenuItem value={"mobile"}>Mobile</MenuItem> */}
             </Select>
+
+            <IconButton onClick={handleDialogClickOpen}>
+              <AddCircleIcon color="success" titleAccess="Add Category" />
+            </IconButton>
           </FormControl>
           <TextField
-       
-      label={<span>Description <sup style={{ color: "red", fontSize:12}}>*</sup></span>}
-      multiline
-      rows={4}
-      name={'description'}
-      sx={{width: "100%"}}
-      variant="outlined"
-      // value={value}
-      // onChange={onChange}
-    />
+            label={
+              <span>
+                Description <sup style={{ color: "red", fontSize: 12 }}>*</sup>
+              </span>
+            }
+            multiline
+            rows={4}
+            name={"description"}
+            sx={{ width: "100%" }}
+            variant="outlined"
+            // value={value}
+            // onChange={onChange}
+          />
           <FileUpload
             runAfterChange={(file) => {
               setImageLoad(true);
@@ -246,11 +289,23 @@ export default function CreateArticleComponent() {
             Submit
           </Button>
           <div id="bottom">
-       
-          <a href="#top"> <Button variant="contained" color="secondary" sx={{mt:1}}>Go Up</Button></a>
-        </div>
+            <a href="#top">
+              {" "}
+              <Button variant="contained" color="secondary" sx={{ mt: 1 }}>
+                Go Up
+              </Button>
+            </a>
+          </div>
         </Container>
       </form>
+      <Dialog
+        open={dialogOpen}
+        onClose={handleDialogClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+      <DialogComponent handleClick={handleClick} handleBackdropClose={handleBackdropClose} handleBackDropOpen={handleBackDropOpen} handleDialogClose={handleDialogClose} />
+      </Dialog>
       <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
         <Alert
           onClose={handleClose}
@@ -258,16 +313,16 @@ export default function CreateArticleComponent() {
           variant="filled"
           sx={{ width: "100%" }}
         >
-          Article Created SuccessFully
+          {showSuccessText}
         </Alert>
-      </Snackbar> 
-<Backdrop
-  sx={{ color: '#fff', zIndex: (theme) => theme.zIndex.drawer + 1 }}
-  open={openBackDrop}
-  onClick={handleBackdropClose}
->
-  <CircularProgress color="inherit" />
-</Backdrop>
+      </Snackbar>
+      <Backdrop
+        sx={{ color: "#fff", zIndex: (theme) => theme.zIndex.drawer + 1 }}
+        open={openBackDrop}
+        onClick={handleBackdropClose}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
     </div>
   );
 }
