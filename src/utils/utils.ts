@@ -1,5 +1,17 @@
 import { Response } from 'express';
 import { NextResponse } from 'next/server';
+// utils/formatDate.js
+import { format } from 'date-fns';
+
+export function formatDate(isoDateString:string) {
+  // Parse the ISO date string into a Date object
+  const date = new Date(isoDateString);
+  
+  // Format the date as "25 JUNE 2024"
+  return format(date, 'dd MMMM yyyy').toUpperCase();
+}
+
+
 
 export const truncateText = (text: string, maxLength: number) => {
   if (text?.length <= maxLength) return text;
