@@ -1,10 +1,10 @@
 import { NextRequest, NextResponse } from "next/server";
 import { IGenericResponse, sendResponse } from '@/utils/utils';
-import { ilike, and, or, desc, asc } from 'drizzle-orm/expressions';
+// import { ilike, and, or, desc, asc } from 'drizzle-orm/expressions';
 import { IPaginationOptions, paginationHelpers } from '@/app/api/shared/helpers';
 import { db } from "@/drizzle/db";
 import { Articles } from "@/drizzle/schema";
-import { count } from "drizzle-orm";
+import { and, count, desc, ilike, or } from "drizzle-orm";
 
 export async function POST(req: Request) {
     try {
@@ -42,7 +42,7 @@ export async function GET(req: NextRequest) {
         const filters = {
             searchTerm: searchParams.get('searchTerm'),
             id: searchParams.get('id'),
-            academicFacultyId: searchParams.get('academicFacultyId'),
+            category: searchParams.get('category'),
         };
 
         const options = {
@@ -58,7 +58,7 @@ export async function GET(req: NextRequest) {
         return NextResponse.json({
             statusCode: 200,
             success: true,
-            message: 'Get All Article successfully',
+            message: 'Get All  Article successfully',
             meta,
             data,
             // total
@@ -73,15 +73,20 @@ const getAll = async (
     options: IPaginationOptions
 ): Promise<IGenericResponse<any[]>> => {
     const { limit, page, skip } = paginationHelpers.calculatePagination(options);
-    const { searchTerm } = filters;
+    const { searchTerm,category } = filters;
     const whereConditions = [];
-
-    if (searchTerm) {
-        const searchConditions = ['title', 'category'].map((field: any) =>
-            ilike(field, `%${searchTerm}%`)
-        );
-        whereConditions.push(or(...searchConditions));
-    }
+    if (category) { 
+    const searchConditions = ilike(Articles["category"], `%${category}%`)
+ 
+    whereConditions.push(searchConditions);
+}
+    if (searchTerm) { 
+    const searchConditions = ['title', 'category','description'].map((field) =>
+        ilike((Articles as any)[field], `%${searchTerm}%`)
+    );
+ 
+    whereConditions.push(or(...searchConditions));
+}
 
     // const orderBy: any = options.sortBy;
 
@@ -89,6 +94,7 @@ const getAll = async (
         .select()
         .from(Articles)
         .where(and(...whereConditions))
+        .orderBy(desc(Articles.createdAt))
         .offset(skip)
         .limit(limit);
     // .orderBy(asc(CreateArticle.createdAt))

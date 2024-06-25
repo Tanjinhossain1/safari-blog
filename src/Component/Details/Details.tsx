@@ -1,0 +1,244 @@
+"use client";
+import Footer from "@/Component/HomePage/Footer";
+import Navbar from "@/Component/Shared/Navbar";
+import { RecentArticleDataType } from "@/types/RecentArticle";
+import { CategoryTypes } from "@/types/category";
+import {
+  Breadcrumbs,
+  Button,
+  Container,
+  Grid,
+  Link,
+  Paper,
+  Typography,
+} from "@mui/material";
+import Image from "next/image";
+import { useParams, useRouter } from "next/navigation";
+import React from "react";
+import CategoryListComponent from "../Category/CategoryListComponent";
+
+function formatText(text: string) {
+  return text.replace(/\n/g, "<br />").replace(/ {2}/g, " &nbsp;");
+}
+export default function DetailsComponent({
+  articleDetail,
+  category
+}: {
+  articleDetail: RecentArticleDataType;
+  category:CategoryTypes[]
+}) {
+  const params = useParams();
+  const history = useRouter();
+  console.log("articleDetail  ", articleDetail.content);
+
+  return (
+    <>
+      <>
+        <Navbar />
+        <Grid container>
+          <Grid xs={0} md={1} lg={1.1} xl={2}></Grid>
+          <Grid xs={12} md={10} lg={9.8} xl={8}>
+            <Paper sx={{ p: 2, mb: 2 }} elevation={2}>
+              <Breadcrumbs sx={{ fontSize: 12 }} aria-label="breadcrumb">
+                <Link underline="hover" color="inherit" href="/">
+                  Home
+                </Link>
+                <Link
+                  underline="hover"
+                  color="inherit"
+                  href={`/category/${params?.category}`}
+                >
+                  {params?.category}
+                </Link>
+                <Typography sx={{ fontSize: 12 }}>
+                  {(params?.title as string)
+                    .split("-")
+                    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+                    .join(" ")}
+                </Typography>
+              </Breadcrumbs>
+              <Button
+                sx={{
+                  mt: 2,
+                  bgcolor: "#d9048b",
+                  padding: "2px 8px",
+                  fontSize: "12px",
+                  minWidth: "50px",
+                  boxShadow: "none",
+                  "&:hover": {
+                    boxShadow: "none",
+                    bgcolor: "#c2047c", // Maintain the same background color on hover
+                  },
+                }}
+                size="small"
+                variant="contained"
+                onClick={() => {
+                  history.push(`/category/${params?.category}`);
+                }}
+              >
+                {params?.category}
+              </Button>
+              <Grid container>
+                <Grid xs={12} lg={7.5}>
+                  <Typography
+                    sx={{
+                      mt: 1,
+                      fontSize: 35,
+                      fontWeight: 550,
+                      color: "#333333",
+                    }}
+                  >
+                    {" "}
+                    {(params?.title as string)
+                      .split("-")
+                      .map(
+                        (word) => word.charAt(0).toUpperCase() + word.slice(1)
+                      )
+                      .join(" ")}
+                  </Typography>
+
+                  <Image
+                    style={{ marginTop: "20px" }}
+                    src={articleDetail.image}
+                    alt={articleDetail.title}
+                    layout="responsive"
+                    width={0}
+                    height={0}
+                  />
+                  {articleDetail.content.map((block) => {
+                    if (block.type === "paragraph") {
+                      return (
+                        <div
+                          style={{ marginTop: "30px" }}
+                          key={block.id}
+                          dangerouslySetInnerHTML={{
+                            __html: formatText(block.data.text),
+                          }}
+                        ></div>
+                      );
+                    } else if (block.type === "header") {
+                      const TagLevel: any = `h${block.data.level}`;
+                      return (
+                        <TagLevel
+                          key={block.id}
+                          dangerouslySetInnerHTML={{
+                            __html: block.data.text,
+                          }}
+                        ></TagLevel>
+                      );
+                    } else if (block.type === "image") {
+                      const TagLevel: any = `h${block.data.level}`;
+                      return (
+                        <Image
+                          key={block.id}
+                          layout="responsive"
+                          width={block.data.height}
+                          height={block.data.height}
+                          src={block.data.file.url}
+                          alt=""
+                        ></Image>
+                      );
+                    } else if (block.type === "list") {
+                      return block.data.style === "unordered" ? (
+                        <ul key={block.id}>
+                          {block.data.items.map((item: any) => (
+                            <li style={{ marginTop: "10px" }} key={item} dangerouslySetInnerHTML={{__html: item}}>
+                              
+                            </li>
+                          ))}
+                        </ul>
+                      ) : (
+                        <ol key={block.id}>
+                          {block.data.items.map((item: any) => (
+                            <li key={item} dangerouslySetInnerHTML={{__html: item}}></li>
+                          ))}
+                        </ol>
+                      );
+                    } else if (block.type === "table") {
+                      return (
+                        <table
+                          key={block.id}
+                          style={{
+                            width: "100%",
+                            borderCollapse: "collapse",
+                            borderRadius: "10px",
+                            marginTop: "30px",
+                          }}
+                        >
+                          <thead>
+                            {/* {block.data.withHeadings && ( */}
+                            <tr>
+                              {block.data.content[0].map(
+                                (heading: any, index: number) => (
+                                  <th
+                                    key={index}
+                                    style={{
+                                      padding: "8px",
+                                      textAlign: "left",
+                                      backgroundColor: "#e6e6e6",
+                                      // border: "1px solid #dddddd",
+                                    }}
+                                    dangerouslySetInnerHTML={{
+                                      __html: heading,
+                                    }}
+                                  ></th>
+                                )
+                              )}
+                            </tr>
+                            {/* )} */}
+                          </thead>
+                          <tbody>
+                            {block.data.content.map(
+                              (row: any, index: number) => {
+                                if (index !== 0) {
+                                  return (
+                                    <tr
+                                      style={{
+                                        backgroundColor:
+                                          index % 2 === 0
+                                            ? "#e6e6e6"
+                                            : "#f5f5f5",
+                                      }}
+                                      key={index}
+                                    >
+                                      {row.map((cell: any, cellIndex: any) => (
+                                        <td
+                                          key={cellIndex}
+                                          style={{
+                                            padding: "8px",
+                                            textAlign: "left",
+                                            // border: "1px solid #dddddd",
+                                          }}
+                                          dangerouslySetInnerHTML={{__html: cell}}
+                                        >
+                                          
+                                        </td>
+                                      ))}
+                                    </tr>
+                                  );
+                                }
+                              }
+                            )}
+                          </tbody>
+                        </table>
+                      );
+                    }
+                  })}
+                </Grid>
+                <Grid xs={12} lg={0.5}></Grid>
+                <Grid xs={12} sx={{mt:17}} lg={4}>
+               
+                <CategoryListComponent category={category} />
+                </Grid>
+              </Grid>
+            </Paper>
+          </Grid>
+          <Grid xs={0} md={1} lg={1.1} xl={2}> 
+              
+          </Grid>
+        </Grid>
+        <Footer />
+      </>
+    </>
+  );
+}

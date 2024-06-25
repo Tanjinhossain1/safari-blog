@@ -42,15 +42,19 @@ import { RecentArticleDataType } from "@/types/RecentArticle";
 import { useRouter, useSearchParams } from "next/navigation";
 import axios from "axios";
 import { truncateText } from "@/utils/utils";
+import { CategoryTypes } from "@/types/category";
+import DisplayArticleComponent from "./DisplayArticleComponent";
+import CategoryListComponent from "../Category/CategoryListComponent";
 
 export default function RecentArticleComponent({
   articles,
-  total
+  total,
+  category,
 }: {
-  articles: RecentArticleDataType[];  
-  total:number
+  articles: RecentArticleDataType[];
+  total: number;
+  category: CategoryTypes[];
 }) {
-     
   const [isHideLoadMore, setIsHideLoadMore] = useState<boolean>(false);
   const history = useRouter();
   const searchParams = useSearchParams();
@@ -58,8 +62,7 @@ export default function RecentArticleComponent({
   const limit = searchParams.get("limit") ?? "3";
 
   // Function to load more articles
-  const loadMoreArticles = async () => { 
-
+  const loadMoreArticles = async () => {
     history.push(
       `/?${new URLSearchParams({
         page: page,
@@ -71,12 +74,12 @@ export default function RecentArticleComponent({
     );
   };
 
-  useEffect(()=>{
-    console.log('articles.length  ', articles.length,total)
-    if(articles.length  === total){
-        setIsHideLoadMore(true)
+  useEffect(() => {
+    console.log("articles.length  ", articles.length, total);
+    if (articles.length === total) {
+      setIsHideLoadMore(true);
     }
-  },[articles.length,total])
+  }, [articles.length, total]);
   return (
     <Grid sx={{ mt: 4 }} container>
       <Grid xs={12} md={8}>
@@ -88,100 +91,22 @@ export default function RecentArticleComponent({
         <Grid sx={{ mt: 2 }} container>
           {articles &&
             articles.map((data: RecentArticleDataType) => {
-              console.log(data,)
+              console.log(data);
               return (
                 <Fragment key={data.id}>
-                  <Grid sx={{mb:5}} xs={12} sm={5.5}>
-                  {/* <Image src={data.image} alt={data.title} layout="fill" objectFit="cover" /> */}
-                    <Image
-                      style={{ width: "100%", cursor: "pointer" }}
-                      alt=""
-                      src={data.image}
-                      width={370}
-                      height={200}
-                      onClick={() => {
-                        const joinTitle = data.title
-                          .split(" ")
-                          .map(
-                            (word) =>
-                              word.charAt(0).toUpperCase() + word.slice(1)
-                          )
-                          .join("-");
-                        history.push(
-                          `/details/${data.id}/${data.category}${joinTitle}`
-                        );
-                      }}
-                    />
-                  </Grid>
-                  <Grid xs={0} sm={0.5}></Grid>
-                  <Grid xs={12} sm={6}>
-                    <Typography
-                      sx={{
-                        fontSize: 18,
-                        fontWeight: 600,
-                        fontFamily: "revert",
-                        cursor: "pointer",
-                        ":hover": { color: "#c4007c" },
-                      }}
-                      onClick={() => {
-                        const joinTitle = data.title
-                          .split(" ")
-                          .map(
-                            (word) =>
-                              word.charAt(0).toUpperCase() + word.slice(1)
-                          )
-                          .join("-");
-                        history.push(
-                          `/details/${data.id}/${data.category}${joinTitle}`
-                        );
-                      }}
-                    >
-                      {data.title}
-                    </Typography>
-                    <Typography sx={{ fontSize: 13, fontWeight: 500, mt: 2 }}>
-                      {truncateText(data.description, 300)}
-                    </Typography>
-                    <Button
-                      variant="contained"
-                      onClick={() => {
-                        const joinTitle = data.title
-                          .split(" ")
-                          .map(
-                            (word) =>
-                              word.charAt(0).toUpperCase() + word.slice(1)
-                          )
-                          .join("-");
-                        history.push(
-                          `/details/${data.id}/${data.category}${joinTitle}`
-                        );
-                      }}
-                      sx={{
-                        backgroundColor: "#bd047c", // Primary color
-                        mt: 1,
-                        color: "#ffffff",
-                        padding: "10px 20px",
-                        fontSize: "16px",
-                        textTransform: "none",
-                        transition:
-                          "background-color 0.3s ease-in-out, transform 0.3s ease-in-out",
-                        "&:hover": {
-                          backgroundColor: "#018c2d", // Darker shade for hover
-                          transform: "scale(1.05)",
-                        },
-                        "&:active": {
-                          backgroundColor: "#4791db", // Lighter shade for active
-                          transform: "scale(0.95)",
-                        },
-                      }}
-                    >
-                      Read More &gt;&gt;
-                    </Button>
-                  </Grid>
+                  <DisplayArticleComponent data={data} />
                 </Fragment>
               );
             })}
         </Grid>
       </Grid>
+
+      <Grid xs={12} md={0.3}></Grid>
+      <Grid xs={12} md={3.7}>
+        
+      <CategoryListComponent category={category} />
+      </Grid>
+
       <Grid sx={{ mt: 3 }} container>
         <Grid xs={1}></Grid>
         <Grid xs={10} sm={4}>
@@ -216,14 +141,6 @@ export default function RecentArticleComponent({
         </Grid>
         <Grid xs={1}></Grid>
       </Grid>
-      {/* <Grid xs={12} md={0.6}></Grid>
-      <Grid xs={12} md={3.7}>
-        <Container sx={{ bgcolor: "#bd047c", p: 1 }}>
-          <Typography sx={{ fontSize: 18, fontWeight: 600, color: "#f5f5f5" }}>
-            Categories
-          </Typography>
-        </Container>
-      </Grid> */}
     </Grid>
   );
 }

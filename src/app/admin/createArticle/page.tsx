@@ -1,10 +1,21 @@
-import React from "react"; 
-import CreateArticleComponent from "@/Component/Admin/CreateArticleComponent";
- 
+import { fetchCategories } from "@/services/articleServices";
+import { CategoryTypes } from "@/types/category";
+import dynamic from "next/dynamic";
+import React, { Suspense } from "react";
+// import CreateArticleComponent from "@/Component/Admin/CreateArticleComponent";
 
-export default function CreateArticle() {
-   
+const CreateArticleComponent = dynamic(
+  () => import("@/Component/Admin/CreateArticleComponent"),
+  { ssr: false }
+);
+
+
+export default async function CreateArticle() {
+  const categories = await fetchCategories();
+  console.log("categories   ", categories);
   return (
-     <CreateArticleComponent />
+    <Suspense>
+      <CreateArticleComponent categories={categories.data} />
+    </Suspense>
   );
 }

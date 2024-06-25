@@ -3,9 +3,8 @@ import styles from "./page.module.css";
 import Navbar from "@/Component/Shared/Navbar";
 import Banner from "@/Component/HomePage/Banner";
 import Footer from "@/Component/HomePage/Footer";
-import { fetchArticles } from "@/services/articleServices";
-import { SAMPLE_DATA } from "@/Component/HomePage/RecentArticleDataType";
-import { details } from "./details/[id]/[category]/[title]/SAMPLE_DATA";
+import { fetchArticles, fetchCategories } from "@/services/articleServices";
+import { Suspense } from "react";
 
 interface HomePropsType {
   searchParams: {
@@ -13,14 +12,19 @@ interface HomePropsType {
     limit: string;
   };
 }
-async function Home({ searchParams }: HomePropsType) {  
-  const { page, limit } = searchParams; 
+async function Home({ searchParams }: HomePropsType) {
+  const { page, limit } = searchParams;
   const articles = await fetchArticles({ page, limit });
+  const Category = await fetchCategories();
   return (
     <>
-      <Navbar />
+      <Suspense>
+        <Navbar />
+      </Suspense>
       {articles ? (
-        <Banner articles={articles.data} total={articles.total} />
+        <Suspense>
+          <Banner category={Category.data} articles={articles.data} total={articles.total} />
+        </Suspense>
       ) : null}
       <Footer />
     </>

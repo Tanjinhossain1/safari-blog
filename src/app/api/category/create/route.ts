@@ -1,5 +1,5 @@
 import { db } from '@/drizzle/db';
-import { Articles } from '@/drizzle/schema';
+import { Category } from '@/drizzle/schema';
 import { NextResponse } from "next/server"; 
 
 export async function POST(req: Request) {
@@ -7,26 +7,22 @@ export async function POST(req: Request) {
         // Parse the JSON body
         const body = await req.json()
         
-        const { title, category, description, image, content } = body;
+        const { title } = body;
 
-        console.log('body detail created', body, title, category, description, image, content);
+        console.log('body detail created', body, title, );
 
-        if (!title || !category || !description || !image || !content) {
+        if (!title) {
             return NextResponse.json({ error: 'Missing required fields' });
         }
         
         // Perform the database insertion using Drizzle ORM
-        const result = await db.insert(Articles).values({
+        const result = await db.insert(Category).values({
             title,
-            category,
-            description,
-            image,
-            content,
         });
 
-        return NextResponse.json({success:true,message:"successfully created article",data:result})
+        return NextResponse.json({success:true,message:"successfully created Category",data:result})
     } catch (error) {
         console.error('Error creating article:', error);
         return NextResponse.json({ error: 'Internal Server Error' });
     }
-}
+} 

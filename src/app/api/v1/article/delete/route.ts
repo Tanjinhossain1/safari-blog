@@ -2,11 +2,13 @@ import { NextApiRequest, NextApiResponse } from 'next';
 import { NextRequest, NextResponse } from "next/server";
 import { IGenericResponse, sendResponse } from '@/utils/utils';
 import { db } from '@/drizzle/db';
+import { Articles } from '@/drizzle/schema';
+import { eq } from 'drizzle-orm';
 
 export async function DELETE(req: Request) {
     try {
         // Parse the JSON body
-        const { id }:any = { id: 2 }
+        const id = 12
 
 
         // console.log('body detail created', id);
@@ -16,8 +18,8 @@ export async function DELETE(req: Request) {
         // }
 
         // Perform the database insertion using Drizzle ORM
-        const result = await db.delete(id);
-
+        const result = await db.delete(Articles).where(eq(Articles.id, id))
+        .returning();
         return NextResponse.json({ success: true, message: "successfully Delete article", data: result })
     } catch (error) {
         console.error('Error creating article:', error);
