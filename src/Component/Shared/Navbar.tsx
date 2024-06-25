@@ -6,20 +6,14 @@ import Toolbar from "@mui/material/Toolbar";
 import Typography from "@mui/material/Typography";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-import {
-  Grid,
-  InputBase,
-  ListItem,
-  alpha,
-  styled,
-} from "@mui/material";
+import { Grid, InputBase, ListItem, alpha, styled } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { NavigationPages } from "@/types/Navbar";
 import Image from "next/image";
 import Button from "@mui/material/Button";
 import List from "@mui/material/List";
 import { useRouter } from "next/navigation";
-import RemoveIcon from '@mui/icons-material/Remove';
+import RemoveIcon from "@mui/icons-material/Remove";
 
 import {
   NavigationMenu,
@@ -89,8 +83,7 @@ function Navbar() {
 
   const handleToggle = () => {
     setIsOpen(!isOpen);
-  }; 
- 
+  };
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
@@ -98,12 +91,13 @@ function Navbar() {
     const search = event.target.search.value;
     history.push(`/search?search=${search}`);
   };
- 
+
   return (
     <Grid container>
       <Grid xs={0} md={1} lg={1.1} xl={2}></Grid>
       <Grid sx={{ m: 0, p: 0 }} xs={12} md={10} lg={9.8} xl={8}>
-        <AppBar sx={{ bgcolor: "#d9078f", m: 0, p: 0 }} position="static">
+        <AppBar sx={{ bgcolor: "#ff5ec1", m: 0, p: 0 }} position="static">
+          {/* <AppBar sx={{ bgcolor: "#d9078f", m: 0, p: 0 }} position="static"> */}
           <Container sx={{ m: 0, p: 0 }} maxWidth="xl">
             <Toolbar disableGutters>
               <Box sx={{ display: { xs: "flex", sm: "none" } }}>
@@ -113,17 +107,18 @@ function Navbar() {
                       <NavigationMenuTrigger
                         style={{ backgroundColor: "transparent" }}
                         onClick={handleToggle}
-                         
-
                       >
                         {isOpen ? (
-              <RemoveIcon className="icon animate-slideInFromTop " />
-            ) : (
-              <MenuIcon className="icon animate-slideInFromTop" />
-            )}
-                      </NavigationMenuTrigger>  
-                       
-                      <NavigationMenuContent style={{borderRadius:'0px'}} className="w-screen  animate-slideInFromTop bg-inherit m-0 p-0  ">
+                          <RemoveIcon className="icon animate-slideInFromTop " />
+                        ) : (
+                          <MenuIcon className="icon animate-slideInFromTop" />
+                        )}
+                      </NavigationMenuTrigger>
+
+                      <NavigationMenuContent
+                        style={{ borderRadius: "0px" }}
+                        className="w-screen  animate-slideInFromTop bg-inherit m-0 p-0  "
+                      >
                         <List sx={{ bgcolor: "#bd047c" }}>
                           <Grid container>
                             <Grid xs={4}>
@@ -190,10 +185,9 @@ function Navbar() {
                           </Grid>
                         </List>
                       </NavigationMenuContent>
-                      
                     </NavigationMenuItem>
                   </NavigationMenuList>
-                </NavigationMenu> 
+                </NavigationMenu>
               </Box>
               {/* large  */}
               <Box
@@ -242,7 +236,7 @@ function Navbar() {
                         padding: 0, // Ensures no extra padding
                         margin: 0, // Ensures no extra margin
                       }}
-                      type="submit" 
+                      type="submit"
                     >
                       <SearchIcon />
                     </button>
@@ -253,10 +247,59 @@ function Navbar() {
                     />
                   </Search>
                 </form>
-
-                
               </Box>
             </Toolbar>
+          </Container>
+        </AppBar>
+        <AppBar sx={{ bgcolor: "#f2f2f2", m: 0, p: 0 }} position="static">
+          <Container sx={{ m: 0, p: 0 }} maxWidth="xl">
+            <Grid container>
+              <Grid xs={4}>
+                <ListItem
+                  sx={{
+                    textAlign: "center",
+                    display: "flex",
+                    alignItems: "center",
+                    mt: 1,
+                    color: "#e691c4", 
+                    fontWeight: 600,
+                  }}
+                  onClick={() => history.push("/")}
+                >
+                  <Typography sx={{fontWeight:600}} textAlign="center">Home</Typography>
+                </ListItem>
+              </Grid>
+              <Grid xs={4}>
+                <ListItem
+                  sx={{
+                    textAlign: "center",
+                    display: "flex",
+                    alignItems: "center",
+                    mt: 1,
+                    color: "#e691c4",
+                    fontWeight: 600,
+                  }}
+                  onClick={() => history.push("/news")}
+                >
+                  <Typography sx={{fontWeight:600}} textAlign="center">News</Typography>
+                </ListItem> 
+              </Grid>
+              <Grid xs={4}>
+              <ListItem
+                  sx={{
+                    textAlign: "center",
+                    display: "flex",
+                    alignItems: "center",
+                    mt: 1,
+                    color: "#e691c4",
+                    fontWeight: 600,
+                  }}
+                  onClick={() => history.push("/aboutUs")}
+                >
+                  <Typography sx={{fontWeight:600}} textAlign="center">About Us</Typography>
+                </ListItem>
+              </Grid>
+            </Grid>
           </Container>
         </AppBar>
       </Grid>
