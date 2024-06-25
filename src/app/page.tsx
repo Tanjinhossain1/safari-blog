@@ -19,7 +19,7 @@ async function Home({ searchParams }: HomePropsType) {
   return (
     <>
       <Suspense>
-        <Navbar />
+        <Navbar /> 
       </Suspense>
       {articles ? (
         <Suspense>

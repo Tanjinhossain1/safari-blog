@@ -43,9 +43,9 @@ export async function fetchArticles({
   revalidatePath("/");
   return {
     data: data.data,
-    page: data.meta.page,
-    limit: data.meta.limit,
-    total: data.meta.total,
+    page: data.meta?.page,
+    limit: data.meta?.limit,
+    total: data.meta?.total,
   };
 }
 

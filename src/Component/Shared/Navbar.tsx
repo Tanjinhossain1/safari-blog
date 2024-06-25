@@ -3,41 +3,25 @@ import React, { useState } from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
 import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
-import {
-  FormControl,
-  Grid,
-  InputBase,
-  InputLabel,
-  Select,
-  alpha,
-  styled,
-} from "@mui/material";
+import { Grid, InputBase, ListItem, alpha, styled } from "@mui/material";
 import SearchIcon from "@mui/icons-material/Search";
 import { NavigationPages } from "@/types/Navbar";
-import TipsAndUpdatesIcon from "@mui/icons-material/TipsAndUpdates";
 import Image from "next/image";
-import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import Button from "@mui/material/Button";
 import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import TopSearch from "../TopSearchBar/TopSearch";
-import CloseIcon from "@mui/icons-material/Close";
 import { useRouter } from "next/navigation";
+import RemoveIcon from "@mui/icons-material/Remove";
+
+import {
+  NavigationMenu,
+  NavigationMenuContent,
+  NavigationMenuItem,
+  NavigationMenuList,
+  NavigationMenuTrigger,
+} from "@/components/ui/navigation-menu";
 
 // const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -95,24 +79,11 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 function Navbar() {
   const history = useRouter();
-  const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
-  const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
+  const [isOpen, setIsOpen] = React.useState(false);
 
-  const handleOpenNavMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElNav(event.currentTarget);
+  const handleToggle = () => {
+    setIsOpen(!isOpen);
   };
-  const handleOpenUserMenu = (event: React.MouseEvent<HTMLElement>) => {
-    setAnchorElUser(event.currentTarget);
-  };
-
-  const handleCloseNavMenu = () => {
-    setAnchorElNav(null);
-  };
-
-  const handleCloseUserMenu = () => {
-    setAnchorElUser(null);
-  };
-  const [state, setState] = React.useState(false);
 
   const handleSubmit = (event: any) => {
     event.preventDefault();
@@ -121,91 +92,108 @@ function Navbar() {
     history.push(`/search?search=${search}`);
   };
 
-  const toggleDrawer =
-    (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
-      if (
-        event &&
-        event.type === "keydown" &&
-        ((event as React.KeyboardEvent).key === "Tab" ||
-          (event as React.KeyboardEvent).key === "Shift")
-      ) {
-        return;
-      }
-
-      setState(open);
-    };
-
-  const list = (
-    <div
-      role="presentation"
-      //   onClick={toggleDrawer(false)}
-      onKeyDown={toggleDrawer(false)}
-      //   style={{ backgroundColor: "#d9078f" }}
-    >
-      <Container
-        sx={{ display: "flex", justifyContent: "center", bgcolor: "white" }}
-      >
-        <CloseIcon
-          onClick={toggleDrawer(false)}
-          sx={{ fontSize: 35, textAlign: "center", color: "#d6002b" }}
-        ></CloseIcon>
-      </Container>
-      <List sx={{ width: 350, bgcolor: "#bd047c", height: "100vh" }}>
-        {pages.map((page: NavigationPages, index: number) => (
-          <ListItem
-            sx={{
-              textAlign: "center",
-              display: "flex",
-              alignItems: "center",
-              mt: 1,
-              borderBottom: "2px solid #d6008b",
-              color: "white",
-              fontWeight: 600,
-            }}
-            key={index}
-            onClick={() => history.push(page.route)}
-          >
-            <Typography textAlign="center">{page.icon}</Typography>
-            <Typography textAlign="center">{page.title}</Typography>
-          </ListItem>
-        ))}
-        <div style={{ marginLeft: "30px" }}>{/* <TopSearch /> */}</div>
-      </List>
-    </div>
-  );
   return (
     <Grid container>
       <Grid xs={0} md={1} lg={1.1} xl={2}></Grid>
-      <Grid xs={12} md={10} lg={9.8} xl={8}>
-        <AppBar sx={{ bgcolor: "#d9078f" }} position="static">
-          <Container maxWidth="xl">
+      <Grid sx={{ m: 0, p: 0 }} xs={12} md={10} lg={9.8} xl={8}>
+        <AppBar sx={{ bgcolor: "#ff5ec1", m: 0, p: 0 }} position="static">
+          {/* <AppBar sx={{ bgcolor: "#d9078f", m: 0, p: 0 }} position="static"> */}
+          <Container sx={{ m: 0, p: 0 }} maxWidth="xl">
             <Toolbar disableGutters>
-              <Box sx={{ flexGrow: 1, display: { xs: "flex", md: "none" } }}>
-                <IconButton
-                  size="large"
-                  aria-label="account of current user"
-                  aria-controls="menu-appbar"
-                  aria-haspopup="true"
-                  onClick={toggleDrawer(true)}
-                  color="inherit"
-                >
-                  <MenuIcon />
-                </IconButton>
-                <SwipeableDrawer
-                  anchor="left"
-                  open={state}
-                  onClose={toggleDrawer(false)}
-                  onOpen={toggleDrawer(true)}
-                  //   sx={{ width: 350, bgcolor: "#d9078f" }}
-                >
-                  {list}
-                </SwipeableDrawer>
+              <Box sx={{ display: { xs: "flex", sm: "none" } }}>
+                <NavigationMenu style={{ margin: 0, padding: 0 }}>
+                  <NavigationMenuList style={{ margin: 0, padding: 0 }}>
+                    <NavigationMenuItem style={{ margin: 0, padding: 0 }}>
+                      <NavigationMenuTrigger
+                        style={{ backgroundColor: "transparent" }}
+                        onClick={handleToggle}
+                      >
+                        {isOpen ? (
+                          <RemoveIcon className="icon animate-slideInFromTop " />
+                        ) : (
+                          <MenuIcon className="icon animate-slideInFromTop" />
+                        )}
+                      </NavigationMenuTrigger>
+
+                      <NavigationMenuContent
+                        style={{ borderRadius: "0px" }}
+                        className="w-screen  animate-slideInFromTop bg-inherit m-0 p-0  "
+                      >
+                        <List sx={{ bgcolor: "#bd047c" }}>
+                          <Grid container>
+                            <Grid xs={4}>
+                              <ListItem
+                                sx={{
+                                  textAlign: "center",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  mt: 1,
+                                  borderRight: "2px solid #d6008b",
+                                  color: "white",
+                                  fontWeight: 600,
+                                }}
+                                onClick={() => history.push("/")}
+                              >
+                                <Typography textAlign="center">Home</Typography>
+                              </ListItem>
+                            </Grid>
+                            <Grid xs={4}>
+                              <ListItem
+                                sx={{
+                                  textAlign: "center",
+                                  display: "flex",
+                                  alignItems: "center",
+                                  mt: 1,
+                                  borderRight: "2px solid #d6008b",
+                                  color: "white",
+                                  fontWeight: 600,
+                                }}
+                                onClick={() => history.push("/news")}
+                              >
+                                <Typography textAlign="center">News</Typography>
+                              </ListItem>
+                            </Grid>
+                          </Grid>
+                        </List>
+                        <List sx={{ bgcolor: "#bd047c" }}>
+                          <Grid sx={{ mt: 4 }} container>
+                            {pages.map(
+                              (page: NavigationPages, index: number) => (
+                                <Grid key={index} xs={4}>
+                                  <ListItem
+                                    sx={{
+                                      textAlign: "center",
+                                      display: "flex",
+                                      alignItems: "center",
+                                      mt: 1,
+                                      borderRight: "2px solid #d6008b",
+                                      color: "white",
+                                      fontWeight: 600,
+                                    }}
+                                    onClick={() => history.push(page.route)}
+                                  >
+                                    <Typography textAlign="center">
+                                      {page.icon}
+                                    </Typography>
+                                    <Typography textAlign="center">
+                                      {page.title}
+                                    </Typography>
+                                  </ListItem>
+                                </Grid>
+                              )
+                            )}
+                          </Grid>
+                        </List>
+                      </NavigationMenuContent>
+                    </NavigationMenuItem>
+                  </NavigationMenuList>
+                </NavigationMenu>
               </Box>
               {/* large  */}
               <Box
                 sx={{
                   flexGrow: 1,
-                  display: { xs: "none", md: "flex" },
+                  display: { xs: "none", sm: "flex" },
                   gap: 3,
                 }}
               >
@@ -228,7 +216,6 @@ function Navbar() {
                     </Typography>
                   </Button>
                 ))}
-
                 {/* <TopSearch /> */}
               </Box>
 
@@ -245,12 +232,11 @@ function Navbar() {
                         color: "inherit",
                         cursor: "pointer",
                         background: "none",
-                        bottom:0,
+                        bottom: 0,
                         padding: 0, // Ensures no extra padding
                         margin: 0, // Ensures no extra margin
                       }}
                       type="submit"
-                      // onClick={handleButtonClick}
                     >
                       <SearchIcon />
                     </button>
@@ -261,31 +247,59 @@ function Navbar() {
                     />
                   </Search>
                 </form>
-
-                <Menu
-                  sx={{ mt: "45px" }}
-                  id="menu-appbar"
-                  anchorEl={anchorElUser}
-                  anchorOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  keepMounted
-                  transformOrigin={{
-                    vertical: "top",
-                    horizontal: "right",
-                  }}
-                  open={Boolean(anchorElUser)}
-                  onClose={handleCloseUserMenu}
-                >
-                  {settings.map((setting) => (
-                    <MenuItem key={setting} onClick={handleCloseUserMenu}>
-                      <Typography textAlign="center">{setting}</Typography>
-                    </MenuItem>
-                  ))}
-                </Menu>
               </Box>
             </Toolbar>
+          </Container>
+        </AppBar>
+        <AppBar sx={{ bgcolor: "#f2f2f2", m: 0, p: 0 }} position="static">
+          <Container sx={{ m: 0, p: 0 }} maxWidth="xl">
+            <Grid container>
+              <Grid xs={4}>
+                <ListItem
+                  sx={{
+                    textAlign: "center",
+                    display: "flex",
+                    alignItems: "center",
+                    mt: 1,
+                    color: "#e691c4", 
+                    fontWeight: 600,
+                  }}
+                  onClick={() => history.push("/")}
+                >
+                  <Typography sx={{fontWeight:600}} textAlign="center">Home</Typography>
+                </ListItem>
+              </Grid>
+              <Grid xs={4}>
+                <ListItem
+                  sx={{
+                    textAlign: "center",
+                    display: "flex",
+                    alignItems: "center",
+                    mt: 1,
+                    color: "#e691c4",
+                    fontWeight: 600,
+                  }}
+                  onClick={() => history.push("/news")}
+                >
+                  <Typography sx={{fontWeight:600}} textAlign="center">News</Typography>
+                </ListItem> 
+              </Grid>
+              <Grid xs={4}>
+              <ListItem
+                  sx={{
+                    textAlign: "center",
+                    display: "flex",
+                    alignItems: "center",
+                    mt: 1,
+                    color: "#e691c4",
+                    fontWeight: 600,
+                  }}
+                  onClick={() => history.push("/aboutUs")}
+                >
+                  <Typography sx={{fontWeight:600}} textAlign="center">About Us</Typography>
+                </ListItem>
+              </Grid>
+            </Grid>
           </Container>
         </AppBar>
       </Grid>
