@@ -1,0 +1,163 @@
+"use client";
+import Footer from "@/Component/HomePage/Footer";
+import Navbar from "@/Component/Shared/Navbar";
+import { RecentArticleDataType } from "@/types/RecentArticle";
+import {
+  Breadcrumbs,
+  Button,
+  Container,
+  Grid,
+  Link,
+  Paper,
+  Typography,
+} from "@mui/material";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+import React, { Fragment, useEffect, useState } from "react";
+import DisplayArticleComponent from "../HomePage/DisplayArticleComponent";
+import { CategoryTypes } from "@/types/category";
+
+export default function CategoryPageComponent({
+  categoryWiseArticles,
+  total,
+  category,
+}: {
+  categoryWiseArticles: RecentArticleDataType[];
+  total: number;
+  category: CategoryTypes[];
+}) {
+  const params = useParams();
+  const history = useRouter();
+  const [isHideLoadMore, setIsHideLoadMore] = useState<boolean>(false);
+
+  const searchParams = useSearchParams();
+  const page = searchParams.get("page") ?? "1";
+  const limit = searchParams.get("limit") ?? "3";
+
+  // Function to load more articles
+  const loadMoreArticles = async () => {
+    history.push(
+      `/category/${params?.category}?${new URLSearchParams({
+        page: page,
+        limit: `${Number(limit) + 2}`,
+      })}`,
+      {
+        scroll: false,
+      }
+    );
+  };
+
+  useEffect(() => {
+    if (categoryWiseArticles.length === total) {
+      setIsHideLoadMore(true);
+    }
+  }, [categoryWiseArticles.length, total]);
+
+  return (
+    <>
+      <Navbar />
+      <Grid container>
+        <Grid xs={0} md={1} lg={1.1} xl={2}></Grid>
+        <Grid xs={12} md={10} lg={9.8} xl={8}>
+          <Paper sx={{ p: 2, mb: 2 }} elevation={2}>
+            <Breadcrumbs sx={{ fontSize: 12 }} aria-label="breadcrumb">
+              <Link underline="hover" color="inherit" href="/">
+                Home
+              </Link>
+              <Typography sx={{ fontSize: 12 }}>{params?.category}</Typography>
+            </Breadcrumbs>
+
+            <Grid container>
+              <Grid xs={12} md={8}>
+                <Typography sx={{ fontSize: 37, fontWeight: 550, my: 2 }}>
+                  {params?.category}
+                </Typography>
+              </Grid>
+              <Grid xs={12} md={4}></Grid>
+            </Grid>
+
+            <Grid container>
+              <Grid xs={12} md={8}>
+                <Grid container>
+                  {categoryWiseArticles &&
+                    categoryWiseArticles?.map((data: RecentArticleDataType) => {
+                      console.log(data);
+                      return (
+                        <Fragment key={data.id}>
+                          <DisplayArticleComponent data={data} />
+                        </Fragment>
+                      );
+                    })}
+                </Grid>
+              </Grid>
+              <Grid xs={12} md={0.5}></Grid>
+              <Grid xs={12} sx={{mt:5}} md={3.5}>
+                <Container sx={{ bgcolor: "#bd047c", p: 1 }}>
+                  <Typography
+                    sx={{ fontSize: 18, fontWeight: 600, color: "#f5f5f5" }}
+                  >
+                    Categories
+                  </Typography>
+                </Container>
+
+                {category.map((value) => {
+                  return (
+                    <Typography
+                      sx={{
+                        p: 1,
+                        backgroundColor: "#f2e4ea",
+                        ":hover": { backgroundColor: "#f584b7" },
+                        cursor: "pointer",
+                      }}
+                      key={value.id}
+                      onClick={() => {
+                        history.push(`/category/${value.title}`);
+                      }}
+                    >
+                      {value.title}
+                    </Typography>
+                  );
+                })}
+              </Grid>
+            </Grid>
+            <Grid sx={{ mt: 3 }} container>
+              <Grid xs={1}></Grid>
+              <Grid xs={10} sm={4}>
+                {isHideLoadMore ? null : (
+                  <Button
+                    variant="outlined"
+                    sx={{
+                      borderColor: "#1976d2", // Border color
+                      color: "#1976d2", // Text color
+                      padding: "10px 20px",
+                      fontSize: "16px",
+                      width: "100%",
+                      textTransform: "none",
+                      transition:
+                        "border-color 0.3s ease-in-out, color 0.3s ease-in-out, transform 0.3s ease-in-out",
+                      "&:hover": {
+                        borderColor: "#115293", // Darker shade for hover
+                        color: "#115293",
+                        transform: "scale(1.05)",
+                      },
+                      "&:active": {
+                        borderColor: "#4791db", // Lighter shade for active
+                        color: "#4791db",
+                        transform: "scale(0.95)",
+                      },
+                    }}
+                    onClick={loadMoreArticles}
+                  >
+                    Load More
+                  </Button>
+                )}
+              </Grid>
+              <Grid xs={1}></Grid>
+            </Grid>
+          </Paper>
+        </Grid>
+        <Grid xs={0} md={1} lg={1.1} xl={2}></Grid>
+      </Grid>
+      <Footer />
+    </>
+  );
+}

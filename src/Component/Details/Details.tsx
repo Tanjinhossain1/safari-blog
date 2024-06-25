@@ -11,7 +11,7 @@ import {
   Typography,
 } from "@mui/material";
 import Image from "next/image";
-import { useParams } from "next/navigation";
+import { useParams, useRouter } from "next/navigation";
 import React from "react";
 
 function formatText(text: string) {
@@ -23,6 +23,7 @@ export default function DetailsComponent({
   articleDetail: RecentArticleDataType;
 }) {
   const params = useParams();
+  const history = useRouter();
   console.log("articleDetail  ", articleDetail.content);
 
   return (
@@ -66,6 +67,9 @@ export default function DetailsComponent({
                 }}
                 size="small"
                 variant="contained"
+                onClick={() => {
+                  history.push(`/category/${params?.category}`);
+                }}
               >
                 {params?.category}
               </Button>

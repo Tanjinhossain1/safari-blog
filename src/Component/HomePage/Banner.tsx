@@ -15,6 +15,7 @@ import { truncateText } from "@/utils/utils";
 import { useRouter } from "next/navigation";
 import { RecentArticleDataType } from "@/types/RecentArticle";
 import RecentArticleComponent from "./RecentArticleComponent";
+import { CategoryTypes } from "@/types/category";
 
 const HoverBox = styled(Box)(({ theme }) => ({
   position: "relative",
@@ -110,10 +111,11 @@ const ContentBox = ({
 
 export default function Banner({
   articles,
-  total
+  total,category
 }: {
   articles: RecentArticleDataType[];
-  total:number
+  total:number,
+  category:CategoryTypes[]
 }) {
   console.log("articles articles ", articles);
   const history = useRouter();
@@ -159,10 +161,12 @@ export default function Banner({
               </Grid>
             </Grid>
           </Grid>
-          <RecentArticleComponent total={total} articles={articles}/>
+          <RecentArticleComponent category={category} total={total} articles={articles}/>
         </Paper>
       </Grid>
-      <Grid xs={0} md={1} lg={1.1} xl={2}></Grid>
+      <Grid xs={0} md={1} lg={1.1} xl={2}>
+
+      </Grid>
     </Grid>
   );
 }

@@ -3,7 +3,7 @@ import styles from "./page.module.css";
 import Navbar from "@/Component/Shared/Navbar";
 import Banner from "@/Component/HomePage/Banner";
 import Footer from "@/Component/HomePage/Footer";
-import { fetchArticles } from "@/services/articleServices";
+import { fetchArticles, fetchCategories } from "@/services/articleServices";
 import { Suspense } from "react";
 
 interface HomePropsType {
@@ -15,6 +15,7 @@ interface HomePropsType {
 async function Home({ searchParams }: HomePropsType) {
   const { page, limit } = searchParams;
   const articles = await fetchArticles({ page, limit });
+  const Category = await fetchCategories();
   return (
     <>
       <Suspense>
@@ -22,7 +23,7 @@ async function Home({ searchParams }: HomePropsType) {
       </Suspense>
       {articles ? (
         <Suspense>
-          <Banner articles={articles.data} total={articles.total} />
+          <Banner category={Category.data} articles={articles.data} total={articles.total} />
         </Suspense>
       ) : null}
       <Footer />
