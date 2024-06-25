@@ -2,9 +2,11 @@
 import Footer from "@/Component/HomePage/Footer";
 import Navbar from "@/Component/Shared/Navbar";
 import { RecentArticleDataType } from "@/types/RecentArticle";
+import { CategoryTypes } from "@/types/category";
 import {
   Breadcrumbs,
   Button,
+  Container,
   Grid,
   Link,
   Paper,
@@ -13,14 +15,17 @@ import {
 import Image from "next/image";
 import { useParams, useRouter } from "next/navigation";
 import React from "react";
+import CategoryListComponent from "../Category/CategoryListComponent";
 
 function formatText(text: string) {
   return text.replace(/\n/g, "<br />").replace(/ {2}/g, " &nbsp;");
 }
 export default function DetailsComponent({
   articleDetail,
+  category
 }: {
   articleDetail: RecentArticleDataType;
+  category:CategoryTypes[]
 }) {
   const params = useParams();
   const history = useRouter();
@@ -220,10 +225,17 @@ export default function DetailsComponent({
                     }
                   })}
                 </Grid>
+                <Grid xs={12} lg={0.5}></Grid>
+                <Grid xs={12} sx={{mt:17}} lg={4}>
+               
+                <CategoryListComponent category={category} />
+                </Grid>
               </Grid>
             </Paper>
           </Grid>
-          <Grid xs={0} md={1} lg={1.1} xl={2}></Grid>
+          <Grid xs={0} md={1} lg={1.1} xl={2}> 
+              
+          </Grid>
         </Grid>
         <Footer />
       </>

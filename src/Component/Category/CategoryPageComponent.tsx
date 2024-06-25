@@ -3,6 +3,7 @@ import Footer from "@/Component/HomePage/Footer";
 import Navbar from "@/Component/Shared/Navbar";
 import { RecentArticleDataType } from "@/types/RecentArticle";
 import {
+  Alert,
   Breadcrumbs,
   Button,
   Container,
@@ -15,15 +16,18 @@ import { useParams, useRouter, useSearchParams } from "next/navigation";
 import React, { Fragment, useEffect, useState } from "react";
 import DisplayArticleComponent from "../HomePage/DisplayArticleComponent";
 import { CategoryTypes } from "@/types/category";
+import CategoryListComponent from "./CategoryListComponent";
 
 export default function CategoryPageComponent({
   categoryWiseArticles,
   total,
   category,
+  isSearch,
 }: {
   categoryWiseArticles: RecentArticleDataType[];
   total: number;
   category: CategoryTypes[];
+  isSearch?: boolean;
 }) {
   const params = useParams();
   const history = useRouter();
@@ -32,18 +36,33 @@ export default function CategoryPageComponent({
   const searchParams = useSearchParams();
   const page = searchParams.get("page") ?? "1";
   const limit = searchParams.get("limit") ?? "3";
+  const search = searchParams.get("search") ?? "";
 
   // Function to load more articles
   const loadMoreArticles = async () => {
-    history.push(
-      `/category/${params?.category}?${new URLSearchParams({
-        page: page,
-        limit: `${Number(limit) + 2}`,
-      })}`,
-      {
-        scroll: false,
-      }
-    );
+    if(isSearch){
+
+        history.push(
+          `/search/?${new URLSearchParams({
+            page: page,
+            limit: `${Number(limit) + 2}`,
+            search: search,
+          })}`,
+          {
+            scroll: false,
+          }
+        );
+    }else{
+        history.push(
+            `/category/${params?.category}/?${new URLSearchParams({
+              page: page,
+              limit: `${Number(limit) + 2}`,
+            })}`,
+            {
+              scroll: false,
+            }
+          );
+    }
   };
 
   useEffect(() => {
@@ -63,17 +82,37 @@ export default function CategoryPageComponent({
               <Link underline="hover" color="inherit" href="/">
                 Home
               </Link>
-              <Typography sx={{ fontSize: 12 }}>{params?.category}</Typography>
+              {isSearch ? (
+                <Typography sx={{ fontSize: 12 }}>
+                  Search Results for: {search}
+                </Typography>
+              ) : (
+                <Typography sx={{ fontSize: 12 }}>
+                  {params?.category}
+                </Typography>
+              )}
             </Breadcrumbs>
 
             <Grid container>
               <Grid xs={12} md={8}>
-                <Typography sx={{ fontSize: 37, fontWeight: 550, my: 2 }}>
-                  {params?.category}
-                </Typography>
+                {isSearch ? (
+                  <Typography sx={{ fontSize: 37, fontWeight: 550, my: 2,mb:5 }}>
+                    Search Results for: {search}
+                  </Typography>
+                ) : (
+                  <Typography sx={{ fontSize: 37, fontWeight: 550, my: 2 }}>
+                    {params?.category}
+                  </Typography>
+                )}
               </Grid>
               <Grid xs={12} md={4}></Grid>
             </Grid>
+
+            {categoryWiseArticles && categoryWiseArticles.length === 0 && (
+              <Alert severity="warning">
+                No Article Found For {params?.category}.
+              </Alert>
+            )}
 
             <Grid container>
               <Grid xs={12} md={8}>
@@ -90,33 +129,8 @@ export default function CategoryPageComponent({
                 </Grid>
               </Grid>
               <Grid xs={12} md={0.5}></Grid>
-              <Grid xs={12} sx={{mt:5}} md={3.5}>
-                <Container sx={{ bgcolor: "#bd047c", p: 1 }}>
-                  <Typography
-                    sx={{ fontSize: 18, fontWeight: 600, color: "#f5f5f5" }}
-                  >
-                    Categories
-                  </Typography>
-                </Container>
-
-                {category.map((value) => {
-                  return (
-                    <Typography
-                      sx={{
-                        p: 1,
-                        backgroundColor: "#f2e4ea",
-                        ":hover": { backgroundColor: "#f584b7" },
-                        cursor: "pointer",
-                      }}
-                      key={value.id}
-                      onClick={() => {
-                        history.push(`/category/${value.title}`);
-                      }}
-                    >
-                      {value.title}
-                    </Typography>
-                  );
-                })}
+              <Grid xs={12} sx={{ mt: 5 }} md={3.5}>
+                <CategoryListComponent category={category} />
               </Grid>
             </Grid>
             <Grid sx={{ mt: 3 }} container>

@@ -36,25 +36,33 @@ import ListItemText from "@mui/material/ListItemText";
 import InboxIcon from "@mui/icons-material/MoveToInbox";
 import MailIcon from "@mui/icons-material/Mail";
 import TopSearch from "../TopSearchBar/TopSearch";
-import CloseIcon from '@mui/icons-material/Close';
+import CloseIcon from "@mui/icons-material/Close";
+import { useRouter } from "next/navigation";
 
 // const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
 
 const pages: NavigationPages[] = [
   {
-    title: "Tips",
-    route: "/tips",
-    icon: <Image alt="tips" height={20} width={20} src="/bulb.png" />,
+    title: "Mobiles",
+    route: "/category/Mobiles",
+    icon: <Image alt="tips" height={20} width={20} src="/smartphone.png" />,
   },
   {
-    title: "Top",
-    route: "/top",
-    icon: <Image alt="tips" height={20} width={20} src="/top-rated.png" />,
+    title: "Jobs",
+    route: "/category/Jobs",
+    icon: <Image alt="tips" height={20} width={20} src="/suitcase.png" />,
+  },
+  {
+    title: "Sports",
+    route: "/category/Sports",
+    icon: <Image alt="tips" height={20} width={20} src="/tournament.png" />,
   },
 ];
 
 const Search = styled("div")(({ theme }) => ({
+  display: "flex",
+  alignItems: "center",
   position: "relative",
   borderRadius: theme.shape.borderRadius,
   backgroundColor: alpha(theme.palette.common.white, 0.15),
@@ -69,22 +77,11 @@ const Search = styled("div")(({ theme }) => ({
   },
 }));
 
-const SearchIconWrapper = styled("div")(({ theme }) => ({
-  padding: theme.spacing(0, 2),
-  height: "100%",
-  position: "absolute",
-  pointerEvents: "none",
-  display: "flex",
-  alignItems: "center",
-  justifyContent: "center",
-}));
-
 const StyledInputBase = styled(InputBase)(({ theme }) => ({
   color: "inherit",
   width: "100%",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
-    // vertical padding + font size from searchIcon
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
     transition: theme.transitions.create("width"),
     [theme.breakpoints.up("sm")]: {
@@ -97,6 +94,7 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 function Navbar() {
+  const history = useRouter();
   const [anchorElNav, setAnchorElNav] = useState<null | HTMLElement>(null);
   const [anchorElUser, setAnchorElUser] = useState<null | HTMLElement>(null);
 
@@ -116,6 +114,13 @@ function Navbar() {
   };
   const [state, setState] = React.useState(false);
 
+  const handleSubmit = (event: any) => {
+    event.preventDefault();
+    console.log("search  ", event);
+    const search = event.target.search.value;
+    history.push(`/search?search=${search}`);
+  };
+
   const toggleDrawer =
     (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
       if (
@@ -133,40 +138,39 @@ function Navbar() {
   const list = (
     <div
       role="presentation"
-    //   onClick={toggleDrawer(false)}
+      //   onClick={toggleDrawer(false)}
       onKeyDown={toggleDrawer(false)}
-    //   style={{ backgroundColor: "#d9078f" }}
+      //   style={{ backgroundColor: "#d9078f" }}
     >
-       <Container sx={{display:"flex",justifyContent:"center",bgcolor:"white"}}>
-       <CloseIcon onClick={toggleDrawer(false)} sx={{fontSize:35,textAlign:"center",color:"#d6002b"}}></CloseIcon>
-       </Container>
-      <List sx={{ width: 350 ,bgcolor: "#bd047c" ,height:"100vh" }}>
+      <Container
+        sx={{ display: "flex", justifyContent: "center", bgcolor: "white" }}
+      >
+        <CloseIcon
+          onClick={toggleDrawer(false)}
+          sx={{ fontSize: 35, textAlign: "center", color: "#d6002b" }}
+        ></CloseIcon>
+      </Container>
+      <List sx={{ width: 350, bgcolor: "#bd047c", height: "100vh" }}>
         {pages.map((page: NavigationPages, index: number) => (
           <ListItem
             sx={{
               textAlign: "center",
               display: "flex",
               alignItems: "center",
-              mt:1,
-              borderBottom:"2px solid #d6008b",
-              color:"white",
-              fontWeight:600
+              mt: 1,
+              borderBottom: "2px solid #d6008b",
+              color: "white",
+              fontWeight: 600,
             }}
             key={index}
-            onClick={handleCloseNavMenu}
+            onClick={() => history.push(page.route)}
           >
             <Typography textAlign="center">{page.icon}</Typography>
             <Typography textAlign="center">{page.title}</Typography>
           </ListItem>
-        ))} 
-       <div style={{marginLeft:'30px'}}>
-       <TopSearch />
-       </div>
+        ))}
+        <div style={{ marginLeft: "30px" }}>{/* <TopSearch /> */}</div>
       </List>
-       
-      
-       
-       
     </div>
   );
   return (
@@ -192,11 +196,11 @@ function Navbar() {
                   open={state}
                   onClose={toggleDrawer(false)}
                   onOpen={toggleDrawer(true)}
-                //   sx={{ width: 350, bgcolor: "#d9078f" }}
+                  //   sx={{ width: 350, bgcolor: "#d9078f" }}
                 >
                   {list}
                 </SwipeableDrawer>
-              </Box> 
+              </Box>
               {/* large  */}
               <Box
                 sx={{
@@ -208,12 +212,13 @@ function Navbar() {
                 {pages.map((page: NavigationPages, index: number) => (
                   <Button
                     key={index}
-                    onClick={handleCloseNavMenu}
+                    onClick={() => history.push(page.route)}
                     sx={{
                       my: 2,
                       color: "white",
                       display: "flex",
                       alignItems: "center",
+                      gap: 1,
                     }}
                   >
                     {page.icon}
@@ -224,19 +229,38 @@ function Navbar() {
                   </Button>
                 ))}
 
-               <TopSearch />
+                {/* <TopSearch /> */}
               </Box>
 
               <Box sx={{ flexGrow: 0 }}>
-                <Search>
-                  <SearchIconWrapper>
-                    <SearchIcon />
-                  </SearchIconWrapper>
-                  <StyledInputBase
-                    placeholder="Search…"
-                    inputProps={{ "aria-label": "search" }}
-                  />
-                </Search>
+                <form onSubmit={handleSubmit} style={{ position: "relative" }}>
+                  <Search>
+                    <button
+                      style={{
+                        height: "100%",
+                        display: "flex",
+                        justifyContent: "center",
+                        alignItems: "center",
+                        border: "none",
+                        color: "inherit",
+                        cursor: "pointer",
+                        background: "none",
+                        bottom:0,
+                        padding: 0, // Ensures no extra padding
+                        margin: 0, // Ensures no extra margin
+                      }}
+                      type="submit"
+                      // onClick={handleButtonClick}
+                    >
+                      <SearchIcon />
+                    </button>
+                    <StyledInputBase
+                      name="search"
+                      placeholder="Search…"
+                      inputProps={{ "aria-label": "search" }}
+                    />
+                  </Search>
+                </form>
 
                 <Menu
                   sx={{ mt: "45px" }}

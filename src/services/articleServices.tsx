@@ -8,10 +8,12 @@ export async function fetchArticles({
   page = "1",
   limit = "3",
   category,
+  search,
 }: {
   page: string;
   limit: string;
   category?: string;
+  search?: string;
 }): Promise<{
   data: RecentArticleDataType[];
   page: number;
@@ -21,9 +23,11 @@ export async function fetchArticles({
   let url = `${process.env.NEXT_APP_URL}/api/v1/article/all?page=${page}&limit=${limit}`;
   if (category) {
     url = `${process.env.NEXT_APP_URL}/api/v1/article/all?page=${page}&limit=${limit}&category=${category}`;
+  } else if (search) {
+    url = `${process.env.NEXT_APP_URL}/api/v1/article/all?page=${page}&limit=${limit}&searchTerm=${search}`;
   }
-  console.log("test 1 ", url,category);
-  
+  console.log("test 1 ", url, category);
+
   const response = await fetch(url, {
     cache: "no-store",
   });

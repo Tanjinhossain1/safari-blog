@@ -9,20 +9,21 @@ interface CategoryPropsType {
     searchParams: {
       page: string;
       limit: string;
-      category:string
+      search:string
     };
     params: {
-      category: string;
+      search: string;
     };
   }
-export default async function CategoryPage({ searchParams,params }: CategoryPropsType) {
-    const { page, limit } = searchParams;
-    const articles = await fetchArticles({ page, limit,category:params?.category });
+export default async function SearchFieldSearchPage({ searchParams,params }: CategoryPropsType) {
+    const { page, limit,search } = searchParams;
+    console.log('search', params,search)
+    const articles = await fetchArticles({ page, limit,search });
     const Category = await fetchCategories();
   
   return (
     <Suspense>
-     <CategoryPageComponent category={Category.data} categoryWiseArticles={articles.data} total={articles.total} />
+     <CategoryPageComponent isSearch category={Category.data} categoryWiseArticles={articles.data} total={articles.total} />
     </Suspense>
   );
 }

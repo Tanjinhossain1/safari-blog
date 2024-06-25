@@ -44,17 +44,17 @@ import axios from "axios";
 import { truncateText } from "@/utils/utils";
 import { CategoryTypes } from "@/types/category";
 import DisplayArticleComponent from "./DisplayArticleComponent";
+import CategoryListComponent from "../Category/CategoryListComponent";
 
 export default function RecentArticleComponent({
   articles,
   total,
-  category
+  category,
 }: {
-  articles: RecentArticleDataType[];  
-  total:number,
-  category:CategoryTypes[]
+  articles: RecentArticleDataType[];
+  total: number;
+  category: CategoryTypes[];
 }) {
-     
   const [isHideLoadMore, setIsHideLoadMore] = useState<boolean>(false);
   const history = useRouter();
   const searchParams = useSearchParams();
@@ -62,8 +62,7 @@ export default function RecentArticleComponent({
   const limit = searchParams.get("limit") ?? "3";
 
   // Function to load more articles
-  const loadMoreArticles = async () => { 
-
+  const loadMoreArticles = async () => {
     history.push(
       `/?${new URLSearchParams({
         page: page,
@@ -75,12 +74,12 @@ export default function RecentArticleComponent({
     );
   };
 
-  useEffect(()=>{
-    console.log('articles.length  ', articles.length,total)
-    if(articles.length  === total){
-        setIsHideLoadMore(true)
+  useEffect(() => {
+    console.log("articles.length  ", articles.length, total);
+    if (articles.length === total) {
+      setIsHideLoadMore(true);
     }
-  },[articles.length,total])
+  }, [articles.length, total]);
   return (
     <Grid sx={{ mt: 4 }} container>
       <Grid xs={12} md={8}>
@@ -92,10 +91,10 @@ export default function RecentArticleComponent({
         <Grid sx={{ mt: 2 }} container>
           {articles &&
             articles.map((data: RecentArticleDataType) => {
-              console.log(data,)
+              console.log(data);
               return (
                 <Fragment key={data.id}>
-                   <DisplayArticleComponent data={data} />
+                  <DisplayArticleComponent data={data} />
                 </Fragment>
               );
             })}
@@ -104,22 +103,8 @@ export default function RecentArticleComponent({
 
       <Grid xs={12} md={0.3}></Grid>
       <Grid xs={12} md={3.7}>
-        <Container sx={{ bgcolor: "#bd047c", p: 1 }}>
-          <Typography sx={{ fontSize: 18, fontWeight: 600, color: "#f5f5f5" }}>
-            Categories
-          </Typography>
-
-        </Container>
-          
-            {
-              category.map((value)=>{
-                return (
-                  <Typography onClick={() => {
-                    history.push(`/category/${value.title}`);
-                  }} sx={{p:1,backgroundColor:"#f2e4ea",":hover":{backgroundColor:"#f584b7"}, cursor:"pointer"}} key={value.id}>{value.title}</Typography>
-                )
-              })
-            } 
+        
+      <CategoryListComponent category={category} />
       </Grid>
 
       <Grid sx={{ mt: 3 }} container>
@@ -156,7 +141,6 @@ export default function RecentArticleComponent({
         </Grid>
         <Grid xs={1}></Grid>
       </Grid>
-     
     </Grid>
   );
 }

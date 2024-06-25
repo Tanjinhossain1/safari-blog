@@ -81,7 +81,7 @@ const getAll = async (
     whereConditions.push(searchConditions);
 }
     if (searchTerm) { 
-    const searchConditions = ['title', 'category'].map((field) =>
+    const searchConditions = ['title', 'category','description'].map((field) =>
         ilike((Articles as any)[field], `%${searchTerm}%`)
     );
  
