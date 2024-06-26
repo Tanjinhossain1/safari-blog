@@ -1,11 +1,8 @@
-import Image from "next/image";
-import styles from "./page.module.css";
 import Navbar from "@/Component/Shared/Navbar";
 import Banner from "@/Component/HomePage/Banner";
 import Footer from "@/Component/HomePage/Footer";
 import { fetchArticles, fetchBrands, fetchCategories } from "@/services/articleServices";
 import { Suspense } from "react";
-import NavbarLoadingSkeleton from "@/Component/Shared/NavbarLoadingSkeleton";
 
 interface HomePropsType {
   searchParams: {

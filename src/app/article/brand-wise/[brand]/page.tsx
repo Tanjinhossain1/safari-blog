@@ -1,8 +1,5 @@
 import CategoryPageComponent from "@/Component/Category/CategoryPageComponent";
-import Footer from "@/Component/HomePage/Footer";
-import Navbar from "@/Component/Shared/Navbar";
 import { fetchArticles, fetchArticlesDetails, fetchCategories } from "@/services/articleServices";
-import { Breadcrumbs, Grid, Link, Paper, Typography } from "@mui/material";
 import React, { Suspense } from "react";
 
 interface CategoryPropsType {

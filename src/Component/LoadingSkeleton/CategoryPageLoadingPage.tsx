@@ -12,7 +12,7 @@ export default function CategoryLoadingSkeleton({isBrandWise}:{isBrandWise?:bool
           <div className="p-4 mb-4 bg-white shadow-md">
             <Skeleton className="h-[30px] w-full lg:w-[200px] bg-gray-700 mb-2" />
 
-            <Skeleton className={`h-[60px] w-full ${isBrandWise ? 'lg:w-[400px]' : 'lg:w-[300px]'}  bg-gray-700 mb-2`} />
+            <Skeleton className={`h-[60px] w-full ${isBrandWise ? 'lg:w-[600px]' : 'lg:w-[300px]'}  bg-gray-700 mb-2`} />
 
            
             <div className="mt-4 grid grid-cols-12 gap-4">

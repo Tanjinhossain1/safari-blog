@@ -3,17 +3,10 @@ import React from "react";
 import {
   Grid,
   Paper,
-  Box,
   Typography,
-  Card,
-  CardMedia,
-  CardContent,
   Divider,
   Container,
 } from "@mui/material";
-import { styled } from "@mui/material/styles";
-import Image from "next/image";
-import { truncateText } from "@/utils/utils";
 import FacebookIcon from "@mui/icons-material/Facebook";
 import InstagramIcon from "@mui/icons-material/Instagram";
 import YouTubeIcon from "@mui/icons-material/YouTube";

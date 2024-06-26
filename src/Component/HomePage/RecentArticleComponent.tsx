@@ -1,47 +1,12 @@
 "use client";
 import React, { Fragment, useEffect, useState } from "react";
-import AppBar from "@mui/material/AppBar";
-import Box from "@mui/material/Box";
-import Toolbar from "@mui/material/Toolbar";
-import IconButton from "@mui/material/IconButton";
 import Typography from "@mui/material/Typography";
-import Menu from "@mui/material/Menu";
-import MenuIcon from "@mui/icons-material/Menu";
 import Container from "@mui/material/Container";
-import Avatar from "@mui/material/Avatar";
-import Tooltip from "@mui/material/Tooltip";
-import MenuItem from "@mui/material/MenuItem";
-import AdbIcon from "@mui/icons-material/Adb";
-import {
-  FormControl,
-  Grid,
-  InputBase,
-  InputLabel,
-  Select,
-  alpha,
-  styled,
-} from "@mui/material";
-import SearchIcon from "@mui/icons-material/Search";
-import { NavigationPages } from "@/types/Navbar";
-import TipsAndUpdatesIcon from "@mui/icons-material/TipsAndUpdates";
+import { Grid } from "@mui/material";
 import Image from "next/image";
-import SwipeableDrawer from "@mui/material/SwipeableDrawer";
 import Button from "@mui/material/Button";
-import List from "@mui/material/List";
-import Divider from "@mui/material/Divider";
-import ListItem from "@mui/material/ListItem";
-import ListItemButton from "@mui/material/ListItemButton";
-import ListItemIcon from "@mui/material/ListItemIcon";
-import ListItemText from "@mui/material/ListItemText";
-import InboxIcon from "@mui/icons-material/MoveToInbox";
-import MailIcon from "@mui/icons-material/Mail";
-import TopSearch from "../TopSearchBar/TopSearch";
-import CloseIcon from "@mui/icons-material/Close";
-import { SAMPLE_DATA } from "./RecentArticleDataType";
 import { RecentArticleDataType } from "@/types/RecentArticle";
 import { useRouter, useSearchParams } from "next/navigation";
-import axios from "axios";
-import { truncateText } from "@/utils/utils";
 import { BrandTypes, CategoryTypes } from "@/types/category";
 import DisplayArticleComponent from "./DisplayArticleComponent";
 import CategoryListComponent from "../Category/CategoryListComponent";
@@ -50,7 +15,7 @@ import {
   CarouselContent,
   CarouselItem,
 } from "@/components/ui/carousel";
-import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import ArrowForwardIosIcon from "@mui/icons-material/ArrowForwardIos";
 import BrandDisplayComponent from "./BrandDisplay";
 
 export default function RecentArticleComponent({
@@ -58,7 +23,7 @@ export default function RecentArticleComponent({
   total,
   category,
   latestArticles,
-  brands
+  brands,
 }: {
   articles: RecentArticleDataType[];
   total: number;
@@ -155,7 +120,7 @@ export default function RecentArticleComponent({
           <Typography
             sx={{
               mb: 1,
-              mt:5,
+              mt: 5,
               borderBottom: "2px solid lightgray",
               fontSize: 25,
               width: "100%",
@@ -208,23 +173,21 @@ export default function RecentArticleComponent({
           <Typography
             sx={{
               mb: 1,
-              mt:5,
+              mt: 5,
               borderBottom: "2px solid lightgray",
               fontSize: 25,
               width: "100%",
               fontWeight: 600,
               color: "#e8005d",
-              cursor:"pointer"
+              cursor: "pointer",
             }}
-            onClick={()=>history.push('/brands')}
+            onClick={() => history.push("/brands")}
             // onclick={()=>history.push('/brands')}
           >
-            Brands <ArrowForwardIosIcon sx={{fontSize: 20}} />
+            Brands <ArrowForwardIosIcon sx={{ fontSize: 20 }} />
           </Typography>
 
           <BrandDisplayComponent brands={brands} />
-
-         
         </Grid>
       </Grid>
     </Grid>

@@ -1,6 +1,4 @@
 import CategoryPageComponent from "@/Component/Category/CategoryPageComponent";
-import CategoryLoadingSkeleton from "@/Component/LoadingSkeleton/CategoryPageLoadingPage";
-import DetailPageLoadingSkeleton from "@/Component/LoadingSkeleton/DetailsPageLoadingSkeleton";
 import { fetchArticles, fetchCategories } from "@/services/articleServices";
 import React, { Suspense } from "react";
 

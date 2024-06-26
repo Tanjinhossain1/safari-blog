@@ -79,18 +79,7 @@ export default function DialogComponent({
             startAdornment={<InputAdornment position="start"></InputAdornment>}
           />
         </FormControl>
-        {/* <FormControl sx={{ my: 2, width: "100%" }} variant="filled">
-          <InputLabel sx={{ mb: 1 }} htmlFor="filled-adornment-amount">
-            Value <sup style={{ color: "red", fontSize: 20 }}>*</sup>
-          </InputLabel>
-          <FilledInput
-            name="value"
-            id="filled-adornment-amount"
-            placeholder="Value"
-            required
-            startAdornment={<InputAdornment position="start"></InputAdornment>}
-          />
-        </FormControl> */}
+       
         <Container sx={{ display: "flex", justifyContent: "end", gap: 3 }}>
           <Button color="error" onClick={handleDialogClose} variant="contained">
             Cancel

@@ -2,11 +2,9 @@
 import {
   Alert,
   Backdrop,
-  Box,
   Button,
   CircularProgress,
   Container,
-  CssBaseline,
   Dialog,
   FilledInput,
   FormControl,
@@ -22,7 +20,7 @@ import {
 } from "@mui/material";
 import dynamic from "next/dynamic";
 import React, { useEffect, useRef, useState } from "react";
-import EditorJS, { OutputData } from "@editorjs/editorjs";
+import EditorJS from "@editorjs/editorjs";
 import FileUpload from "@/Component/Forms/UploadImage";
 import axios from "axios";
 import { useRouter } from "next/navigation";

@@ -5,9 +5,6 @@ import {
   Paper,
   Box,
   Typography,
-  Card,
-  CardMedia,
-  CardContent,
 } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Image from "next/image";
