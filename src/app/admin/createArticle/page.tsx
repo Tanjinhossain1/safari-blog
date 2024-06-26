@@ -1,4 +1,4 @@
-import { fetchCategories } from "@/services/articleServices";
+import { fetchBrands, fetchCategories } from "@/services/articleServices";
 import { CategoryTypes } from "@/types/category";
 import dynamic from "next/dynamic";
 import React, { Suspense } from "react";
@@ -12,10 +12,11 @@ const CreateArticleComponent = dynamic(
 
 export default async function CreateArticle() {
   const categories = await fetchCategories();
+  const brands = await fetchBrands();
   console.log("categories   ", categories);
   return (
     <Suspense>
-      <CreateArticleComponent categories={categories.data} />
+      <CreateArticleComponent brandsData={brands.data} categories={categories.data} />
     </Suspense>
   );
 }

@@ -28,27 +28,44 @@ import axios from "axios";
 import { useRouter } from "next/navigation";
 import AddCircleIcon from "@mui/icons-material/AddCircle";
 import DialogComponent from "./Dialog";
-import { CategoryTypes } from "@/types/category";
+import { BrandTypes, CategoryTypes } from "@/types/category";
 
 const Editor = dynamic(
   () => import("../../../src/Component/Editor/EditorForCreateArticle"),
   { ssr: false }
 );
 
-export default function CreateArticleComponent({categories}:{categories:CategoryTypes[]}) {
+export default function CreateArticleComponent({
+  categories,
+  brandsData
+}: {
+  categories: CategoryTypes[];
+  brandsData: BrandTypes[];
+}) {
   const history = useRouter();
   const editorRef = useRef<EditorJS | null>(null);
   const [open, setOpen] = React.useState(false);
   const [openBackDrop, setOpenBackDrop] = React.useState(false);
 
   const [age, setAge] = React.useState("");
+  const [brands, setBrands] = React.useState("");
+  const [latestDevice, setLatestDevice] = React.useState("");
 
   const [unFormatFile, setUnFormatFile] = useState<any>(null);
   const [image, setImage] = useState<string | null>(null);
   const [imageLoad, setImageLoad] = useState<boolean>(false);
   const [imageRequiredError, setImageRequiredError] = useState<boolean>(false);
+  const [showSuccessText, setShowSuccessText] = useState<string>("");
   const [dialogOpen, setDialogOpen] = React.useState(false);
-  const [showSuccessText, setShowSuccessText] = useState<string>("")
+  const [brandDialogOpen, setBrandDialogOpen] = React.useState(false);
+
+  const handleBrandDialogClickOpen = () => {
+    setBrandDialogOpen(true);
+  };
+
+  const handleBrandDialogClose = () => {
+    setBrandDialogOpen(false);
+  };
 
   const handleDialogClickOpen = () => {
     setDialogOpen(true);
@@ -68,10 +85,17 @@ export default function CreateArticleComponent({categories}:{categories:Category
   const handleChange = (event: SelectChangeEvent) => {
     setAge(event.target.value);
   };
+  const handleBrandChange = (event: SelectChangeEvent) => {
+    setBrands(event.target.value);
+  };
 
-  const handleClick = (text:string) => {
+  const handleLatestChange = (event: SelectChangeEvent) => {
+    setLatestDevice(event.target.value);
+  };
+
+  const handleClick = (text: string) => {
     setOpen(true);
-    setShowSuccessText(text)
+    setShowSuccessText(text);
   };
 
   const handleClose = (
@@ -80,7 +104,7 @@ export default function CreateArticleComponent({categories}:{categories:Category
   ) => {
     if (reason === "clickaway") {
       return;
-    } 
+    }
     setOpen(false);
   };
   useEffect(() => {
@@ -117,6 +141,9 @@ export default function CreateArticleComponent({categories}:{categories:Category
     const title = (event.target as any)?.title.value;
     const description = (event.target as any)?.description.value;
     const category = (event.target as any)?.category.value;
+    const latestDeviceValue = (event.target as any)?.latestDevice.value;
+    const brands = (event.target as any)?.brands.value;
+    const deviceName = (event.target as any)?.deviceName.value;
     event.preventDefault();
     console.log(
       "submit data  ",
@@ -126,6 +153,8 @@ export default function CreateArticleComponent({categories}:{categories:Category
         category: category,
         image: image,
         content: fieldData?.blocks,
+        latestDevice: latestDeviceValue,
+        brands: brands,
       }
     );
     const data = {
@@ -134,6 +163,9 @@ export default function CreateArticleComponent({categories}:{categories:Category
       description: description,
       image: image,
       content: fieldData?.blocks,
+      latestDevice: latestDeviceValue,
+      brands: brands,
+      deviceName: deviceName,
     };
     if (image) {
       setImageRequiredError(false);
@@ -200,6 +232,43 @@ export default function CreateArticleComponent({categories}:{categories:Category
               }
             />
           </FormControl>
+
+          <FormControl sx={{ my: 2, width: "100%" }} variant="filled">
+            <InputLabel sx={{ mb: 1 }} htmlFor="filled-adornment-amount">
+              Device Name <sup style={{ color: "red", fontSize: 20 }}>*</sup>
+            </InputLabel>
+            <FilledInput
+              name="deviceName"
+              id="filled-adornment-amount"
+              placeholder="Name"
+              required
+              startAdornment={
+                <InputAdornment position="start"></InputAdornment>
+              }
+            />
+          </FormControl>
+
+          <FormControl
+            variant="filled"
+            sx={{ my: 1, minWidth: "100%", display: "flex" }}
+          >
+            <InputLabel id="demo-simple-select-filled-label">
+              Latest Device <sup style={{ color: "red", fontSize: 20 }}>*</sup>
+            </InputLabel>
+
+            <Select
+              labelId="demo-simple-select-filled-label"
+              id="demo-simple-select-filled"
+              value={latestDevice}
+              required
+              name="latestDevice"
+              onChange={handleLatestChange}
+            >
+              <MenuItem value={"latest"}>Latest</MenuItem>
+              <MenuItem value={"old"}>Old</MenuItem>
+            </Select>
+          </FormControl>
+
           <FormControl
             variant="filled"
             sx={{ my: 1, minWidth: "100%", display: "flex" }}
@@ -216,11 +285,13 @@ export default function CreateArticleComponent({categories}:{categories:Category
               name="category"
               onChange={handleChange}
             >
-              {
-                categories?.map((category) =>{
-                  return <MenuItem key={category.id} value={category.title}>{category.title}</MenuItem>
-                })
-              }
+              {categories?.map((category) => {
+                return (
+                  <MenuItem key={category.id} value={category.title}>
+                    {category.title}
+                  </MenuItem>
+                );
+              })}
               {/* <MenuItem value={"mobile"}>Mobile</MenuItem> */}
             </Select>
 
@@ -228,6 +299,39 @@ export default function CreateArticleComponent({categories}:{categories:Category
               <AddCircleIcon color="success" titleAccess="Add Category" />
             </IconButton>
           </FormControl>
+
+          {age === "Mobiles" ? (
+            <FormControl
+              variant="filled"
+              sx={{ my: 1, minWidth: "100%", display: "flex" }}
+            >
+              <InputLabel id="demo-simple-select-filled-label">
+                Brands <sup style={{ color: "red", fontSize: 20 }}>*</sup>
+              </InputLabel>
+
+              <Select
+                labelId="demo-simple-select-filled-label"
+                id="demo-simple-select-filled"
+                value={brands}
+                required
+                name="brands"
+                onChange={handleBrandChange}
+              >
+                {brandsData?.map((brand) => {
+                  return (
+                    <MenuItem key={brand.id} value={brand.title}>
+                      {brand.title}
+                    </MenuItem>
+                  );
+                })}
+                {/* <MenuItem value={"mobile"}>Mobile</MenuItem> */}
+              </Select>
+
+              <IconButton onClick={handleBrandDialogClickOpen}>
+                <AddCircleIcon color="success" titleAccess="Add Brand" />
+              </IconButton>
+            </FormControl>
+          ) : null}
           <TextField
             label={
               <span>
@@ -304,8 +408,29 @@ export default function CreateArticleComponent({categories}:{categories:Category
         aria-labelledby="alert-dialog-title"
         aria-describedby="alert-dialog-description"
       >
-      <DialogComponent handleClick={handleClick} handleBackdropClose={handleBackdropClose} handleBackDropOpen={handleBackDropOpen} handleDialogClose={handleDialogClose} />
+        <DialogComponent
+          handleClick={handleClick}
+          handleBackdropClose={handleBackdropClose}
+          handleBackDropOpen={handleBackDropOpen}
+          handleDialogClose={handleDialogClose}
+        />
       </Dialog>
+
+      <Dialog
+        open={brandDialogOpen}
+        onClose={handleBrandDialogClose}
+        aria-labelledby="alert-dialog-title"
+        aria-describedby="alert-dialog-description"
+      >
+        <DialogComponent
+        isBrand
+          handleClick={handleBrandDialogClickOpen}
+          handleBackdropClose={handleBackdropClose}
+          handleBackDropOpen={handleBackDropOpen}
+          handleDialogClose={handleBrandDialogClose}
+        />
+      </Dialog>
+
       <Snackbar open={open} autoHideDuration={3000} onClose={handleClose}>
         <Alert
           onClose={handleClose}

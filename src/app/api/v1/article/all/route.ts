@@ -43,6 +43,9 @@ export async function GET(req: NextRequest) {
             searchTerm: searchParams.get('searchTerm'),
             id: searchParams.get('id'),
             category: searchParams.get('category'),
+            latestDevice: searchParams.get('latestDevice'),
+            all: searchParams.get('all'),
+            brands: searchParams.get('brands'),
         };
 
         const options = {
@@ -73,30 +76,46 @@ const getAll = async (
     options: IPaginationOptions
 ): Promise<IGenericResponse<any[]>> => {
     const { limit, page, skip } = paginationHelpers.calculatePagination(options);
-    const { searchTerm,category } = filters;
+    const { searchTerm, category, latestDevice, all,brands } = filters;
     const whereConditions = [];
-    if (category) { 
-    const searchConditions = ilike(Articles["category"], `%${category}%`)
- 
-    whereConditions.push(searchConditions);
-}
-    if (searchTerm) { 
-    const searchConditions = ['title', 'category','description'].map((field) =>
-        ilike((Articles as any)[field], `%${searchTerm}%`)
-    );
- 
-    whereConditions.push(or(...searchConditions));
-}
+
+    if (category) {
+        const searchConditions = ilike(Articles["category"], `%${category}%`)
+
+        whereConditions.push(searchConditions);
+    }
+    if (latestDevice) {
+        const searchConditions = ilike(Articles["latestDevice"], `%${latestDevice}%`)
+
+        whereConditions.push(searchConditions);
+    }
+    if (brands) {
+        const searchConditions = ilike(Articles["brands"], `%${brands}%`)
+
+        whereConditions.push(searchConditions);
+    }
+    if (searchTerm) {
+        const searchConditions = ['title', 'category', 'description'].map((field) =>
+            ilike((Articles as any)[field], `%${searchTerm}%`)
+        );
+
+        whereConditions.push(or(...searchConditions));
+    }
 
     // const orderBy: any = options.sortBy;
 
-    const articles = await db
+    const articles = all === "all" ? await db
         .select()
         .from(Articles)
         .where(and(...whereConditions))
-        .orderBy(desc(Articles.createdAt))
-        .offset(skip)
-        .limit(limit);
+        .orderBy(desc(Articles.id))
+        : await db
+            .select()
+            .from(Articles)
+            .where(and(...whereConditions))
+            .orderBy(desc(Articles.id))
+            .offset(skip)
+            .limit(limit);
     // .orderBy(asc(CreateArticle.createdAt))
     // .orderBy(orderBy);
     //   .orderBy(orderBy)

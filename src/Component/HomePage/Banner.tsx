@@ -111,11 +111,14 @@ const ContentBox = ({
 
 export default function Banner({
   articles,
-  total,category
+  total,
+  category,
+  latestArticles
 }: {
   articles: RecentArticleDataType[];
   total:number,
   category:CategoryTypes[]
+  latestArticles: RecentArticleDataType[];
 }) {
   console.log("articles articles ", articles);
   const history = useRouter();
@@ -161,12 +164,14 @@ export default function Banner({
               </Grid>
             </Grid>
           </Grid>
-          <RecentArticleComponent category={category} total={total} articles={articles}/>
+          <RecentArticleComponent latestArticles={latestArticles} category={category} total={total} articles={articles}/>
         </Paper>
       </Grid>
       <Grid xs={0} md={1} lg={1.1} xl={2}>
 
       </Grid>
+
+      
     </Grid>
   );
 }

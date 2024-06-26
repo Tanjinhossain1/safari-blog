@@ -1,7 +1,7 @@
 "use server";
 // services/articleService.ts
 import { RecentArticleDataType } from "@/types/RecentArticle";
-import { CategoryTypes } from "@/types/category";
+import { BrandTypes, CategoryTypes } from "@/types/category";
 import { revalidatePath } from "next/cache";
 
 export async function fetchArticles({
@@ -9,11 +9,13 @@ export async function fetchArticles({
   limit = "3",
   category,
   search,
+  latestDevice
 }: {
   page: string;
   limit: string;
   category?: string;
   search?: string;
+  latestDevice?: string;
 }): Promise<{
   data: RecentArticleDataType[];
   page: number;
@@ -25,6 +27,8 @@ export async function fetchArticles({
     url = `${process.env.NEXT_APP_URL}/api/v1/article/all?page=${page}&limit=${limit}&category=${category}`;
   } else if (search) {
     url = `${process.env.NEXT_APP_URL}/api/v1/article/all?page=${page}&limit=${limit}&searchTerm=${search}`;
+  }else if (latestDevice) {
+    url = `${process.env.NEXT_APP_URL}/api/v1/article/all?latestDevice=${latestDevice}&all=all`;
   }
   console.log("test 1 ", url, category);
 
@@ -85,6 +89,27 @@ export async function fetchCategories(): Promise<{
       `Failed to fetch Category: ${response.status} ${response.statusText}`
     );
     throw new Error("Failed to fetch Category");
+  }
+
+  const data = await response.json();
+  // revalidatePath('/')
+  return {
+    data: data?.data,
+  };
+}
+
+export async function fetchBrands(): Promise<{
+  data: BrandTypes[];
+}> {
+  const response = await fetch(`${process.env.NEXT_APP_URL}/api/brands/all`, {
+    cache: "no-store",
+  });
+
+  if (!response.ok) {
+    console.error(
+      `Failed to fetch brands: ${response.status} ${response.statusText}`
+    );
+    throw new Error("Failed to fetch Brands");
   }
 
   const data = await response.json();

@@ -6,3 +6,10 @@ export interface CategoryTypes {
     updateAt: string;
     createdAt: string;
 } 
+
+export interface BrandTypes {
+    id:number;
+    title:string;
+    updateAt: string;
+    createdAt: string;
+} 

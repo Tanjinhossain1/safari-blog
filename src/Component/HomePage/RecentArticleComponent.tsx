@@ -45,22 +45,30 @@ import { truncateText } from "@/utils/utils";
 import { CategoryTypes } from "@/types/category";
 import DisplayArticleComponent from "./DisplayArticleComponent";
 import CategoryListComponent from "../Category/CategoryListComponent";
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+} from "@/components/ui/carousel";
+import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
 
 export default function RecentArticleComponent({
   articles,
   total,
   category,
+  latestArticles,
 }: {
   articles: RecentArticleDataType[];
   total: number;
   category: CategoryTypes[];
+  latestArticles: RecentArticleDataType[];
 }) {
   const [isHideLoadMore, setIsHideLoadMore] = useState<boolean>(false);
   const history = useRouter();
   const searchParams = useSearchParams();
   const page = searchParams.get("page") ?? "1";
   const limit = searchParams.get("limit") ?? "3";
-
+  console.log("latestArticles  ", latestArticles);
   // Function to load more articles
   const loadMoreArticles = async () => {
     history.push(
@@ -103,8 +111,7 @@ export default function RecentArticleComponent({
 
       <Grid xs={12} md={0.3}></Grid>
       <Grid xs={12} md={3.7}>
-        
-      <CategoryListComponent category={category} />
+        <CategoryListComponent category={category} />
       </Grid>
 
       <Grid sx={{ mt: 3 }} container>
@@ -140,6 +147,84 @@ export default function RecentArticleComponent({
           )}
         </Grid>
         <Grid xs={1}></Grid>
+
+        <Grid sx={{ mt: 2 }} container>
+          <Typography
+            sx={{
+              mb: 1,
+              borderBottom: "2px solid lightgray",
+              fontSize: 25,
+              width: "100%",
+              fontWeight: 600,
+              color: "#e8005d",
+            }}
+          >
+            Latest Devices
+          </Typography>
+          <Carousel>
+            <CarouselContent>
+              {latestArticles &&
+                latestArticles.map((data: RecentArticleDataType) => {
+                  // if (data?.latestDevice === "latest") {
+                  return (
+                    <CarouselItem
+                      className=" basis-1/3 sm:basis-1/4 lg:basis-1/5"
+                      key={data.id}
+                    >
+                      <Image
+                        style={{ cursor: "pointer" }}
+                        alt=""
+                        src={data.image}
+                        width={300}
+                        height={300}
+                        onClick={() => {
+                          const joinTitle = data.title
+                            .split(" ")
+                            .map(
+                              (word) =>
+                                word.charAt(0).toUpperCase() + word.slice(1)
+                            )
+                            .join("-");
+                          history.push(
+                            `/details/${data.id}/${data.category}/${joinTitle}`
+                          );
+                        }}
+                      />
+                      <Typography>{data?.deviceName}</Typography>
+                    </CarouselItem>
+                  );
+                  // }
+                })}
+              {/* <CarouselItem className="basis-1/3"></CarouselItem>  */}
+            </CarouselContent>
+          </Carousel>
+        </Grid>
+
+        <Grid sx={{ mt: 2 }} container>
+          <Typography
+            sx={{
+              mb: 1,
+              borderBottom: "2px solid lightgray",
+              fontSize: 25,
+              width: "100%",
+              fontWeight: 600,
+              color: "#e8005d",
+            }}
+          >
+            Brands
+          </Typography>
+
+          {latestArticles &&
+            latestArticles.map((data: RecentArticleDataType) => {
+              // if (data?.latestDevice === "latest") {
+              return (
+                <Container sx={{display:"flex",justifyContent:"space-between"}} key={data?.id}>
+                  <Typography>{data?.brands}</Typography>
+                  <Typography><ArrowForwardIosIcon /></Typography>
+                </Container>
+              );
+            })}
+        </Grid>
       </Grid>
     </Grid>
   );

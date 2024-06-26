@@ -16,6 +16,7 @@ interface HomePropsType {
 async function Home({ searchParams }: HomePropsType) {
   const { page, limit } = searchParams;
   const articles = await fetchArticles({ page, limit });
+  const LatestArticles = await fetchArticles({ page, limit,latestDevice:"latest" });
   const Category = await fetchCategories();
   return (
     <>
@@ -24,7 +25,7 @@ async function Home({ searchParams }: HomePropsType) {
       </Suspense>
       {articles ? (
         <Suspense>
-          <Banner category={Category.data} articles={articles.data} total={articles.total} />
+          <Banner latestArticles={LatestArticles.data} category={Category.data} articles={articles.data} total={articles.total} />
         </Suspense>
       ) : null}
       <Footer />
