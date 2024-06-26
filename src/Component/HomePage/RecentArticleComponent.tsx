@@ -42,7 +42,7 @@ import { RecentArticleDataType } from "@/types/RecentArticle";
 import { useRouter, useSearchParams } from "next/navigation";
 import axios from "axios";
 import { truncateText } from "@/utils/utils";
-import { CategoryTypes } from "@/types/category";
+import { BrandTypes, CategoryTypes } from "@/types/category";
 import DisplayArticleComponent from "./DisplayArticleComponent";
 import CategoryListComponent from "../Category/CategoryListComponent";
 import {
@@ -51,17 +51,20 @@ import {
   CarouselItem,
 } from "@/components/ui/carousel";
 import ArrowForwardIosIcon from '@mui/icons-material/ArrowForwardIos';
+import BrandDisplayComponent from "./BrandDisplay";
 
 export default function RecentArticleComponent({
   articles,
   total,
   category,
   latestArticles,
+  brands
 }: {
   articles: RecentArticleDataType[];
   total: number;
   category: CategoryTypes[];
   latestArticles: RecentArticleDataType[];
+  brands: BrandTypes[];
 }) {
   const [isHideLoadMore, setIsHideLoadMore] = useState<boolean>(false);
   const history = useRouter();
@@ -152,6 +155,7 @@ export default function RecentArticleComponent({
           <Typography
             sx={{
               mb: 1,
+              mt:5,
               borderBottom: "2px solid lightgray",
               fontSize: 25,
               width: "100%",
@@ -204,26 +208,23 @@ export default function RecentArticleComponent({
           <Typography
             sx={{
               mb: 1,
+              mt:5,
               borderBottom: "2px solid lightgray",
               fontSize: 25,
               width: "100%",
               fontWeight: 600,
               color: "#e8005d",
+              cursor:"pointer"
             }}
+            onClick={()=>history.push('/brands')}
+            // onclick={()=>history.push('/brands')}
           >
-            Brands
+            Brands <ArrowForwardIosIcon sx={{fontSize: 20}} />
           </Typography>
 
-          {latestArticles &&
-            latestArticles.map((data: RecentArticleDataType) => {
-              // if (data?.latestDevice === "latest") {
-              return (
-                <Container sx={{display:"flex",justifyContent:"space-between"}} key={data?.id}>
-                  <Typography>{data?.brands}</Typography>
-                  <Typography><ArrowForwardIosIcon /></Typography>
-                </Container>
-              );
-            })}
+          <BrandDisplayComponent brands={brands} />
+
+         
         </Grid>
       </Grid>
     </Grid>

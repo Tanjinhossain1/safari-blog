@@ -22,14 +22,21 @@ function formatText(text: string) {
 }
 export default function DetailsComponent({
   articleDetail,
-  category
+  category,
 }: {
   articleDetail: RecentArticleDataType;
-  category:CategoryTypes[]
+  category: CategoryTypes[];
 }) {
   const params = useParams();
   const history = useRouter();
   console.log("articleDetail  ", articleDetail.content);
+  const rawTitle = params?.title as string;
+  const decodedTitle = decodeURIComponent(rawTitle);
+
+  const formattedTitle = decodedTitle
+    .split("-")
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(" ");
 
   return (
     <>
@@ -50,12 +57,7 @@ export default function DetailsComponent({
                 >
                   {params?.category}
                 </Link>
-                <Typography sx={{ fontSize: 12 }}>
-                  {(params?.title as string)
-                    .split("-")
-                    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-                    .join(" ")}
-                </Typography>
+                <Typography sx={{ fontSize: 12 }}>{formattedTitle}</Typography>
               </Breadcrumbs>
               <Button
                 sx={{
@@ -89,12 +91,7 @@ export default function DetailsComponent({
                     }}
                   >
                     {" "}
-                    {(params?.title as string)
-                      .split("-")
-                      .map(
-                        (word) => word.charAt(0).toUpperCase() + word.slice(1)
-                      )
-                      .join(" ")}
+                    {formattedTitle}
                   </Typography>
 
                   <Image
@@ -105,7 +102,7 @@ export default function DetailsComponent({
                     width={0}
                     height={0}
                   />
-                  {articleDetail.content.map((block) => {
+                 {articleDetail.content.map((block) => {
                     if (block.type === "paragraph") {
                       return (
                         <div
@@ -142,15 +139,20 @@ export default function DetailsComponent({
                       return block.data.style === "unordered" ? (
                         <ul key={block.id}>
                           {block.data.items.map((item: any) => (
-                            <li style={{ marginTop: "10px" }} key={item} dangerouslySetInnerHTML={{__html: item}}>
-                              
-                            </li>
+                            <li
+                              style={{ marginTop: "10px" }}
+                              key={item}
+                              dangerouslySetInnerHTML={{ __html: item }}
+                            ></li>
                           ))}
                         </ul>
                       ) : (
                         <ol key={block.id}>
                           {block.data.items.map((item: any) => (
-                            <li key={item} dangerouslySetInnerHTML={{__html: item}}></li>
+                            <li
+                              key={item}
+                              dangerouslySetInnerHTML={{ __html: item }}
+                            ></li>
                           ))}
                         </ol>
                       );
@@ -209,10 +211,10 @@ export default function DetailsComponent({
                                             textAlign: "left",
                                             // border: "1px solid #dddddd",
                                           }}
-                                          dangerouslySetInnerHTML={{__html: cell}}
-                                        >
-                                          
-                                        </td>
+                                          dangerouslySetInnerHTML={{
+                                            __html: cell,
+                                          }}
+                                        ></td>
                                       ))}
                                     </tr>
                                   );
@@ -226,16 +228,13 @@ export default function DetailsComponent({
                   })}
                 </Grid>
                 <Grid xs={12} lg={0.5}></Grid>
-                <Grid xs={12} sx={{mt:17}} lg={4}>
-               
-                <CategoryListComponent category={category} />
+                <Grid xs={12} sx={{ mt: 17 }} lg={4}>
+                  <CategoryListComponent category={category} />
                 </Grid>
               </Grid>
             </Paper>
           </Grid>
-          <Grid xs={0} md={1} lg={1.1} xl={2}> 
-              
-          </Grid>
+          <Grid xs={0} md={1} lg={1.1} xl={2}></Grid>
         </Grid>
         <Footer />
       </>

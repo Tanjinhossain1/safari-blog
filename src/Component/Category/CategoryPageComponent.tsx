@@ -23,11 +23,13 @@ export default function CategoryPageComponent({
   total,
   category,
   isSearch,
+  isBrandWise,
 }: {
   categoryWiseArticles: RecentArticleDataType[];
   total: number;
   category: CategoryTypes[];
   isSearch?: boolean;
+  isBrandWise?: boolean;
 }) {
   const params = useParams();
   const history = useRouter();
@@ -36,7 +38,7 @@ export default function CategoryPageComponent({
   const searchParams = useSearchParams();
   const page = searchParams.get("page") ?? "1";
   const limit = searchParams.get("limit") ?? "3";
-  const search = searchParams.get("search") ?? "";
+  const search = searchParams.get("search") ?? ""; 
 
   // Function to load more articles
   const loadMoreArticles = async () => {
@@ -52,6 +54,16 @@ export default function CategoryPageComponent({
             scroll: false,
           }
         );
+    } else if(isBrandWise){
+      history.push(
+        `/article/brand-wise/${params?.brand}?${new URLSearchParams({
+          page: page,
+          limit: `${Number(limit) + 2}`,
+        })}`,
+        {
+          scroll: false,
+        }
+      );
     }else{
         history.push(
             `/category/${params?.category}/?${new URLSearchParams({
@@ -82,7 +94,9 @@ export default function CategoryPageComponent({
               <Link underline="hover" color="inherit" href="/">
                 Home
               </Link>
-              {isSearch ? (
+              {isBrandWise ? <Typography sx={{ fontSize: 12 }}>
+                  {params?.brand}
+                </Typography> : isSearch ? (
                 <Typography sx={{ fontSize: 12 }}>
                   Search Results for: {search}
                 </Typography>
@@ -95,7 +109,9 @@ export default function CategoryPageComponent({
 
             <Grid container>
               <Grid xs={12} md={8}>
-                {isSearch ? (
+                {isBrandWise ?   <Typography sx={{ fontSize: 37, fontWeight: 550, my: 2,mb:5 }}>
+                    Article for Brand: {params?.brand}
+                  </Typography> : isSearch ? (
                   <Typography sx={{ fontSize: 37, fontWeight: 550, my: 2,mb:5 }}>
                     Search Results for: {search}
                   </Typography>
@@ -110,7 +126,7 @@ export default function CategoryPageComponent({
 
             {categoryWiseArticles && categoryWiseArticles.length === 0 && (
               <Alert severity="warning">
-                No Article Found For {params?.category}.
+                No Article Found For {params?.brand} {search ? search : ""} {params?.category}.
               </Alert>
             )}
 

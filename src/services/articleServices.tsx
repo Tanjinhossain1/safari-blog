@@ -9,13 +9,15 @@ export async function fetchArticles({
   limit = "3",
   category,
   search,
-  latestDevice
+  latestDevice,
+  brands
 }: {
   page: string;
   limit: string;
   category?: string;
   search?: string;
   latestDevice?: string;
+  brands?: string;
 }): Promise<{
   data: RecentArticleDataType[];
   page: number;
@@ -27,9 +29,12 @@ export async function fetchArticles({
     url = `${process.env.NEXT_APP_URL}/api/v1/article/all?page=${page}&limit=${limit}&category=${category}`;
   } else if (search) {
     url = `${process.env.NEXT_APP_URL}/api/v1/article/all?page=${page}&limit=${limit}&searchTerm=${search}`;
-  }else if (latestDevice) {
+  } else if (latestDevice) {
     url = `${process.env.NEXT_APP_URL}/api/v1/article/all?latestDevice=${latestDevice}&all=all`;
-  }
+  }else if (brands) {
+    url = `${process.env.NEXT_APP_URL}/api/v1/article/all?page=${page}&limit=${limit}&brands=${brands}`;
+  } 
+
   console.log("test 1 ", url, category);
 
   const response = await fetch(url, {
