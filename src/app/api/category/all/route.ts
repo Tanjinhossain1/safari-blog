@@ -5,7 +5,6 @@ import { NextResponse } from "next/server";
 
 export async function GET(req: Request) {
     try {
-        
         // Perform the database insertion using Drizzle ORM
         const result = await db.select().from(Category).orderBy(desc(Category.createdAt)).execute();
 

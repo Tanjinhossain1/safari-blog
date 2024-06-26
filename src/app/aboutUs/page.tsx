@@ -1,19 +1,18 @@
 "use client"
 import { Container, Grid, Paper, Typography } from "@mui/material";
 import Image from "next/image";
-import React from "react";
-import CallIcon from '@mui/icons-material/Call';
-import LocationOnIcon from '@mui/icons-material/LocationOn';
-import EmailIcon from '@mui/icons-material/Email';
-import Footer from "@/Component/HomePage/Footer";
+import React, { Fragment } from "react";
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';  
 import { useRouter } from "next/navigation";
 import OtherPageFooter from "@/Component/Shared/Footer";
+import Navbar from "@/Component/Shared/Navbar";
 
 export default function AboutUs() {
     const history = useRouter()
   return (
-    <Grid container>
+    <Fragment>
+      <Navbar />
+      <Grid container>
       <Container
         sx={{
           width: {
@@ -60,6 +59,7 @@ export default function AboutUs() {
       <div style={{marginTop:5,width:"100%",}}>
       <OtherPageFooter />
       </div>
-    </Grid>
+    </Grid> 
+    </Fragment>
   );
 }

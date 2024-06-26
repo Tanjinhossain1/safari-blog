@@ -6,7 +6,10 @@ export interface RecentArticleDataType {
     description: string;
     category: string;
     content:any[];
+    latestDevice: string,
+    brands: string,
     updateAt: string;
     createdAt: string;
     view?:string;
+    deviceName?:string;
 }

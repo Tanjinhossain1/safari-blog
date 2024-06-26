@@ -7,9 +7,9 @@ export async function POST(req: Request) {
         // Parse the JSON body
         const body = await req.json()
         
-        const { title, category, description, image, content } = body;
+        const { title, category, description, image, content,latestDevice,brands,deviceName } = body;
 
-        console.log('body detail created', body, title, category, description, image, content);
+        console.log('body detail created', body, title, category, description, image, deviceName, content);
 
         if (!title || !category || !description || !image || !content) {
             return NextResponse.json({ error: 'Missing required fields' });
@@ -22,6 +22,9 @@ export async function POST(req: Request) {
             description,
             image,
             content,
+            latestDevice,
+            brands,
+            deviceName
         });
 
         return NextResponse.json({success:true,message:"successfully created article",data:result})

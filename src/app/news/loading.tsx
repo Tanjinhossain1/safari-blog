@@ -1,10 +1,13 @@
-import { Skeleton } from '@/components/ui/skeleton'
-import React from 'react'
 
-export default function loading() {
+import NewsPageLoadingSkeletonForPaper from "@/Component/LoadingSkeleton/NewsPageLoadingSkeleton";
+import NavbarLoadingSkeleton from "@/Component/Shared/NavbarLoadingSkeleton";
+import { Grid, Paper, Skeleton } from "@mui/material";
+import React, { Fragment } from "react";
+
+export default function Loading() {
   return (
-    <>
-        <Skeleton className="w-[100px] h-[20px] rounded-full" />
-    </>
-  )
+    <Fragment>
+     <NewsPageLoadingSkeletonForPaper />
+    </Fragment>
+  );
 }

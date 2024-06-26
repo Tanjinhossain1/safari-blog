@@ -7,8 +7,10 @@ export default async function Details({ params }: { params: any }) {
   const Category = await fetchCategories();
 
   return (
-    <>
+    <>{
+      data?.data ? 
       <DetailsComponent category={Category.data} articleDetail={data?.data[0]} />
+    : null}
     </>
   );
 }

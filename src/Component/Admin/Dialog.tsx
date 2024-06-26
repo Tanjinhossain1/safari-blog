@@ -15,11 +15,14 @@ export default function DialogComponent({
   handleBackdropClose,
   handleBackDropOpen,
   handleClick,
+  isBrand,
 }: {
   handleDialogClose: () => void;
   handleBackdropClose: () => void;
   handleBackDropOpen: () => void;
   handleClick: (text:string) => void;
+  isBrand?: boolean;
+
 }) {  
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
     handleBackDropOpen();
@@ -39,15 +42,14 @@ export default function DialogComponent({
     //   value
     };
     await axios
-        .post(`/api/category/create`, data, {
+        .post(isBrand ? `/api/brands/create` :`/api/category/create`, data, {
           headers: {
             "Content-Type": "application/json",
           },
         })
         .then((response: any) => {
-          console.log("create success", response);
           if (response?.data?.success) {
-            handleClick("Successfully Category Created")
+            handleClick(isBrand ? "SUccessfully Brand Created" : "Successfully Category Created")
             handleDialogClose()
             window.location.reload();
           }
@@ -62,7 +64,7 @@ export default function DialogComponent({
   return (
     <Container sx={{ p: 3,  }}>
       <Typography sx={{ fontSize: 28, fontWeight: 550 }}>
-        Add Category
+       {isBrand ? "Add Brands" :  "Add Category"}
       </Typography>
       <form onSubmit={handleSubmit}>
         <FormControl sx={{ my: 2, width: "100%" }} variant="filled">
@@ -77,18 +79,7 @@ export default function DialogComponent({
             startAdornment={<InputAdornment position="start"></InputAdornment>}
           />
         </FormControl>
-        {/* <FormControl sx={{ my: 2, width: "100%" }} variant="filled">
-          <InputLabel sx={{ mb: 1 }} htmlFor="filled-adornment-amount">
-            Value <sup style={{ color: "red", fontSize: 20 }}>*</sup>
-          </InputLabel>
-          <FilledInput
-            name="value"
-            id="filled-adornment-amount"
-            placeholder="Value"
-            required
-            startAdornment={<InputAdornment position="start"></InputAdornment>}
-          />
-        </FormControl> */}
+       
         <Container sx={{ display: "flex", justifyContent: "end", gap: 3 }}>
           <Button color="error" onClick={handleDialogClose} variant="contained">
             Cancel
