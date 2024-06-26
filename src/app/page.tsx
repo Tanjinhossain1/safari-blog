@@ -5,6 +5,7 @@ import Banner from "@/Component/HomePage/Banner";
 import Footer from "@/Component/HomePage/Footer";
 import { fetchArticles, fetchCategories } from "@/services/articleServices";
 import { Suspense } from "react";
+import NavbarLoadingSkeleton from "@/Component/Shared/NavbarLoadingSkeleton";
 
 interface HomePropsType {
   searchParams: {
@@ -18,7 +19,7 @@ async function Home({ searchParams }: HomePropsType) {
   const Category = await fetchCategories();
   return (
     <>
-      <Suspense>
+      <Suspense fallback={<NavbarLoadingSkeleton />}>
         <Navbar /> 
       </Suspense>
       {articles ? (
