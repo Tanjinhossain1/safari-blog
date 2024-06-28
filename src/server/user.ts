@@ -2,29 +2,47 @@
 
 import { redirect } from "next/navigation";
 import { hash } from "bcryptjs";
-import { signIn } from "../../auth";
 import { users } from "@/drizzle/schema";
 import { db } from "@/drizzle/db";
 import { eq } from "drizzle-orm";
-import { NextResponse } from "next/server";
+import {signIn} from "next-auth/react"
 
 const login = async (formData: FormData) => {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
-    console.log('email,password',email, password);
+  
     try {
-        await signIn("credentials", {
-            redirect: false,
-            callbackUrl: "/",
-            email,
-            password,
-        });
-        redirect("/");
+      await signIn("credentials", {
+        redirect: false,
+        callbackUrl: "/",
+        email,
+        password,
+      });
     } catch (error) {
-        const someError = error as any;
-        return someError.cause;
+      const someError = error as any;
+      console.error('this is the error',someError)
+      return someError.cause;
     }
-};
+    redirect("/");
+  };
+
+// const login = async (formData: FormData) => {
+//     const email = formData.get("email") as string;
+//     const password = formData.get("password") as string;
+//     console.log('email,password',email, password);
+//     try {
+//         await signIn("credentials", {
+//             redirect: false,
+//             callbackUrl: "/",
+//             email,
+//             password,
+//         });
+//         redirect("/");
+//     } catch (error) {
+//         const someError = error as any;
+//         return someError.cause;
+//     }
+// };
 
 const register = async (formData: FormData) => {
     const fullName = formData.get("fullName") as string;

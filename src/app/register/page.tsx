@@ -1,17 +1,7 @@
-
-import { register } from "@/server/user";
 import { Input } from "@/components/ui/input";
-import { getSession } from "@/lib/getSession";
 import Link from "next/link";
-import { redirect } from "next/navigation";
 
 const Register = async () => {
-  const session = await getSession();
-  const user = session?.user;
-  console.log(session,'register  ',user)
-  if (user) redirect("/"); 
-
-
   return (
     <div className="mt-10 max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white border border-[#121212]  dark:bg-black">
       <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
@@ -21,7 +11,7 @@ const Register = async () => {
         Please provide all the necessary information
       </p>
 
-      <form className="my-8" action={register}>
+      <form className="my-8">
         <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
           <div className="flex flex-col col-span-12">
             <label >
