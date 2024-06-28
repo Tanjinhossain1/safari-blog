@@ -5,44 +5,25 @@ import { hash } from "bcryptjs";
 import { users } from "@/drizzle/schema";
 import { db } from "@/drizzle/db";
 import { eq } from "drizzle-orm";
-import {signIn} from "next-auth/react"
+import { signIn } from "@/auth";
 
 const login = async (formData: FormData) => {
     const email = formData.get("email") as string;
     const password = formData.get("password") as string;
-  
+    console.log('email,password',email, password);
     try {
-      await signIn("credentials", {
-        redirect: false,
-        callbackUrl: "/",
-        email,
-        password,
-      });
+        await signIn("credentials", {
+            redirect: false,
+            callbackUrl: "/",
+            email,
+            password,
+        });
+        redirect("/");
     } catch (error) {
-      const someError = error as any;
-      console.error('this is the error',someError)
-      return someError.cause;
+        const someError = error as any;
+        return someError.cause;
     }
-    redirect("/");
-  };
-
-// const login = async (formData: FormData) => {
-//     const email = formData.get("email") as string;
-//     const password = formData.get("password") as string;
-//     console.log('email,password',email, password);
-//     try {
-//         await signIn("credentials", {
-//             redirect: false,
-//             callbackUrl: "/",
-//             email,
-//             password,
-//         });
-//         redirect("/");
-//     } catch (error) {
-//         const someError = error as any;
-//         return someError.cause;
-//     }
-// };
+};
 
 const register = async (formData: FormData) => {
     const fullName = formData.get("fullName") as string;
@@ -62,7 +43,7 @@ const register = async (formData: FormData) => {
         // //    return <HomePage />
         // }
     const hashedPassword = await hash(password, 12);
-
+    
     await db.insert(users).values({
         fullName,
         email,
