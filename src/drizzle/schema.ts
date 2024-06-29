@@ -1,4 +1,3 @@
-import { InferModel } from 'drizzle-orm';
 import {
   boolean,
   integer,
@@ -8,7 +7,6 @@ import {
   serial,
   text,
   timestamp,
-  uniqueIndex,
 } from 'drizzle-orm/pg-core';
 
 export const Articles = pgTable(
@@ -21,6 +19,7 @@ export const Articles = pgTable(
     latestDevice: text('latestDevice'),
     brands: text('brands'),
     deviceName: text('deviceName'),
+    showInNews: text('showInNews'),
     image: text('image').notNull(),
     content: jsonb('content'),
     createdAt: timestamp('createdAt').defaultNow().notNull(),

@@ -1,7 +1,7 @@
 import Footer from "@/Component/HomePage/Footer";
 import NewsPageComponent from "@/Component/News/NewsComponent";
 import Navbar from "@/Component/Shared/Navbar";
-import { fetchArticles } from "@/services/articleServices"; 
+import { fetchArticles } from "@/services/articleServices";
 import React, { Suspense } from "react";
 
 interface NewsPagePropsType {
@@ -10,15 +10,14 @@ interface NewsPagePropsType {
     limit: string;
   };
 }
- 
 
 export default async function NewsPage({ searchParams }: NewsPagePropsType) {
   const { page, limit } = searchParams;
-  const articles = await fetchArticles({ page, limit });
+  const articles = await fetchArticles({ page, limit, showInNews: "show" });
 
   return (
-    <>   
-       <Suspense  >
+    <>
+      <Suspense>
         {" "}
         <Navbar />
       </Suspense>
@@ -26,7 +25,7 @@ export default async function NewsPage({ searchParams }: NewsPagePropsType) {
       <Suspense>
         {" "}
         <Footer />
-      </Suspense>  
+      </Suspense>
     </>
   );
 }

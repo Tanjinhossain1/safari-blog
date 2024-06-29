@@ -1,28 +1,44 @@
-"use client"
-import { login } from "@/server/user";
+"use client";
+import { signIn } from "@/auth/helpers";
 import { Input } from "@/components/ui/input";
 import Link from "next/link";
-import { redirect } from "next/navigation"; 
-import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
+import { useState } from "react";
 
-const LoginComponent =  () => {
-  const {data:session } = useSession();
-  console.log('user   in seasion   ', session)
-  const user = session?.user;
-  if (user) redirect("/");
+const LoginComponent = () => {
+  const [error, setError] = useState(null);
+  const router = useRouter();
+  const handleSubmit = async (e: any) => {
+    e.preventDefault();
+    setError(null);
 
+    try {
+      const res = await signIn("credentials", {
+        redirect: false,
+        email: e.target.email.value,
+        password: e.target.password.value,
+      });
+      window.location.reload()
+      router.push(res);
+      console.log("Login successful", res);
+    } catch (err: any) {
+      console.error("Login error", err.message);
+      setError(err.message || 'An error occurred');
+    }
+  };
   return (
     <div className="mt-10 max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white border border-[#121212]  dark:bg-black">
-      <form className="my-8" action={login}>
-        <label htmlFor="email">Email Address</label>
+      <form className="my-8" onSubmit={handleSubmit}>
+        <label htmlFor="email" style={{color:"white"}}>Email Address {error}</label>
         <Input
           id="email"
           placeholder="projectmayhem@fc.com"
           type="email"
           name="email"
+          style={{marginBottom:"1 0px"}}
         />
 
-        <label htmlFor="email">Password</label>
+        <label htmlFor="email" style={{color:"white"}}>Password</label>
         <Input
           id="password"
           placeholder="*************"
@@ -35,44 +51,12 @@ const LoginComponent =  () => {
           Login &rarr;
         </button>
 
-        <p className="text-right text-neutral-600 text-sm max-w-sm mt-4 dark:text-neutral-300">
+        <p className="text-center text-neutral-600 text-sm max-w-sm mt-4 dark:text-neutral-300">
           Dont have account? <Link href="/register">Register</Link>
         </p>
 
         <div className="bg-gradient-to-r from-transparent via-neutral-300 dark:via-neutral-700 to-transparent my-8 h-[1px] w-full" />
-      </form>
-      <form
-        action={async () => {
-          "use server";
-          await signIn("github");
-        }}
-      >
-        <button
-          className=" relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
-          type="submit"
-        >
-          {/* <IconBrandGithub className="h-4 w-4 text-neutral-800 dark:text-neutral-300" /> */}
-          <span className="text-neutral-700 dark:text-neutral-300 text-sm">
-            Github
-          </span>
-        </button>
-      </form>
-      <form
-        action={async () => {
-          "use server";
-          await signIn("google");
-        }}
-      >
-        <button
-          className=" relative group/btn flex space-x-2 items-center justify-start px-4 w-full text-black rounded-md h-10 font-medium shadow-input bg-gray-50 dark:bg-zinc-900 dark:shadow-[0px_0px_1px_1px_var(--neutral-800)]"
-          type="submit"
-        >
-          {/* <IconBrandGoogle className="h-4 w-4 text-neutral-800 dark:text-neutral-300" /> */}
-          <span className="text-neutral-700 dark:text-neutral-300 text-sm">
-            Google
-          </span>
-        </button>
-      </form>
+      </form> 
     </div>
   );
 };

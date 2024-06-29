@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from "react";
+import React from "react";
 import AppBar from "@mui/material/AppBar";
 import Box from "@mui/material/Box";
 import Toolbar from "@mui/material/Toolbar";
@@ -22,8 +22,16 @@ import {
   NavigationMenuList,
   NavigationMenuTrigger,
 } from "@/components/ui/navigation-menu";
-import { auth } from "@/auth";
 import { signOut } from "@/auth/helpers";
+import LoginIcon from "@mui/icons-material/Login";
+import GroupAddIcon from "@mui/icons-material/GroupAdd";
+import LogoutIcon from "@mui/icons-material/Logout";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
+import LoginComponent from "../Login/LoginComponent";
 
 // const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -46,7 +54,7 @@ const pages: NavigationPages[] = [
   },
 ];
 
-const Search = styled("div")(({ theme }) => ({
+const Search = styled("div")(({ theme }:any) => ({
   display: "flex",
   alignItems: "center",
   position: "relative",
@@ -63,7 +71,7 @@ const Search = styled("div")(({ theme }) => ({
   },
 }));
 
-const StyledInputBase = styled(InputBase)(({ theme }) => ({
+const StyledInputBase = styled(InputBase)(({ theme }:any) => ({
   color: "inherit",
   width: "100%",
   "& .MuiInputBase-input": {
@@ -79,10 +87,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
   },
 }));
 
-function NavbarHelper({isLoginUser}:{isLoginUser:any}) {
+function NavbarHelper({ isLoginUser }: { isLoginUser: any }) {
   const history = useRouter();
   const [isOpen, setIsOpen] = React.useState(false);
-    console.log('user  ' ,isLoginUser)
+  console.log("user  ", isLoginUser);
   const handleToggle = () => {
     setIsOpen(!isOpen);
   };
@@ -196,7 +204,7 @@ function NavbarHelper({isLoginUser}:{isLoginUser:any}) {
                 sx={{
                   flexGrow: 1,
                   display: { xs: "none", sm: "flex" },
-                  gap: 3,
+                  gap: 1,
                 }}
               >
                 {pages.map((page: NavigationPages, index: number) => (
@@ -204,11 +212,11 @@ function NavbarHelper({isLoginUser}:{isLoginUser:any}) {
                     key={index}
                     onClick={() => history.push(page.route)}
                     sx={{
-                      my: 2,
+                      // my: 2,
                       color: "white",
                       display: "flex",
                       alignItems: "center",
-                      gap: 1,
+                      // gap: 1,
                     }}
                   >
                     {page.icon}
@@ -221,7 +229,14 @@ function NavbarHelper({isLoginUser}:{isLoginUser:any}) {
                 {/* <TopSearch /> */}
               </Box>
 
-              <Box sx={{ flexGrow: 0 }}>
+              <Box
+                sx={{
+                  flexGrow: 0,
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "end",
+                }}
+              >
                 <form onSubmit={handleSubmit} style={{ position: "relative" }}>
                   <Search>
                     <button
@@ -249,6 +264,40 @@ function NavbarHelper({isLoginUser}:{isLoginUser:any}) {
                     />
                   </Search>
                 </form>
+                <Container
+                  sx={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: isLoginUser ? 1 : 2,
+                  }}
+                >
+                  {isLoginUser ? (
+                    <>
+                      <Typography>
+                        {isLoginUser?.fullName?.toUpperCase()}
+                      </Typography>
+                      <LogoutIcon
+                        onClick={async () => {
+                          await signOut();
+                          await window.location.reload();
+                        }}
+                      />
+                    </>
+                  ) : (
+                    <>
+                      <Popover>
+                        <PopoverTrigger>
+                          <LoginIcon />
+                        </PopoverTrigger>
+                        <PopoverContent className="w-[355px] md:w-[550px]">
+                          <LoginComponent  />
+                        </PopoverContent>
+                      </Popover>
+
+                      <GroupAddIcon onClick={()=>history.push('/register')} />
+                    </>
+                  )}
+                </Container>
               </Box>
             </Toolbar>
           </Container>
@@ -256,7 +305,7 @@ function NavbarHelper({isLoginUser}:{isLoginUser:any}) {
         <AppBar sx={{ bgcolor: "#f2f2f2", m: 0, p: 0 }} position="static">
           <Container sx={{ m: 0, p: 0 }} maxWidth="xl">
             <Grid container>
-              <Grid xs={4}>
+              {/* <Grid xs={4}>
                 <ListItem
                   sx={{
                     textAlign: "center",
@@ -275,7 +324,7 @@ function NavbarHelper({isLoginUser}:{isLoginUser:any}) {
                   </Typography> : null
                   }
                 </ListItem>
-              </Grid>
+              </Grid> */}
               <Grid xs={4}>
                 <ListItem
                   sx={{
