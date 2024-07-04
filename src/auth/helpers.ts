@@ -1,5 +1,5 @@
 "use server";
-import { signIn as naSignIn, signOut as naSignOut } from "./index";
+import { signIn as naSignIn, signOut as naSignOut , auth as naAuth} from "./index";
 
 // export async function signIn(...props:any) {
 //   await naSignIn(...props)
@@ -31,4 +31,8 @@ export async function signIn(...props: any) {
 
 export async function signOut() {
   await naSignOut();
+}
+
+export async function auth() {
+  await naAuth();
 }

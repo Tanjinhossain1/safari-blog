@@ -2,7 +2,7 @@ import NavbarLoadingSkeleton from '@/Component/Shared/NavbarLoadingSkeleton'
 import { Grid, Skeleton } from '@mui/material'
 import React, { Fragment } from 'react'
 
-export default function loading() {
+export default function curcure() {
   return (
     <Fragment>
     <NavbarLoadingSkeleton />
