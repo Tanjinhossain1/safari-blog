@@ -35,7 +35,7 @@ const Editor = dynamic(
 
 export default function CreateArticleComponent({
   categories,
-  brandsData
+  brandsData,
 }: {
   categories: CategoryTypes[];
   brandsData: BrandTypes[];
@@ -56,6 +56,7 @@ export default function CreateArticleComponent({
   const [showSuccessText, setShowSuccessText] = useState<string>("");
   const [dialogOpen, setDialogOpen] = React.useState(false);
   const [brandDialogOpen, setBrandDialogOpen] = React.useState(false);
+  const [showInNews, setShowInNews] = React.useState("");
 
   const handleBrandDialogClickOpen = () => {
     setBrandDialogOpen(true);
@@ -91,6 +92,9 @@ export default function CreateArticleComponent({
     setLatestDevice(event.target.value);
   };
 
+  const handleNewsChange = (event: SelectChangeEvent) => {
+    setShowInNews(event.target.value);
+  };
   const handleClick = (text: string) => {
     setOpen(true);
     setShowSuccessText(text);
@@ -131,8 +135,10 @@ export default function CreateArticleComponent({
     }
   }, [unFormatFile]);
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
     if (!image) {
       setImageRequiredError(true);
+      return;
     }
     handleBackDropOpen();
     const fieldData = await editorRef.current?.save();
@@ -140,9 +146,9 @@ export default function CreateArticleComponent({
     const description = (event.target as any)?.description.value;
     const category = (event.target as any)?.category.value;
     const latestDeviceValue = (event.target as any)?.latestDevice.value;
-    const brands = (event.target as any)?.brands.value;
+    const brands = (event.target as any)?.brands?.value;
     const deviceName = (event.target as any)?.deviceName.value;
-    event.preventDefault();
+    const newsValue = (event.target as any)?.showInNews?.value;
     console.log(
       "submit data  ",
 
@@ -150,6 +156,7 @@ export default function CreateArticleComponent({
         title: title,
         category: category,
         image: image,
+        showInNews: newsValue,
         content: fieldData?.blocks,
         latestDevice: latestDeviceValue,
         brands: brands,
@@ -163,6 +170,7 @@ export default function CreateArticleComponent({
       content: fieldData?.blocks,
       latestDevice: latestDeviceValue,
       brands: brands,
+      showInNews: newsValue,
       deviceName: deviceName,
     };
     if (image) {
@@ -230,7 +238,24 @@ export default function CreateArticleComponent({
               }
             />
           </FormControl>
-
+          <FormControl
+            variant="filled"
+            sx={{ my: 1, minWidth: "100%", display: "flex" }}
+          >
+            <InputLabel id="demo-simple-select-filled-label">
+              Show In News <sup style={{ color: "red", fontSize: 20 }}>*</sup>
+            </InputLabel>
+            <Select
+              labelId="demo-simple-select-filled-label"
+              id="demo-simple-select-filled"
+              value={showInNews}
+              name="showInNews"
+              onChange={handleNewsChange}
+            >
+              <MenuItem value={"show"}>YES</MenuItem>
+              <MenuItem value={"notShow"}>NO</MenuItem>
+            </Select>
+          </FormControl>
           <FormControl sx={{ my: 2, width: "100%" }} variant="filled">
             <InputLabel sx={{ mb: 1 }} htmlFor="filled-adornment-amount">
               Device Name <sup style={{ color: "red", fontSize: 20 }}>*</sup>
@@ -407,6 +432,7 @@ export default function CreateArticleComponent({
         aria-describedby="alert-dialog-description"
       >
         <DialogComponent
+          isBrand
           handleClick={handleClick}
           handleBackdropClose={handleBackdropClose}
           handleBackDropOpen={handleBackDropOpen}
@@ -421,7 +447,7 @@ export default function CreateArticleComponent({
         aria-describedby="alert-dialog-description"
       >
         <DialogComponent
-        isBrand
+          isBrand
           handleClick={handleBrandDialogClickOpen}
           handleBackdropClose={handleBackdropClose}
           handleBackDropOpen={handleBackDropOpen}

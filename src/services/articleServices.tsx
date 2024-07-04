@@ -10,7 +10,8 @@ export async function fetchArticles({
   category,
   search,
   latestDevice,
-  brands
+  brands,
+  showInNews,
 }: {
   page: string;
   limit: string;
@@ -18,6 +19,7 @@ export async function fetchArticles({
   search?: string;
   latestDevice?: string;
   brands?: string;
+  showInNews?: string;
 }): Promise<{
   data: RecentArticleDataType[];
   page: number;
@@ -27,13 +29,15 @@ export async function fetchArticles({
   let url = `${process.env.NEXT_APP_URL}/api/v1/article/all?page=${page}&limit=${limit}`;
   if (category) {
     url = `${process.env.NEXT_APP_URL}/api/v1/article/all?page=${page}&limit=${limit}&category=${category}`;
+  } else if (showInNews) {
+    url = `${process.env.NEXT_APP_URL}/api/v1/article/all?page=${page}&limit=${limit}&showInNews=${showInNews}`;
   } else if (search) {
     url = `${process.env.NEXT_APP_URL}/api/v1/article/all?page=${page}&limit=${limit}&searchTerm=${search}`;
   } else if (latestDevice) {
     url = `${process.env.NEXT_APP_URL}/api/v1/article/all?latestDevice=${latestDevice}&all=all`;
-  }else if (brands) {
+  } else if (brands) {
     url = `${process.env.NEXT_APP_URL}/api/v1/article/all?page=${page}&limit=${limit}&brands=${brands}`;
-  } 
+  }
 
   console.log("test 1 ", url, category);
 
