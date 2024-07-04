@@ -4,13 +4,13 @@ import NavbarHelper from "./NavbarHelperComponent";
 
 
 async function Navbar() {
-  const session = await auth();
-  const user = session?.user;
-  console.log(session, "register  ", session,user);
+  // const session = await auth();
+  // const user = session?.user;
+  // console.log(session, "register  ", session,user);
    
 
   return (
-   <NavbarHelper isLoginUser={user}  />
+   <NavbarHelper isLoginUser={{fullName:"tanjin"}}  />
   );
 }
 export default Navbar;
