@@ -1,19 +1,30 @@
 import DetailsComponent from "@/Component/Details/Details";
 import Navbar from "@/Component/Shared/Navbar";
-import { fetchArticlesDetails, fetchCategories } from "@/services/articleServices";
+import { fetchArticles, fetchArticlesDetails, fetchCategories } from "@/services/articleServices";
 import React from "react";
 
-export default async function Details({ params }: { params: any }) {
+interface DetailsParams{
+  searchParams: {
+    page: string;
+    limit: string;
+    category:string
+  };
+  params: {
+    id: string;
+    category: string;
+  };
+}
+export default async function Details({ params,searchParams }: DetailsParams) {
   const data = await fetchArticlesDetails({ id: params?.id });
   const Category = await fetchCategories();
-
+  const articles = await fetchArticles({category: params?.category,page:searchParams?.page,limit:searchParams?.limit})
   return (
     <>
     
     <Navbar />
     {
       data?.data ? 
-      <DetailsComponent category={Category.data} articleDetail={data?.data[0]} />
+      <DetailsComponent articles={articles.data} category={Category.data} articleDetail={data?.data[0]} />
     : null}
     </>
   );

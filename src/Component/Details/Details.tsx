@@ -11,8 +11,8 @@ import {
   Typography,
 } from "@mui/material";
 import Image from "next/image";
-import { useParams, useRouter } from "next/navigation";
-import React from "react";
+import { useParams, useRouter, useSearchParams } from "next/navigation";
+import React, { Fragment } from "react";
 import CategoryListComponent from "../Category/CategoryListComponent";
 
 function formatText(text: string) {
@@ -21,12 +21,19 @@ function formatText(text: string) {
 export default function DetailsComponent({
   articleDetail,
   category,
+  articles,
 }: {
   articleDetail: RecentArticleDataType;
   category: CategoryTypes[];
+  articles: RecentArticleDataType[];
 }) {
   const params = useParams();
   const history = useRouter();
+  
+  const searchParams = useSearchParams();
+  const page = searchParams.get("page") ?? "1";
+  const limit = searchParams.get("limit") ?? "3";
+
   console.log("articleDetail  ", articleDetail.content);
   const rawTitle = params?.title as string;
   const decodedTitle = decodeURIComponent(rawTitle);
@@ -99,7 +106,7 @@ export default function DetailsComponent({
                     width={0}
                     height={0}
                   />
-                 {articleDetail.content.map((block) => {
+                  {articleDetail.content.map((block) => {
                     if (block.type === "paragraph") {
                       return (
                         <div
@@ -228,6 +235,73 @@ export default function DetailsComponent({
                 <Grid xs={12} sx={{ mt: 17 }} lg={4}>
                   <CategoryListComponent category={category} />
                 </Grid>
+              </Grid>
+              <Grid sx={{ mt: 3 }} container>
+                <Grid xs={12} lg={7.5}>
+                  <Typography
+                    sx={{
+                      mt: 1,
+                      // fontSize: 35,
+                      fontWeight: 550,
+                      color: "white",
+                      p: 1,
+                      bgcolor: "#c40069",
+                    }}
+                  >
+                    {" "}
+                    Related Posts
+                  </Typography>
+                  <Grid container>
+                    {articles.map((article: RecentArticleDataType) => {
+                      const joinTitle = article.title
+                        .split(" ")
+                        .map(
+                          (word: any) =>
+                            word.charAt(0).toUpperCase() + word.slice(1)
+                        )
+                        .join("-");
+                      return (
+                        <Fragment key={article.id}>
+                          <Grid
+                            onClick={() =>
+                              history.push(
+                                `/details/${article.id}/${article.category}/${joinTitle}?${new URLSearchParams({
+                                  page: `${Number(page) + 1}`,
+                                  limit: limit,
+                                })}`,
+                                {
+                                  scroll: false,
+                                }
+                              )
+                              // history.push(
+                              //   `/details/${article.id}/${article.category}/${joinTitle}`
+                              // )
+                            }
+
+                            sx={{ m: 1, cursor: "pointer" }}
+                            xs={3.5}
+                          >
+                            <Image
+                              style={{ marginTop: "20px" }}
+                              src={article.image}
+                              alt={article.title}
+                              layout="responsive"
+                              width={0}
+                              height={0}
+                            />
+                            <Typography
+                              sx={{ mt: 1, fontSize: 14, fontWeight: 600 }}
+                            >
+                              {article.title}
+                            </Typography>
+                          </Grid>
+                        </Fragment>
+                      );
+                    })}
+                  </Grid>
+                </Grid>
+                <Grid xs={12} lg={0.5}></Grid>
+                <Grid xs={12} sx={{ mt: 17 }} lg={4}></Grid>
               </Grid>
             </Paper>
           </Grid>

@@ -155,7 +155,13 @@ export default function RecentArticleComponent({
                             )
                             .join("-");
                           history.push(
-                            `/details/${data.id}/${data.category}/${joinTitle}`
+                            `/details/${data.id}/${data.category}/${joinTitle}?${new URLSearchParams({
+                page: `${Number(page) + 1}`,
+                limit: limit,
+              })}`,
+              {
+                scroll: false,
+              }
                           );
                         }}
                       />
