@@ -8,7 +8,7 @@ import { ToastAction } from "@/components/ui/toast";
 import { signIn } from "@/auth/helpers";
 
 const RegisterComponent = () => {
-    const router = useRouter()
+  const router = useRouter();
   const { toast } = useToast();
 
   const handleSubmit = (event: any) => {
@@ -24,7 +24,7 @@ const RegisterComponent = () => {
     };
     axios
       .post(`/api/auth/register`, data)
-      .then(async (response:any) => {
+      .then(async (response: any) => {
         console.log("response in register ", response);
         if (response?.data?.error) {
           console.log("error in register ", response?.data?.error);
@@ -40,7 +40,7 @@ const RegisterComponent = () => {
             title: response?.data?.message,
           });
           const data = response?.data?.data[0];
-            
+
           await signIn("credentials", {
             redirect: false,
             email: data?.email,
@@ -54,7 +54,7 @@ const RegisterComponent = () => {
       });
   };
   return (
-    <div className="mt-10 max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white border border-[#121212]  dark:bg-black">
+    <div className="my-10 max-w-md w-full mx-auto rounded-none md:rounded-2xl p-4 md:p-8 shadow-input bg-white border border-[#121212]  dark:bg-black">
       <h2 className="font-bold text-xl text-neutral-800 dark:text-neutral-200">
         Welcome to MyShop
       </h2>
@@ -63,7 +63,7 @@ const RegisterComponent = () => {
       </p>
 
       <form onSubmit={handleSubmit} className="my-8">
-        <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
+        {/* <div className="flex flex-col md:flex-row space-y-2 md:space-y-0 md:space-x-2 mb-4">
           <div className="flex flex-col col-span-12">
             <label>Full Name</label>
             <Input
@@ -73,8 +73,14 @@ const RegisterComponent = () => {
               name="fullName"
             />
           </div>
-        </div>
-
+        </div> */}
+        <label>Full Name</label>
+        <Input
+          id="fullName"
+          placeholder="Full Name"
+          type="text"
+          name="fullName"
+        />
         <label>Email Address</label>
         <Input
           id="email"
