@@ -1,15 +1,10 @@
 "use client";
 import React from "react";
-import {
-  Grid,
-  Paper,
-  Box,
-  Typography,
-} from "@mui/material";
+import { Grid, Paper, Box, Typography } from "@mui/material";
 import { styled } from "@mui/material/styles";
 import Image from "next/image";
-import { truncateText } from "@/utils/utils"; 
-import { useRouter } from "next/navigation";
+import { truncateText } from "@/utils/utils";
+import { useRouter, useSearchParams } from "next/navigation";
 import { RecentArticleDataType } from "@/types/RecentArticle";
 import RecentArticleComponent from "./RecentArticleComponent";
 import { BrandTypes, CategoryTypes } from "@/types/category";
@@ -68,6 +63,8 @@ const ContentBox = ({
   history,
   id,
   isBig,
+  page,
+  limit,
 }: {
   image: string;
   category: string;
@@ -75,6 +72,8 @@ const ContentBox = ({
   description: string;
   id: string;
   history: any;
+  page: string;
+  limit: string;
   isBig?: boolean;
 }) => (
   <HoverBox>
@@ -89,7 +88,15 @@ const ContentBox = ({
           .split(" ")
           .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
           .join("-");
-        history.push(`/details/${id}/${category}/${joinTitle}`);
+        history.push(
+          `/details/${id}/${category}/${joinTitle}?${new URLSearchParams({
+            page: `${Number(page) + 1}`,
+            limit: limit,
+          })}`,
+          {
+            scroll: false,
+          }
+        );
       }}
     >
       <Image src={image} alt={title} layout="fill" objectFit="cover" />
@@ -111,16 +118,20 @@ export default function Banner({
   total,
   category,
   latestArticles,
-  brands
+  brands,
 }: {
   articles: RecentArticleDataType[];
-  total:number,
-  category:CategoryTypes[]
+  total: number;
+  category: CategoryTypes[];
   latestArticles: RecentArticleDataType[];
   brands: BrandTypes[];
 }) {
   console.log("articles articles ", articles);
   const history = useRouter();
+
+  const searchParams = useSearchParams();
+  const page = searchParams.get("page") ?? "1";
+  const limit = searchParams.get("limit") ?? "3";
   return (
     <Grid container>
       <Grid xs={0} md={1} lg={1.1} xl={2}></Grid>
@@ -129,6 +140,8 @@ export default function Banner({
           <Grid container spacing={1}>
             <Grid item xs={12} sm={8}>
               <ContentBox
+                page={page}
+                limit={limit}
                 category={articles[0]?.category}
                 id={articles[0]?.id}
                 history={history}
@@ -142,6 +155,8 @@ export default function Banner({
               <Grid container spacing={2}>
                 <Grid item xs={6} sm={12}>
                   <ContentBox
+                    page={page}
+                    limit={limit}
                     category={articles[1]?.category}
                     id={articles[1]?.id}
                     history={history}
@@ -152,6 +167,8 @@ export default function Banner({
                 </Grid>
                 <Grid item xs={6} sm={12}>
                   <ContentBox
+                    page={page}
+                    limit={limit}
                     category={articles[2]?.category}
                     id={articles[2]?.id}
                     history={history}
@@ -163,14 +180,16 @@ export default function Banner({
               </Grid>
             </Grid>
           </Grid>
-          <RecentArticleComponent brands={brands} latestArticles={latestArticles} category={category} total={total} articles={articles}/>
+          <RecentArticleComponent
+            brands={brands}
+            latestArticles={latestArticles}
+            category={category}
+            total={total}
+            articles={articles}
+          />
         </Paper>
       </Grid>
-      <Grid xs={0} md={1} lg={1.1} xl={2}>
-
-      </Grid>
-
-      
+      <Grid xs={0} md={1} lg={1.1} xl={2}></Grid>
     </Grid>
   );
 }

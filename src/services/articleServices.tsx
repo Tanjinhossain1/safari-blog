@@ -13,8 +13,8 @@ export async function fetchArticles({
   brands,
   showInNews
 }: {
-  page: string;
-  limit: string;
+  page?: string;
+  limit?: string;
   category?: string;
   search?: string;
   latestDevice?: string;
