@@ -9,7 +9,8 @@ const theme = createTheme({
       main: '#dc004e', // Customize the secondary color
     },
     background: {
-      default: '#f5f5f5', // Customize the background color
+      default: '#f4f8ff', // Customize the background color
+      // default: '#f5f5f5', // Customize the background color
     },
   },
   typography: {

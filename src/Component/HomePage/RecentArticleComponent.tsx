@@ -57,13 +57,15 @@ export default function RecentArticleComponent({
     }
   }, [articles.length, total]);
   return (
-    <Grid sx={{ mt: 4 }} container>
-      <Grid xs={12} md={8}>
-        <Container sx={{ bgcolor: "#bd047c", p: 1 }}>
-          <Typography sx={{ fontSize: 18, fontWeight: 600, color: "#f5f5f5" }}>
+    <Grid  container>
+      <Grid xs={12} md={12}>
+        
+        {/* <Container sx={{ bgcolor: "#bd047c", p: 1 }}> */}
+          <Typography sx={{ fontSize: 25, fontWeight: 600 }}>
+          {/* <Typography sx={{ fontSize: 18, fontWeight: 600, color: "#f5f5f5" }}> */}
             Recent Article
           </Typography>
-        </Container>
+         
         <Grid sx={{ mt: 2 }} container>
           {articles &&
             articles.map((data: RecentArticleDataType) => {
@@ -77,10 +79,10 @@ export default function RecentArticleComponent({
         </Grid>
       </Grid>
 
-      <Grid xs={12} md={0.3}></Grid>
+      {/* <Grid xs={12} md={0.3}></Grid>
       <Grid xs={12} md={3.7}>
         <CategoryListComponent category={category} />
-      </Grid>
+      </Grid> */}
 
       <Grid sx={{ mt: 3 }} container>
         <Grid xs={1}></Grid>

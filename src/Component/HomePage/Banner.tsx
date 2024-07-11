@@ -8,6 +8,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { RecentArticleDataType } from "@/types/RecentArticle";
 import RecentArticleComponent from "./RecentArticleComponent";
 import { BrandTypes, CategoryTypes } from "@/types/category";
+import MobileFriendlyIcon from "@mui/icons-material/MobileFriendly";
 
 const HoverBox = styled(Box)(({ theme }) => ({
   position: "relative",
@@ -133,10 +134,12 @@ export default function Banner({
   const page = searchParams.get("page") ?? "1";
   const limit = searchParams.get("limit") ?? "3";
   return (
+    articles ? 
     <Grid container>
-      <Grid xs={0} md={1} lg={1.1} xl={2}></Grid>
-      <Grid xs={12} md={10} lg={9.8} xl={8}>
+      <Grid xs={0} md={1} lg={1.1} xl={2.5}></Grid>
+      <Grid xs={12} md={10} lg={9.8} xl={7}>
         <Paper sx={{ p: 2, mb: 2 }} elevation={2}>
+          <Typography sx={{fontSize:25,fontWeight:600,mb:1}}>Latest Article</Typography>
           <Grid container spacing={1}>
             <Grid item xs={12} sm={8}>
               <ContentBox
@@ -180,6 +183,61 @@ export default function Banner({
               </Grid>
             </Grid>
           </Grid>
+        </Paper>
+        <Paper sx={{ p: 2, mb: 2 }} elevation={2}>
+            <Typography sx={{fontSize:25,fontFamily:"Arial, sans-serif",fontWeight:600,mb:1}}>Categories</Typography>
+          <Grid container gap={1} xs={12}>
+            {category.map((value: CategoryTypes, index: number) => {
+              return (
+                <Grid
+                  sx={{
+                    p: 1,
+                    textAlign: "center",
+                    // display: "flex",
+                    alignItems: "center",
+                    // justifyContent: "center",
+                    cursor: "pointer",
+                    bgcolor: "#ffffff",
+                    width: "50px",
+                    height: "120px",
+                    borderRadius: "10px",
+                    backgroundColor:
+                      index === 0
+                        ? "#e8f6ff"
+                        : index === 1
+                        ? "#eeeeff"
+                        : index === 2
+                        ? "#fff6df"
+                        : index === 3
+                        ? "#eef0f5"
+                        : index === 4
+                        ? "#fff2ea"
+                        : index === 5
+                        ? "#e8ffe8"
+                        : "",
+                    ":hover": { backgroundColor: "#f584b7" },
+                  }}
+                  xs={1.5}
+                  key={value.id}
+                >
+                  <Typography sx={{ m: 0, p: 0,mt:2 }}>
+                    <MobileFriendlyIcon sx={{ fontSize: 40 }} />
+                  </Typography>
+                  <br />
+                  <Typography
+                    sx={{ m: 0, p: 0 }}
+                    onClick={() => {
+                      history.push(`/category/${value.title}`);
+                    }}
+                  >
+                    {value.title}
+                  </Typography>
+                </Grid>
+              );
+            })}
+          </Grid>
+        </Paper>
+        <Paper sx={{ p: 2, mb: 2 }} elevation={2}>
           <RecentArticleComponent
             brands={brands}
             latestArticles={latestArticles}
@@ -189,7 +247,8 @@ export default function Banner({
           />
         </Paper>
       </Grid>
-      <Grid xs={0} md={1} lg={1.1} xl={2}></Grid>
+      <Grid xs={0} md={1} lg={1.1} xl={2.5}></Grid>
     </Grid>
+    :null
   );
 }

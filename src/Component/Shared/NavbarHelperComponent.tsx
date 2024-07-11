@@ -32,6 +32,8 @@ import {
   PopoverTrigger,
 } from "@/components/ui/popover";
 import LoginComponent from "../Login/LoginComponent";
+import { CategoryTypes } from "@/types/category";
+import Link from "next/link";
 
 // const pages = ["Products", "Pricing", "Blog"];
 const settings = ["Profile", "Account", "Dashboard", "Logout"];
@@ -54,14 +56,14 @@ const pages: NavigationPages[] = [
   },
 ];
 
-const Search = styled("div")(({ theme }:any) => ({
+const Search = styled("div")(({ theme }: any) => ({
   display: "flex",
   alignItems: "center",
   position: "relative",
-  borderRadius: theme.shape.borderRadius,
-  backgroundColor: alpha(theme.palette.common.white, 0.15),
+  borderRadius: "50px",
+  backgroundColor: "#eaf2ff",
   "&:hover": {
-    backgroundColor: alpha(theme.palette.common.white, 0.25),
+    backgroundColor: "#eaf2ff",
   },
   marginLeft: 0,
   width: "100%",
@@ -71,13 +73,13 @@ const Search = styled("div")(({ theme }:any) => ({
   },
 }));
 
-const StyledInputBase = styled(InputBase)(({ theme }:any) => ({
-  color: "inherit",
+const StyledInputBase = styled(InputBase)(({ theme }: any) => ({
+  // color: "inherit",
   width: "100%",
   "& .MuiInputBase-input": {
     padding: theme.spacing(1, 1, 1, 0),
     paddingLeft: `calc(1em + ${theme.spacing(4)})`,
-    transition: theme.transitions.create("width"),
+    // transition: theme.transitions.create("width"),
     [theme.breakpoints.up("sm")]: {
       width: "12ch",
       "&:focus": {
@@ -87,7 +89,13 @@ const StyledInputBase = styled(InputBase)(({ theme }:any) => ({
   },
 }));
 
-function NavbarHelper({ isLoginUser }: { isLoginUser: any }) {
+function NavbarHelper({
+  isLoginUser,
+  category,
+}: {
+  isLoginUser: any;
+  category: CategoryTypes[];
+}) {
   const history = useRouter();
   const [isOpen, setIsOpen] = React.useState(false);
   console.log("user  ", isLoginUser);
@@ -104,33 +112,105 @@ function NavbarHelper({ isLoginUser }: { isLoginUser: any }) {
 
   return (
     <Grid container>
-      <Grid xs={0} md={1} lg={1.1} xl={2}></Grid>
-      <Grid sx={{ m: 0, p: 0 }} xs={12} md={10} lg={9.8} xl={8}>
-        <AppBar sx={{ bgcolor: "#ff5ec1", m: 0, p: 0 }} position="static">
-          {/* <AppBar sx={{ bgcolor: "#d9078f", m: 0, p: 0 }} position="static"> */}
-          <Container sx={{ m: 0, p: 0 }} maxWidth="xl">
-            <Toolbar disableGutters>
-              <Box sx={{ display: { xs: "flex", sm: "none" } }}>
-                <NavigationMenu style={{ margin: 0, padding: 0 }}>
-                  <NavigationMenuList style={{ margin: 0, padding: 0 }}>
-                    <NavigationMenuItem style={{ margin: 0, padding: 0 }}>
-                      <NavigationMenuTrigger
-                        style={{ backgroundColor: "transparent" }}
-                        onClick={handleToggle}
-                      >
-                        {isOpen ? (
-                          <RemoveIcon className="icon animate-slideInFromTop " />
-                        ) : (
-                          <MenuIcon className="icon animate-slideInFromTop" />
-                        )}
-                      </NavigationMenuTrigger>
+      {/* <Grid xs={0} md={1} lg={1.1} xl={2}></Grid> */}
+      <Grid sx={{ m: 0, p: 0 }} xs={12}>
+        {/* <Grid sx={{ m: 0, p: 0 }} xs={12} md={10} lg={9.8} xl={8}> */}
+        <AppBar sx={{ bgcolor: "#ffffff", m: 0, p: 0 }} position="static">
+          <Grid sx={{ bgcolor: "white" }} container>
+            <Grid xs={7}></Grid>
 
-                      <NavigationMenuContent
-                        style={{ borderRadius: "0px" }}
-                        className="w-screen  animate-slideInFromTop bg-inherit m-0 p-0  "
-                      >
-                        <List sx={{ bgcolor: "#bd047c" }}>
-                          <Grid container>
+            <Grid sx={{ display: "flex" }} gap={2} xs={3}>
+              <Typography
+                gap={2}
+                sx={{
+                  fontSize: 11,
+                  color: "#023359",
+                  ":hover": { textDecoration: "underline" },
+                }}
+              >
+                <Link href={"/aboutus"}>About Us</Link>
+              </Typography>
+
+              <Typography
+                gap={2}
+                sx={{
+                  fontSize: 11,
+                  color: "#023359",
+                  ":hover": { textDecoration: "underline" },
+                }}
+              >
+                <Link href={"/contactUs"}>Contact us</Link>
+              </Typography>
+
+              <Typography
+                gap={2}
+                sx={{
+                  fontSize: 11,
+                  color: "#023359",
+                  ":hover": { textDecoration: "underline" },
+                }}
+              >
+                <Link href={"/privacyPolicy"}>Privacy Policy</Link>
+              </Typography>
+
+              <Typography
+                gap={2}
+                sx={{
+                  fontSize: 11,
+                  color: "#023359",
+                  ":hover": { textDecoration: "underline" },
+                }}
+              >
+                <Link href={"/termCondition"}>Terms Condition</Link>
+              </Typography>
+
+              <Typography
+                gap={2}
+                sx={{
+                  fontSize: 11,
+                  color: "#023359",
+                  ":hover": { textDecoration: "underline" },
+                }}
+              >
+                <Link href={"/faq"}>FAQ</Link>
+              </Typography>
+              <Typography
+                gap={2}
+                sx={{
+                  fontSize: 11,
+                  color: "#023359",
+                  ":hover": { textDecoration: "underline" },
+                }}
+              >
+                <Link href={"/helpus"}>Tip Us</Link>
+              </Typography>
+            </Grid>
+            <Grid xs={2}></Grid>
+          </Grid>
+          {/* <AppBar sx={{ bgcolor: "#d9078f", m: 0, p: 0 }} position="static"> */}
+          {/* <Container sx={{ m: 0, p: 0 }} maxWidth="xl"> */}
+          {/* <Toolbar disableGutters> */}
+          <Box sx={{ display: { xs: "flex", sm: "none" } }}>
+            <NavigationMenu style={{ margin: 0, padding: 0 }}>
+              <NavigationMenuList style={{ margin: 0, padding: 0 }}>
+                <NavigationMenuItem style={{ margin: 0, padding: 0 }}>
+                  <NavigationMenuTrigger
+                    style={{ backgroundColor: "transparent" }}
+                    onClick={handleToggle}
+                  >
+                    {isOpen ? (
+                      <RemoveIcon className="icon animate-slideInFromTop " />
+                    ) : (
+                      <MenuIcon className="icon animate-slideInFromTop" />
+                    )}
+                  </NavigationMenuTrigger>
+
+                  <NavigationMenuContent
+                    style={{ borderRadius: "0px" }}
+                    className="w-screen  animate-slideInFromTop bg-inherit m-0 p-0  "
+                  >
+                    <List sx={{ bgcolor: "#bd047c" }}>
+                      {/* <Grid container>
                             <Grid xs={4}>
                               <ListItem
                                 sx={{
@@ -163,44 +243,42 @@ function NavbarHelper({ isLoginUser }: { isLoginUser: any }) {
                                 <Typography textAlign="center">News</Typography>
                               </ListItem>
                             </Grid>
+                          </Grid> */}
+                    </List>
+                    <List sx={{ bgcolor: "#bd047c" }}>
+                      <Grid sx={{ mt: 4 }} container>
+                        {pages.map((page: NavigationPages, index: number) => (
+                          <Grid key={index} xs={4}>
+                            <ListItem
+                              sx={{
+                                textAlign: "center",
+                                display: "flex",
+                                alignItems: "center",
+                                mt: 1,
+                                borderRight: "2px solid #d6008b",
+                                color: "white",
+                                fontWeight: 600,
+                              }}
+                              onClick={() => history.push(page.route)}
+                            >
+                              <Typography textAlign="center">
+                                {page.icon}
+                              </Typography>
+                              <Typography textAlign="center">
+                                {page.title}
+                              </Typography>
+                            </ListItem>
                           </Grid>
-                        </List>
-                        <List sx={{ bgcolor: "#bd047c" }}>
-                          <Grid sx={{ mt: 4 }} container>
-                            {pages.map(
-                              (page: NavigationPages, index: number) => (
-                                <Grid key={index} xs={4}>
-                                  <ListItem
-                                    sx={{
-                                      textAlign: "center",
-                                      display: "flex",
-                                      alignItems: "center",
-                                      mt: 1,
-                                      borderRight: "2px solid #d6008b",
-                                      color: "white",
-                                      fontWeight: 600,
-                                    }}
-                                    onClick={() => history.push(page.route)}
-                                  >
-                                    <Typography textAlign="center">
-                                      {page.icon}
-                                    </Typography>
-                                    <Typography textAlign="center">
-                                      {page.title}
-                                    </Typography>
-                                  </ListItem>
-                                </Grid>
-                              )
-                            )}
-                          </Grid>
-                        </List>
-                      </NavigationMenuContent>
-                    </NavigationMenuItem>
-                  </NavigationMenuList>
-                </NavigationMenu>
-              </Box>
-              {/* large  */}
-              <Box
+                        ))}
+                      </Grid>
+                    </List>
+                  </NavigationMenuContent>
+                </NavigationMenuItem>
+              </NavigationMenuList>
+            </NavigationMenu>
+          </Box>
+          {/* large  */}
+          {/* <Box
                 sx={{
                   flexGrow: 1,
                   display: { xs: "none", sm: "flex" },
@@ -226,86 +304,123 @@ function NavbarHelper({ isLoginUser }: { isLoginUser: any }) {
                     </Typography>
                   </Button>
                 ))}
-                {/* <TopSearch /> */}
-              </Box>
+                {/* <TopSearch />  
+              </Box> */}
 
-              <Box
+          {/* </Toolbar> */}
+          <Grid container>
+            <Grid xs={0} md={1} lg={1.1} xl={2.3}></Grid>
+            <Grid xs={12} md={10} lg={9.8} xl={7}>
+              <Grid
                 sx={{
-                  flexGrow: 0,
                   display: "flex",
                   alignItems: "center",
-                  justifyContent: "end",
+                  // justifyContent: "center",
+                  m: 2,
+                  // textAlign: "center",
                 }}
+                // xs={}
               >
-                <form onSubmit={handleSubmit} style={{ position: "relative" }}>
-                  <Search>
-                    <button
-                      style={{
-                        height: "100%",
-                        display: "flex",
-                        justifyContent: "center",
-                        alignItems: "center",
-                        border: "none",
-                        color: "inherit",
-                        cursor: "pointer",
-                        background: "none",
-                        bottom: 0,
-                        padding: 0, // Ensures no extra padding
-                        margin: 0, // Ensures no extra margin
-                      }}
-                      type="submit"
-                    >
-                      <SearchIcon />
-                    </button>
-                    <StyledInputBase
-                      name="search"
-                      placeholder="Search…"
-                      inputProps={{ "aria-label": "search" }}
-                    />
-                  </Search>
-                </form>
-                <Container
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: isLoginUser ? 1 : 2,
-                  }}
+                <Grid
+                // sx={{ display: "flex", justifyContent: "center", width: "100%" }}
                 >
-                  {isLoginUser ? (
-                    <>
-                      <Typography>
-                        {isLoginUser?.fullName?.toUpperCase()}
-                      </Typography>
-                      <LogoutIcon
-                        onClick={async () => {
-                          await signOut();
-                          await window.location.reload();
+                  <Image
+                    alt="logo"
+                    // layout="responsive"
+                    width={180}
+                    height={20}
+                    src="/logo.png"
+                  />
+                </Grid>
+                <Grid>
+                  <form
+                    onSubmit={handleSubmit}
+                    style={{
+                      position: "relative",
+                      width: "100%",
+                      display: "flex",
+                      justifyContent: "center",
+                      marginLeft: 50,
+                      marginTop:10
+                    }}
+                  >
+                    <Search>
+                      <button
+                        style={{
+                          height: "100%",
+                          display: "flex",
+                          justifyContent: "center",
+                          alignItems: "center",
+                          border: "none",
+                          borderTopLeftRadius: "50px",
+                          borderBottomLeftRadius: "50px",
+                          color: "gray",
+                          cursor: "pointer",
+                          background: "#f0f5fe",
+                          bottom: 0,
+                          padding: 0, // Ensures no extra padding
+                          margin: 0, // Ensures no extra margin
                         }}
+                        type="submit"
+                      >
+                        <SearchIcon />
+                      </button>
+                      <StyledInputBase
+                        name="search"
+                        placeholder="Search…"
+                        inputProps={{ "aria-label": "search" }}
+                        sx={{ width: "400px" }}
                       />
-                    </>
-                  ) : (
-                    <>
-                      <Popover>
-                        <PopoverTrigger>
-                          <LoginIcon />
-                        </PopoverTrigger>
-                        <PopoverContent className="w-[355px] md:w-[550px]">
-                          <LoginComponent  />
-                        </PopoverContent>
-                      </Popover>
-
-                      <GroupAddIcon onClick={()=>history.push('/register')} />
-                    </>
-                  )}
-                </Container>
-              </Box>
-            </Toolbar>
-          </Container>
+                    </Search>
+                  </form>
+                </Grid>
+              </Grid>
+            </Grid>
+          </Grid>
+          {/* </Container> */}
         </AppBar>
-        <AppBar sx={{ bgcolor: "#f2f2f2", m: 0, p: 0 }} position="static">
-          <Container sx={{ m: 0, p: 0 }} maxWidth="xl">
-            <Grid container>
-              {/* <Grid xs={4}>
+        <AppBar sx={{ bgcolor: "#023359", m: 0, p: 0 }} position="static">
+          <Grid container sx={{ m: 0, p: 0 }} xs={12}>
+            <Grid xs={0} md={1} lg={1.1} xl={2.5}></Grid>
+            <Grid xs={12} md={10} lg={9.8} xl={7}>
+              {/* <Container sx={{ m: 0, p: 0 }} maxWidth="xl"> */}
+              <Grid container>
+                <Grid alignItems={"left"} container xs={11}>
+                  {category?.map((value: CategoryTypes) => {
+                    return (
+                      <Grid sx={{ p: 1 }} xs={1} key={value.id}>
+                        <Typography
+                          sx={{
+                            cursor: "pointer",
+                          }}
+                          onClick={() => {
+                            history.push(`/category/${value.title}`);
+                          }}
+                        >
+                          {value.title}
+                        </Typography>
+                      </Grid>
+                    );
+                  })}
+                </Grid>
+                <Grid textAlign={"end"} xs={1}>
+                  <>
+                    <Popover>
+                      <PopoverTrigger>
+                        <LoginIcon sx={{ mt: 1 }} />
+                      </PopoverTrigger>
+                      <PopoverContent className="w-[355px] md:w-[550px]">
+                        <LoginComponent />
+                      </PopoverContent>
+                    </Popover>
+
+                    <GroupAddIcon
+                      sx={{ ml: 1.5, mt: 1 }}
+                      onClick={() => history.push("/register")}
+                    />
+                  </>
+                </Grid>
+                {/* <Grid xs={4}>
                 <ListItem
                   sx={{
                     textAlign: "center",
@@ -325,7 +440,7 @@ function NavbarHelper({ isLoginUser }: { isLoginUser: any }) {
                   }
                 </ListItem>
               </Grid> */}
-              <Grid xs={4}>
+                {/* <Grid xs={4}>
                 <ListItem
                   sx={{
                     textAlign: "center",
@@ -378,12 +493,14 @@ function NavbarHelper({ isLoginUser }: { isLoginUser: any }) {
                     About Us
                   </Typography>
                 </ListItem>
+              </Grid> */}
               </Grid>
+              {/* </Container> */}
             </Grid>
-          </Container>
+            <Grid xs={0} md={1} lg={1.1} xl={2.5}></Grid>
+          </Grid>
         </AppBar>
       </Grid>
-      <Grid xs={0} md={1} lg={1.1} xl={2}></Grid>
     </Grid>
   );
 }

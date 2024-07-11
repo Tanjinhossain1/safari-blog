@@ -24,19 +24,27 @@ export default function DisplayArticleComponent({
       container
       sx={{
         borderBottom: asSmall ? "1px solid lightgray" : "none",
-        pb: 3,
-        pt: 2,
+        border:"1px solid lightgray",
+        height:"150px",
+        borderRadius:"5px",
+        // p:2,
+        // pb: 3,
+        mr:1,
+        // pt: 2,
+        p:1,
+        mb:1
       }}
+      xs={5.6}
     >
-      <Grid xs={asSmall ? 5 : 12} sm={5.5}>
+      <Grid xs={asSmall ? 5 : 12} sm={5.5} sx={{height:"100%"}}>
         {/* <Image src={data.image} alt={data.title} layout="fill" objectFit="cover" /> */}
         <Image
-          style={{ width: "100%", cursor: "pointer" }}
+          style={{ width: "100%", cursor: "pointer",height:"100%" }}
           alt=""
           src={data.image}
-          layout="responsive"
-          width={370}
-          height={200}
+          // layout="responsive"
+          width={300}
+          height={300}
           onClick={() => {
             const joinTitle = data.title
               .split(" ")
@@ -97,7 +105,7 @@ export default function DisplayArticleComponent({
         >
           {asSmall ? formatDate(data.createdAt) : null}
         </Typography>
-        <Typography
+        {/* <Typography
           sx={{
             fontSize: 13,
             fontWeight: 500,
@@ -113,9 +121,10 @@ export default function DisplayArticleComponent({
           }}
         >
           {truncateText(data.description, 300)}
-        </Typography>
+        </Typography> */}
 
-        <Button
+        {/* <Button
+        size="small"
           variant="contained"
           onClick={() => {
             const joinTitle = data.title
@@ -159,10 +168,11 @@ export default function DisplayArticleComponent({
               backgroundColor: "#4791db", // Lighter shade for active
               transform: "scale(0.95)",
             },
+            
           }}
         >
           Read More &gt;&gt;
-        </Button>
+        </Button> */}
       </Grid>
     </Grid>
   );
