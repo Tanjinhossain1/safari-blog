@@ -1,4 +1,5 @@
 import CategoryPageComponent from "@/Component/Category/CategoryPageComponent";
+import Navbar from "@/Component/Shared/Navbar";
 import { fetchArticles, fetchArticlesDetails, fetchCategories } from "@/services/articleServices";
 import React, { Suspense } from "react";
 
@@ -19,6 +20,7 @@ export default async function ArticleBrandWisePage({ searchParams,params }: Cate
   
   return (
     <Suspense>
+      <Navbar />
      <CategoryPageComponent  isBrandWise category={Category.data} categoryWiseArticles={articles.data} total={articles.total} />
     </Suspense>
   );

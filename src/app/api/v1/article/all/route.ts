@@ -46,6 +46,7 @@ export async function GET(req: NextRequest) {
             latestDevice: searchParams.get('latestDevice'),
             all: searchParams.get('all'),
             brands: searchParams.get('brands'),
+            showInNews: searchParams.get('showInNews'),
         };
 
         const options = {
@@ -76,11 +77,16 @@ const getAll = async (
     options: IPaginationOptions
 ): Promise<IGenericResponse<any[]>> => {
     const { limit, page, skip } = paginationHelpers.calculatePagination(options);
-    const { searchTerm, category, latestDevice, all,brands } = filters;
+    const { searchTerm, category, latestDevice, all,brands,showInNews } = filters;
     const whereConditions = [];
 
     if (category) {
         const searchConditions = ilike(Articles["category"], `%${category}%`)
+
+        whereConditions.push(searchConditions);
+    }
+    if (showInNews) {
+        const searchConditions = ilike(Articles["showInNews"], `%${showInNews}%`)
 
         whereConditions.push(searchConditions);
     }
